@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin & Undangan Pernikahan</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-serif-custom { font-family: 'Playfair Display', serif; }
+    </style>
+</head>
+<body id="body-theme" class="bg-slate-950 text-slate-100 antialiased selection:bg-amber-500 selection:text-slate-950 transition-colors duration-500">
+
+    <!-- ================================================= -->
+    <!-- HALAMAN ADMIN (PENGATURAN & UPLOAD FOTO)          -->
+    <!-- ================================================= -->
+    <div id="admin-page" class="min-h-screen py-10 px-4 md:px-8 max-w-4xl mx-auto">
+        <div class="bg-slate-900 border border-slate-800 p-6 md:p-10 rounded-3xl shadow-2xl space-y-8">
+            
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-800 pb-6">
+                <div>
+                    <span class="text-amber-500 tracking-[0.3em] uppercase text-xs font-semibold">Panel Kontrol Admin</span>
+                    <h1 class="font-serif-custom text-2xl md:text-3xl font-bold mt-1">Setting Undangan M. Rayhan Aly & Puja Shalehah</h1>
+                </div>
+                <button onclick="switchToPreview()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-400 text-xs font-semibold rounded-xl transition-all flex items-center gap-2">
+                    <span>Preview Tampilan</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                </button>
+            </div>
+
+            <!-- FORM SETTING -->
+            <div class="space-y-6">
+                <h3 class="font-serif-custom text-lg font-bold text-amber-300">1. Konfigurasi Waktu, Lokasi & Rekening</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="text-xs text-slate-400 uppercase font-medium">Pukul & Jam Acara</label>
+                        <input type="text" id="cfg-time" value="Pukul 09.00 WIB - Selesai" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs text-slate-400 uppercase font-medium">Tanggal Acara</label>
+                        <input type="text" id="cfg-date" value="Sabtu, 25 Desember 2026" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="text-xs text-slate-400 uppercase font-medium">Nama Lokasi / Gedung</label>
+                        <input type="text" id="cfg-location" value="Gedung Serbaguna Grand Ballroom, Bandung" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs text-slate-400 uppercase font-medium">Link Google Maps</label>
+                        <input type="text" id="cfg-maps" value="https://maps.app.goo.gl/contoh" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="text-xs text-slate-400 uppercase font-medium">Nomor Rekening Tuan Rumah (Amplop)</label>
+                        <input type="text" id="cfg-rek" value="BCA 1234567890 a.n M. Rayhan Aly" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs text-slate-400 uppercase font-medium">Tema Warna Latar Belakang</label>
+                        <select id="cfg-theme" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 text-slate-300">
+                            <option value="dark">Deep Midnight (Gelap Elegan)</option>
+                            <option value="emerald">Emerald Luxury (Hijau Mewah)</option>
+                            <option value="rose">Rose Gold (Romantis Hangat)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- UPLOAD FOTO (PNG, JPG, JPEG) -->
+                <div class="space-y-2">
+                    <label class="text-xs text-slate-400 uppercase font-medium">Upload Foto Galeri (Format: PNG, JPG, JPEG)</label>
+                    <input type="file" id="cfg-photo-files" accept="image/png, image/jpeg, image/jpg" multiple class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
+                    <p class="text-[11px] text-slate-500">Pilih beberapa foto sekaligus. Foto akan otomatis tersimpan di memori setting.</p>
+                </div>
+
+                <button onclick="saveSettings()" class="w-full py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-400 font-semibold rounded-xl transition-all text-sm">
+                    Simpan Perubahan Setting
+                </button>
+            </div>
+
+            <hr class="border-slate-800">
+
+            <!-- INPUT DAFTAR NAMA TAMU -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-serif-custom text-lg font-bold text-amber-300">2. Masukkan Daftar Nama Tamu (Link Menjadi Singkat)</h3>
+                    <span class="text-xs text-slate-500">Ketik 1 nama per baris</span>
+                </div>
+                
+                <textarea id="guest-input" rows="4" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm focus:outline-none focus:border-amber-500" placeholder="Budi Santoso&#10;Siti Aminah">Budi Santoso
+Siti Aminah
+Keluarga Besar Nusantara</textarea>
+                
+                <button onclick="generateShortLinks()" class="w-full py-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
+                    <span>Generate Link Singkat Per Tamu</span>
+                </button>
+            </div>
+
+            <!-- HASIL LINK GENERATOR -->
+            <div id="result-box" class="space-y-4 pt-4 hidden">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-serif-custom text-xl font-bold text-amber-400">Daftar Link Singkat Siap Dibagikan:</h3>
+                    <span id="counter-badge" class="px-3 py-1 bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs rounded-full font-medium">0 Tamu</span>
+                </div>
+                <div id="link-list-container" class="space-y-3 max-h-96 overflow-y-auto pr-2">
+                    <!-- List link masuk otomatis -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- HALAMAN PUBLIK / UNDANGAN                        -->
+    <!-- ================================================= -->
+    <div id="invitation-page" class="hidden">
+        
+        <!-- COVER / HALAMAN UTAMA -->
+        <section id="cover" class="relative min-h-screen flex flex-col items-center justify-between p-6 text-center bg-gradient-to-b from-slate-900 to-slate-950">
+            <div class="relative z-10 space-y-4 pt-12">
+                <span class="tracking-[0.3em] uppercase text-xs text-amber-500 font-semibold">The Wedding Of</span>
+                <!-- TEMPLATE NAMA PASANGAN -->
+                <h1 class="font-serif-custom text-4xl md:text-6xl italic font-bold text-amber-100">Undangan Pernikahan <br><span class="text-amber-400 not-italic text-3xl md:text-5xl mt-2 block">M. Rayhan Aly & Puja Shalehah</span></h1>
+            </div>
+
+            <!-- KOTAK KEPADA (NAMA TAMU, PUKUL & LOKASI) -->
+            <div class="relative z-10 my-6 space-y-3 max-w-md w-full bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-800 shadow-2xl text-left">
+                <div class="border-b border-slate-800 pb-3">
+                    <p class="text-[11px] tracking-wider text-slate-400 uppercase font-semibold">Kepada Yth:</p>
+                    <h2 id="view-guest-name" class="font-serif-custom text-2xl font-bold text-amber-400 mt-0.5">Tamu Undangan</h2>
+                </div>
+                <div class="space-y-1 text-xs text-slate-300 pt-1">
+                    <p class="flex items-center gap-2"><strong class="text-amber-500 w-14">Waktu:</strong> <span id="view-time-box">-</span></p>
+                    <p class="flex items-center gap-2"><strong class="text-amber-500 w-14">Lokasi:</strong> <span id="view-location-box">-</span></p>
+                </div>
+            </div>
+
+            <div class="relative z-10 pb-10 space-y-3">
+                <button onclick="openInvitation()" class="px-8 py-4 bg-amber-500 text-slate-950 font-semibold rounded-full shadow-lg hover:bg-amber-400 transition-all duration-300 transform hover:scale-105">
+                    Buka Undangan
+                </button>
+                <div>
+                    <button onclick="backToAdmin()" class="text-xs text-slate-500 hover:text-slate-300 underline">Kembali ke Panel Setting</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- KONTEN UTAMA -->
+        <div id="main-content" class="hidden">
+            
+            <section class="py-24 px-6 max-w-4xl mx-auto text-center space-y-10">
+                <div class="space-y-3">
+                    <span class="text-amber-500 tracking-[0.2em] uppercase text-xs font-semibold">Save The Date</span>
+                    <h2 class="font-serif-custom text-4xl md:text-5xl">M. Rayhan Aly & Puja Shalehah</h2>
+                    <p id="view-date" class="text-amber-200 font-semibold text-base pt-2"></p>
+                </div>
+
+                <div class="bg-slate-900/60 p-8 rounded-3xl border border-slate-800 space-y-3 shadow-xl max-w-lg mx-auto">
+                    <h3 class="font-serif-custom text-2xl text-amber-400">Resepsi & Akad</h3>
+                    <p id="view-location" class="text-slate-300 text-sm font-medium"></p>
+                </div>
+
+                <div>
+                    <a id="view-maps-btn" href="#" target="_blank" class="inline-flex items-center gap-2 px-8 py-4 bg-amber-500 hover:bg-amber-400 text-slate-950 text-sm font-semibold rounded-full shadow-lg transition-all">
+                        <span>Buka Petunjuk Google Maps</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- GALERI FOTO (Presisi & Center) -->
+            <section class="py-20 px-6 bg-slate-900/30 border-y border-slate-900">
+                <div class="max-w-4xl mx-auto space-y-10">
+                    <div class="text-center space-y-3">
+                        <span class="text-amber-500 tracking-[0.2em] uppercase text-xs font-semibold">Galeri Momen</span>
+                        <h2 class="font-serif-custom text-4xl md:text-5xl">Our Gallery</h2>
+                    </div>
+
+                    <div id="view-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <!-- Foto render otomatis -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- AMPLOP DIGITAL -->
+            <section class="py-20 px-6">
+                <div class="max-w-xl mx-auto text-center space-y-6 bg-slate-900/60 p-8 rounded-3xl border border-slate-800 shadow-2xl">
+                    <div class="space-y-2">
+                        <span class="text-amber-500 tracking-[0.2em] uppercase text-xs font-semibold">Tanda Kasih</span>
+                        <h2 class="font-serif-custom text-3xl">Amplop Digital</h2>
+                        <p class="text-xs text-slate-400">Doa restu Anda merupakan karunia terindah bagi kami.</p>
+                    </div>
+                    <div class="p-5 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
+                        <p id="view-rek" class="font-mono text-base font-bold tracking-wider text-amber-200">-</p>
+                        <button onclick="copyRek(this)" class="mt-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs rounded-lg transition-colors text-amber-300">Salin Nomor Rekening</button>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="py-12 text-center text-xs text-slate-500 border-t border-slate-900">
+                <p>© 2026 M. Rayhan Aly & Puja Shalehah. All rights reserved.</p>
+            </footer>
+
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIKA -->
+    <script>
+        // Load data saat pertama kali dibuka
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSavedSettingsToForm();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const guestName = urlParams.get('to');
+
+            if (guestName) {
+                document.getElementById('admin-page').classList.add('hidden');
+                document.getElementById('invitation-page').classList.remove('hidden');
+
+                document.getElementById('view-guest-name').innerText = guestName.replace(/_/g, ' ');
+                
+                // Ambil data setting dari LocalStorage
+                const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
+                
+                if (savedData.time) document.getElementById('view-time-box').innerText = savedData.time;
+                if (savedData.date) document.getElementById('view-date').innerText = savedData.date;
+                if (savedData.location) {
+                    document.getElementById('view-location-box').innerText = savedData.location;
+                    document.getElementById('view-location').innerText = savedData.location;
+                }
+                if (savedData.maps) document.getElementById('view-maps-btn').href = savedData.maps;
+                if (savedData.rek) document.getElementById('view-rek').innerText = savedData.rek;
+                if (savedData.theme) applyTheme(savedData.theme);
+
+                const galleryGrid = document.getElementById('view-gallery-grid');
+                if (savedData.photos && savedData.photos.length > 0) {
+                    galleryGrid.innerHTML = savedData.photos.map(base64 => `
+                        <div class="overflow-hidden rounded-2xl bg-slate-900 border border-slate-800 aspect-square flex items-center justify-center">
+                            <img src="${base64}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Galeri">
+                        </div>
+                    `).join('');
+                }
+            }
+        });
+
+        function saveSettings(showAlert = true) {
+            const time = document.getElementById('cfg-time').value;
+            const date = document.getElementById('cfg-date').value;
+            const location = document.getElementById('cfg-location').value;
+            const maps = document.getElementById('cfg-maps').value;
+            const rek = document.getElementById('cfg-rek').value;
+            const theme = document.getElementById('cfg-theme').value;
+
+            const fileInput = document.getElementById('cfg-photo-files');
+            const files = fileInput.files;
+
+            const existingData = JSON.parse(localStorage.getItem('wedding_config')) || {};
+
+            if (files.length === 0) {
+                existingData.time = time;
+                existingData.date = date;
+                existingData.location = location;
+                existingData.maps = maps;
+                existingData.rek = rek;
+                existingData.theme = theme;
+                localStorage.setItem('wedding_config', JSON.stringify(existingData));
+                if (showAlert) alert('Setting berhasil disimpan!');
+            } else {
+                let readers = [];
+                let base64Images = [];
+
+                for (let i = 0; i < files.length; i++) {
+                    readers.push(new Promise((resolve) => {
+                        let reader = new FileReader();
+                        reader.onload = function(e) {
+                            base64Images.push(e.target.result);
+                            resolve();
+                        }
+                        reader.readAsDataURL(files[i]);
+                    }));
+                }
+
+                Promise.all(readers).then(() => {
+                    existingData.time = time;
+                    existingData.date = date;
+                    existingData.location = location;
+                    existingData.maps = maps;
+                    existingData.rek = rek;
+                    existingData.theme = theme;
+                    existingData.photos = base64Images;
+                    localStorage.setItem('wedding_config', JSON.stringify(existingData));
+                    if (showAlert) alert('Setting & Foto berhasil disimpan!');
+                });
+            }
+        }
+
+        function loadSavedSettingsToForm() {
+            const savedData = JSON.parse(localStorage.getItem('wedding_config'));
+            if (!savedData) return;
+
+            if (savedData.time) document.getElementById('cfg-time').value = savedData.time;
+            if (savedData.date) document.getElementById('cfg-date').value = savedData.date;
+            if (savedData.location) document.getElementById('cfg-location').value = savedData.location;
+            if (savedData.maps) document.getElementById('cfg-maps').value = savedData.maps;
+            if (savedData.rek) document.getElementById('cfg-rek').value = savedData.rek;
+            if (savedData.theme) document.getElementById('cfg-theme').value = savedData.theme;
+        }
+
+        function generateShortLinks() {
+            saveSettings(false); // Simpan otomatis setting sebelum generate
+
+            const guestInput = document.getElementById('guest-input').value.trim();
+            if (!guestInput) return alert('Masukkan minimal satu nama tamu!');
+
+            const guests = guestInput.split('\n');
+            const baseUrl = window.location.origin + window.location.pathname;
+            
+            const container = document.getElementById('link-list-container');
+            container.innerHTML = '';
+            let validCount = 0;
+
+            guests.forEach(name => {
+                const cleanName = name.trim();
+                if (!cleanName) return;
+                validCount++;
+
+                const formattedName = cleanName.replace(/ /g, '_');
+                const uniqueLink = `${baseUrl}?to=${formattedName}`;
+
+                container.innerHTML += `
+                    <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+                        <div class="overflow-hidden">
+                            <p class="font-semibold text-amber-300 text-sm flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 text-xs flex items-center justify-center font-mono">${validCount}</span>
+                                ${cleanName}
+                            </p>
+                            <p class="text-xs text-slate-500 truncate max-w-md mt-1 font-mono">${uniqueLink}</p>
+                        </div>
+                        <button onclick="copyLink('${uniqueLink}', this)" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs rounded-xl font-medium text-amber-400 transition-colors whitespace-nowrap">
+                            Salin Link
+                        </button>
+                    </div>
+                `;
+            });
+
+            document.getElementById('counter-badge').innerText = `${validCount} Tamu`;
+            document.getElementById('result-box').classList.remove('hidden');
+        }
+
+        function applyTheme(theme) {
+            const body = document.getElementById('body-theme');
+            if (theme === 'emerald') body.className = "bg-emerald-950 text-emerald-100 antialiased selection:bg-emerald-500 selection:text-slate-950";
+            else if (theme === 'rose') body.className = "bg-stone-950 text-rose-100 antialiased selection:bg-rose-500 selection:text-slate-950";
+        }
+
+        function copyLink(text, btn) {
+            navigator.clipboard.writeText(text);
+            const originalText = btn.innerText;
+            btn.innerText = "Tersalin!";
+            setTimeout(() => { btn.innerText = originalText; }, 2000);
+        }
+
+        function switchToPreview() {
+            saveSettings(false);
+            document.getElementById('admin-page').classList.add('hidden');
+            document.getElementById('invitation-page').classList.remove('hidden');
+            
+            document.getElementById('view-guest-name').innerText = "Tamu Kehormatan";
+            document.getElementById('view-time-box').innerText = document.getElementById('cfg-time').value;
+            document.getElementById('view-date').innerText = document.getElementById('cfg-date').value;
+            const locVal = document.getElementById('cfg-location').value;
+            document.getElementById('view-location-box').innerText = locVal;
+            document.getElementById('view-location').innerText = locVal;
+            document.getElementById('view-maps-btn').href = document.getElementById('cfg-maps').value;
+            document.getElementById('view-rek').innerText = document.getElementById('cfg-rek').value;
+            applyTheme(document.getElementById('cfg-theme').value);
+
+            const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
+            const galleryGrid = document.getElementById('view-gallery-grid');
+            if (savedData.photos && savedData.photos.length > 0) {
+                galleryGrid.innerHTML = savedData.photos.map(base64 => `
+                    <div class="overflow-hidden rounded-2xl bg-slate-900 border border-slate-800 aspect-square flex items-center justify-center">
+                        <img src="${base64}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Galeri">
+                    </div>
+                `).join('');
+            }
+        }
+
+        function backToAdmin() { window.location.href = window.location.pathname; }
+
+        function openInvitation() {
+            const cover = document.getElementById('cover');
+            const mainContent = document.getElementById('main-content');
+            cover.classList.add('opacity-0', 'transition-opacity', 'duration-700');
+            setTimeout(() => {
+                cover.style.display = 'none';
+                mainContent.classList.remove('hidden');
+                window.scrollTo(0, 0);
+            }, 700);
+        }
+
+        function copyRek(btn) {
+            navigator.clipboard.writeText(document.getElementById('view-rek').innerText);
+            const originalText = btn.innerText;
+            btn.innerText = "Berhasil Disalin!";
+            setTimeout(() => { btn.innerText = originalText; }, 2000);
+        }
+    </script>
+</body>
+</html>
