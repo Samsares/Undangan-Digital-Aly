@@ -31,11 +31,38 @@
     <!-- AUDIO BACKSOUND ELEMENT -->
     <audio id="bg-audio" loop preload="auto"></audio>
 
-    <!-- FLOATING MUSIC BUTTON (MUNCUL SETELAH UNDANGAN DIBUKA) -->
+    <!-- FLOATING MUSIC BUTTON -->
     <div id="floating-music-btn" class="fixed bottom-6 right-6 z-50 hidden">
         <button onclick="toggleAudio()" class="w-12 h-12 rounded-full bg-slate-900/90 border border-amber-500/40 text-amber-400 flex items-center justify-center shadow-2xl backdrop-blur-md hover:scale-110 transition-all">
             <svg id="music-icon" class="w-5 h-5 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
         </button>
+    </div>
+
+    <!-- MODAL KAMERA INTERAKTIF (LIVE CAPTURE) -->
+    <div id="camera-modal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md hidden flex flex-col items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl max-w-md w-full space-y-4 text-center relative shadow-2xl">
+            <h3 class="font-serif-custom text-xl font-bold text-amber-300">Abadikan Momen di Lokasi</h3>
+            <div class="relative w-full aspect-[3/4] bg-slate-950 rounded-2xl overflow-hidden border border-slate-800">
+                <video id="live-camera" autoplay playsinline class="w-full h-full object-cover"></video>
+                <canvas id="snapshot-canvas" class="hidden"></canvas>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="capturePhoto()" class="flex-1 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl transition-all text-sm">Ambil Foto</button>
+                <button onclick="closeCameraModal()" class="px-5 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl transition-all text-sm">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL REVIEW KELUAR LOKASI (GEOFENCE EXIT NOTIFICATION) -->
+    <div id="review-modal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md hidden flex flex-col items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl max-w-lg w-full space-y-4 shadow-2xl">
+            <h3 class="font-serif-custom text-xl font-bold text-amber-300 text-center">Kurasi Foto Anda</h3>
+            <p class="text-xs text-slate-400 text-center">Anda telah meninggalkan area pernikahan. Pilih foto mana saja yang ingin Anda simpan untuk dikirim ke galeri utama.</p>
+            <div id="review-photos-container" class="grid grid-cols-3 gap-3 max-h-64 overflow-y-auto pr-1">
+                <!-- Foto hasil jepretan dimunculkan di sini untuk dipilih/hapus -->
+            </div>
+            <button onclick="submitCuratedPhotos()" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl transition-all text-sm">Kirim Foto Terpilih ke Galeri Utama</button>
+        </div>
     </div>
 
     <!-- ================================================= -->
@@ -76,8 +103,9 @@
                         <input type="text" id="cfg-location" value="Gedung Serbaguna Grand Ballroom, Bandung" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500">
                     </div>
                     <div class="space-y-1.5">
-                        <label class="text-xs text-slate-400 uppercase font-medium">Link Google Maps</label>
-                        <input type="text" id="cfg-maps" value="https://maps.app.goo.gl/contoh" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500">
+                        <label class="text-xs text-slate-400 uppercase font-medium">Link Google Maps (Pusat Radius 1 KM)</label>
+                        <input type="text" id="cfg-maps" value="https://maps.google.com/?q=-6.9175,107.6191" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500" placeholder="Masukkan link google maps atau koordinat lat,long">
+                        <p class="text-[10px] text-slate-500">Sistem akan mendeteksi koordinat dari link ini untuk fitur kamera radius 1 km.</p>
                     </div>
                 </div>
 
@@ -100,7 +128,6 @@
                 <div class="space-y-2 pt-2 border-t border-slate-800">
                     <label class="text-xs text-slate-400 uppercase font-medium">Upload Backsound Musik Undangan (Format: MP3, WAV, AAC)</label>
                     <input type="file" id="cfg-audio-file" accept="audio/mp3, audio/wav, audio/aac, audio/*" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
-                    <p class="text-[11px] text-slate-500">Musik akan otomatis berputar saat tamu mengklik tombol "Buka Undangan".</p>
                 </div>
 
                 <!-- PENGATURAN BACKGROUND TERPISAH PER BAGIAN -->
@@ -108,25 +135,26 @@
                     <h3 class="font-serif-custom text-lg font-bold text-amber-300">2. Kustomisasi Background Per Bagian (Opsional)</h3>
                     
                     <div class="space-y-2">
-                        <label class="text-xs text-slate-400 uppercase font-medium">Background Bagian 1: Cover Utama (Saat Link Dibuka)</label>
+                        <label class="text-xs text-slate-400 uppercase font-medium">Background Bagian 1: Cover Utama</label>
                         <input type="file" id="cfg-bg-1" accept="image/png, image/jpeg, image/jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
                     </div>
 
                     <div class="space-y-2">
-                        <label class="text-xs text-slate-400 uppercase font-medium">Background Bagian 2: Bagian Tanggal & Lokasi (Setelah Dibuka)</label>
+                        <label class="text-xs text-slate-400 uppercase font-medium">Background Bagian 2: Tanggal & Lokasi</label>
                         <input type="file" id="cfg-bg-2" accept="image/png, image/jpeg, image/jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
                     </div>
 
                     <div class="space-y-2">
-                        <label class="text-xs text-slate-400 uppercase font-medium">Background Bagian 3: Bagian Galeri & Amplop Digital</label>
+                        <label class="text-xs text-slate-400 uppercase font-medium">Background Bagian 3: Galeri & Amplop</label>
                         <input type="file" id="cfg-bg-3" accept="image/png, image/jpeg, image/jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
                     </div>
                 </div>
 
-                <!-- UPLOAD FOTO GALERI -->
+                <!-- UPLOAD FOTO GALERI UTAMA -->
                 <div class="space-y-2 pt-2 border-t border-slate-800">
-                    <label class="text-xs text-slate-400 uppercase font-medium">Upload Foto Galeri (Format: PNG, JPG, JPEG)</label>
+                    <label class="text-xs text-slate-400 uppercase font-medium">Upload Foto Galeri Utama (Link Induk)</label>
                     <input type="file" id="cfg-photo-files" accept="image/png, image/jpeg, image/jpg" multiple class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
+                    <p class="text-[11px] text-slate-500">Foto kontribusi tamu dari berbagai link akan otomatis masuk ke galeri ini.</p>
                 </div>
 
                 <button onclick="saveSettings()" class="w-full py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-400 font-semibold rounded-xl transition-all text-sm">
@@ -136,7 +164,7 @@
 
             <hr class="border-slate-800">
 
-            <!-- INPUT DAFTAR NAMA TAMU (MANUAL & UPLOAD FILE EXCEL/PDF) -->
+            <!-- INPUT DAFTAR NAMA TAMU -->
             <div class="space-y-4">
                 <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-2">
                     <h3 class="font-serif-custom text-lg font-bold text-amber-300">3. Masukkan Daftar Nama Tamu</h3>
@@ -147,7 +175,6 @@
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Manual Input -->
                     <div class="space-y-1.5">
                         <label class="text-xs text-slate-400 uppercase font-medium">Ketik Manual (1 Nama Per Baris)</label>
                         <textarea id="guest-input" rows="5" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm focus:outline-none focus:border-amber-500" placeholder="Budi Santoso&#10;Siti Aminah">Budi Santoso
@@ -155,7 +182,6 @@ Siti Aminah
 Keluarga Besar Nusantara</textarea>
                     </div>
 
-                    <!-- Upload File Excel / PDF -->
                     <div class="space-y-1.5 relative">
                         <label class="text-xs text-slate-400 uppercase font-medium">Atau Upload File Excel (.xlsx/.xls) / PDF</label>
                         <div class="border-2 border-dashed border-slate-800 hover:border-amber-500/50 rounded-xl p-6 text-center flex flex-col items-center justify-center bg-slate-950 transition-colors h-[132px] relative cursor-pointer">
@@ -178,9 +204,7 @@ Keluarga Besar Nusantara</textarea>
                     <h3 class="font-serif-custom text-xl font-bold text-amber-400">Daftar Link Singkat Siap Dibagikan:</h3>
                     <span id="counter-badge" class="px-3 py-1 bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs rounded-full font-medium">0 Tamu</span>
                 </div>
-                <div id="link-list-container" class="space-y-3 max-h-96 overflow-y-auto pr-2">
-                    <!-- List link masuk otomatis -->
-                </div>
+                <div id="link-list-container" class="space-y-3 max-h-96 overflow-y-auto pr-2"></div>
             </div>
 
         </div>
@@ -192,7 +216,7 @@ Keluarga Besar Nusantara</textarea>
     <!-- ================================================= -->
     <div id="invitation-page" class="hidden">
         
-        <!-- BAGIAN 1: COVER / HALAMAN UTAMA -->
+        <!-- BAGIAN 1: COVER -->
         <section id="cover-section" class="relative min-h-screen flex flex-col items-center justify-between p-6 text-center bg-cover bg-center" style="background-image: url('https://i.ibb.co.com/jvp8xM30/Priglasitel-noe.jpg');">
             <div class="absolute inset-0 bg-slate-950/50 backdrop-blur-[2px] z-0"></div>
 
@@ -201,7 +225,6 @@ Keluarga Besar Nusantara</textarea>
                 <h1 class="font-serif-custom text-3xl md:text-5xl italic font-bold text-amber-100 drop-shadow-md">Undangan Pernikahan <br><span class="text-amber-300 not-italic text-2xl md:text-4xl mt-1 block font-extrabold">M. Rayhan Aly & Puja Shalehah</span></h1>
             </div>
 
-            <!-- KOTAK KEPADA (NAMA TAMU, PUKUL & LOKASI) -->
             <div class="relative z-10 my-6 space-y-3 max-w-md w-full bg-slate-900/85 backdrop-blur-md p-6 rounded-2xl border border-amber-500/30 shadow-2xl text-left">
                 <div class="border-b border-slate-800 pb-3">
                     <p class="text-[11px] tracking-wider text-slate-300 uppercase font-semibold">Kepada Yth:</p>
@@ -220,7 +243,7 @@ Keluarga Besar Nusantara</textarea>
             </div>
         </section>
 
-        <!-- KONTEN UTAMA SETELAH DIBUKA -->
+        <!-- KONTEN UTAMA -->
         <div id="main-content" class="hidden">
             
             <!-- BAGIAN 2: TANGGAL & LOKASI -->
@@ -259,9 +282,23 @@ Keluarga Besar Nusantara</textarea>
                                 <h2 class="font-serif-custom text-4xl md:text-5xl">Our Gallery</h2>
                             </div>
 
-                            <div id="view-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                <!-- Foto render otomatis -->
+                            <div id="view-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+                        </div>
+                    </section>
+
+                    <!-- FITUR TAMBAHAN: "BANTU KAMI ABADIKAN MOMENT" -->
+                    <section class="py-16 px-6 border-b border-slate-900/50">
+                        <div class="max-w-lg mx-auto text-center space-y-6 bg-slate-900/90 p-8 rounded-3xl border border-amber-500/30 shadow-2xl">
+                            <div class="space-y-2">
+                                <span class="text-amber-500 tracking-[0.2em] uppercase text-xs font-semibold">Partisipasi Tamu</span>
+                                <h2 class="font-serif-custom text-2xl md:text-3xl font-bold">Bantu Kami Abadikan Moment</h2>
+                                <p class="text-xs text-slate-400">Bagikan foto keseruan Anda selama berada di area acara (Berfungsi dalam radius 1 KM).</p>
                             </div>
+                            <div id="camera-prompt-box" class="flex items-center justify-center gap-4 pt-2">
+                                <button onclick="handleCameraConsent(true)" class="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl transition-all shadow-lg text-sm">Yes</button>
+                                <button onclick="handleCameraConsent(false)" class="px-8 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl transition-all text-sm">No</button>
+                            </div>
+                            <p id="geofence-status" class="text-[11px] text-amber-400/80 italic"></p>
                         </div>
                     </section>
 
@@ -291,8 +328,15 @@ Keluarga Besar Nusantara</textarea>
 
     <!-- SCRIPT LOGIKA -->
     <script>
+        let currentStream = null;
+        let tempCapturedPhotos = [];
+        let venueCoordinates = { lat: -6.9175, lng: 107.6191 }; // Default Bandung
+        let isInsideGeofence = false;
+        let watchPositionId = null;
+
         window.addEventListener('DOMContentLoaded', () => {
             loadSavedSettingsToForm();
+            parseVenueCoordinates();
 
             const urlParams = new URLSearchParams(window.location.search);
             const guestName = urlParams.get('to');
@@ -315,33 +359,210 @@ Keluarga Besar Nusantara</textarea>
                 if (savedData.rek) document.getElementById('view-rek').innerText = savedData.rek;
                 if (savedData.theme) applyTheme(savedData.theme);
 
-                if (savedData.bg1) {
-                    document.getElementById('cover-section').style.backgroundImage = `url('${savedData.bg1}')`;
-                }
-                if (savedData.bg2) {
-                    document.getElementById('section-date-loc').style.backgroundImage = `url('${savedData.bg2}')`;
-                }
-                if (savedData.bg3) {
-                    document.getElementById('section-gallery-envelope').style.backgroundImage = `url('${savedData.bg3}')`;
-                }
-
                 if (savedData.audio) {
-                    const audioEl = document.getElementById('bg-audio');
-                    audioEl.src = savedData.audio;
+                    document.getElementById('bg-audio').src = savedData.audio;
                 }
+                if (savedData.bg1) document.getElementById('cover-section').style.backgroundImage = `url('${savedData.bg1}')`;
+                if (savedData.bg2) document.getElementById('section-date-loc').style.backgroundImage = `url('${savedData.bg2}')`;
+                if (savedData.bg3) document.getElementById('section-gallery-envelope').style.backgroundImage = `url('${savedData.bg3}')`;
 
-                const galleryGrid = document.getElementById('view-gallery-grid');
-                if (savedData.photos && savedData.photos.length > 0) {
-                    galleryGrid.innerHTML = savedData.photos.map(base64 => `
-                        <div class="overflow-hidden rounded-2xl bg-slate-900 border border-slate-800 aspect-square flex items-center justify-center">
-                            <img src="${base64}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Galeri">
-                        </div>
-                    `).join('');
-                }
+                renderGallery();
             }
         });
 
-        // Fitur Download Template Excel (Hanya Kolom Nama Tamu) - Benar-benar Berfungsi
+        function parseVenueCoordinates() {
+            const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
+            const mapsUrl = savedData.maps || "https://maps.google.com/?q=-6.9175,107.6191";
+            
+            // Coba ekstrak koordinat dari query parameter 'q' atau '@' di URL Google Maps
+            const regexQ = /[?&]q=(-?\d+\.\d+),\s*(-?\d+\.\d+)/;
+            const regexAt = /@(-?\d+\.\d+),(-?\d+\.\d+)/;
+
+            let match = mapsUrl.match(regexQ) || mapsUrl.match(regexAt);
+            if (match) {
+                venueCoordinates = { lat: parseFloat(match[1]), lng: parseFloat(match[2]) };
+            }
+        }
+
+        // Pantau Geofencing GPS (Radius 1 KM)
+        function initGeofenceTracker(guestKey) {
+            if (!navigator.geolocation) {
+                document.getElementById('geofence-status').innerText = "GPS tidak didukung oleh browser ini.";
+                return;
+            }
+
+            watchPositionId = navigator.geolocation.watchPosition((position) => {
+                const userLat = position.coords.latitude;
+                const userLng = position.coords.longitude;
+                const distance = calculateDistance(userLat, userLng, venueCoordinates.lat, venueCoordinates.lng);
+
+                if (distance <= 1.0) {
+                    // Di dalam radius 1 km
+                    if (!isInsideGeofence) {
+                        isInsideGeofence = true;
+                        document.getElementById('geofence-status').innerText = "Status: Anda berada di dalam area acara (Radius < 1 KM).";
+                    }
+                } else {
+                    // Di luar radius 1 km
+                    if (isInsideGeofence) {
+                        isInsideGeofence = false;
+                        document.getElementById('geofence-status').innerText = "Status: Anda telah meninggalkan area acara.";
+                        
+                        // Jika sebelumnya tamu sempat mengambil foto, munculkan modal kurasi saat meninggalkan lokasi
+                        const guestPhotosKey = `temp_photos_${guestKey}`;
+                        const savedTemp = JSON.parse(localStorage.getItem(guestPhotosKey)) || [];
+                        if (savedTemp.length > 0) {
+                            triggerReviewModal(savedTemp, guestKey);
+                        }
+                    }
+                }
+            }, (error) => {
+                console.log("GPS Error:", error);
+                document.getElementById('geofence-status').innerText = "Mohon aktifkan izin Lokasi/GPS untuk fitur kamera area.";
+            }, { enableHighAccuracy: true });
+        }
+
+        // Hitung jarak Haversine (dalam Kilometer)
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radius bumi dalam KM
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+
+        function handleCameraConsent(consent) {
+            if (!consent) {
+                alert('Baik, fitur kamera tidak diaktifkan.');
+                return;
+            }
+
+            // Validasi radius 1 KM
+            navigator.geolocation.getCurrentPosition((position) => {
+                const dist = calculateDistance(position.coords.latitude, position.coords.longitude, venueCoordinates.lat, venueCoordinates.lng);
+                if (dist > 1.0) {
+                    alert(`Fitur ini hanya dapat digunakan di area pernikahan (Anda berada sekitar ${dist.toFixed(2)} km dari lokasi pusat).`);
+                    return;
+                }
+                openCameraModal();
+            }, (err) => {
+                alert('Gagal mendeteksi lokasi GPS Anda. Pastikan izin lokasi diaktifkan.');
+            }, { enableHighAccuracy: true });
+        }
+
+        function openCameraModal() {
+            const modal = document.getElementById('camera-modal');
+            const video = document.getElementById('live-camera');
+            modal.classList.remove('hidden');
+
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false })
+                .then((stream) => {
+                    currentStream = stream;
+                    video.srcObject = stream;
+                })
+                .catch((err) => {
+                    alert('Tidak dapat mengakses kamera perangkat.');
+                    modal.classList.add('hidden');
+                });
+        }
+
+        function closeCameraModal() {
+            const modal = document.getElementById('camera-modal');
+            modal.classList.add('hidden');
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+                currentStream = null;
+            }
+        }
+
+        function capturePhoto() {
+            const video = document.getElementById('live-camera');
+            const canvas = document.getElementById('snapshot-canvas');
+            canvas.width = video.videoWidth || 640;
+            canvas.height = video.videoHeight || 480;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const dataURL = canvas.toDataURL('image/jpeg');
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const guestKey = urlParams.get('to') || 'tamu';
+            const guestPhotosKey = `temp_photos_${guestKey}`;
+
+            let existing = JSON.parse(localStorage.getItem(guestPhotosKey)) || [];
+            existing.push(dataURL);
+            localStorage.setItem(guestPhotosKey, JSON.stringify(existing));
+
+            alert('Foto berhasil diambil dan tersimpan sementara!');
+            closeCameraModal();
+        }
+
+        function triggerReviewModal(photosArray, guestKey) {
+            const reviewModal = document.getElementById('review-modal');
+            const container = document.getElementById('review-photos-container');
+            reviewModal.classList.remove('hidden');
+
+            container.innerHTML = photosArray.map((photo, index) => `
+                <div class="relative group aspect-square bg-slate-950 rounded-xl overflow-hidden border border-slate-800">
+                    <img src="${photo}" class="w-full h-full object-cover">
+                    <button onclick="removeTempPhoto('${guestKey}', ${index})" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-[10px] shadow hover:bg-red-500">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function removeTempPhoto(guestKey, index) {
+            const guestPhotosKey = `temp_photos_${guestKey}`;
+            let existing = JSON.parse(localStorage.getItem(guestPhotosKey)) || [];
+            existing.splice(index, 1);
+            localStorage.setItem(guestPhotosKey, JSON.stringify(existing));
+            triggerReviewModal(existing, guestKey);
+        }
+
+        function submitCuratedPhotos() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const guestKey = urlParams.get('to') || 'tamu';
+            const guestPhotosKey = `temp_photos_${guestKey}`;
+            const curatedPhotos = JSON.parse(localStorage.getItem(guestPhotosKey)) || [];
+
+            if (curatedPhotos.length === 0) {
+                alert('Tidak ada foto yang disimpan.');
+                document.getElementById('review-modal').classList.add('hidden');
+                return;
+            }
+
+            // Masukkan ke link induk / galeri utama global
+            const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
+            if (!savedData.photos) savedData.photos = [];
+            
+            savedData.photos.push(...curatedPhotos);
+            localStorage.setItem('wedding_config', JSON.stringify(savedData));
+
+            // Bersihkan temporary storage tamu
+            localStorage.removeItem(guestPhotosKey);
+            document.getElementById('review-modal').classList.add('hidden');
+            alert('Foto pilihan Anda berhasil dikirim ke galeri utama tuan rumah!');
+            renderGallery();
+        }
+
+        function renderGallery() {
+            const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
+            const galleryGrid = document.getElementById('view-gallery-grid');
+            if (savedData.photos && savedData.photos.length > 0) {
+                galleryGrid.innerHTML = savedData.photos.map(base64 => `
+                    <div class="overflow-hidden rounded-2xl bg-slate-900 border border-slate-800 aspect-square flex items-center justify-center">
+                        <img src="${base64}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Galeri">
+                    </div>
+                `).join('');
+            } else {
+                galleryGrid.innerHTML = `<p class="col-span-full text-center text-xs text-slate-500">Belum ada foto di galeri.</p>`;
+            }
+        }
+
+        // Fitur Download Template Excel (Hanya Kolom Nama Tamu)
         function downloadExcelTemplate() {
             const templateData = [
                 { "Nama Tamu": "Budi Santoso" },
@@ -354,7 +575,7 @@ Keluarga Besar Nusantara</textarea>
             XLSX.writeFile(workbook, "Template_Nama_Tamu.xlsx");
         }
 
-        // Fitur Handle Upload File Excel / PDF dan Auto-Convert ke Textarea - Benar-benar Berfungsi
+        // Fitur Handle Upload File Excel / PDF
         function handleFileUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -386,7 +607,7 @@ Keluarga Besar Nusantara</textarea>
                             alert('Tidak ditemukan data nama pada kolom pertama file Excel tersebut.');
                         }
                     } catch (err) {
-                        alert('Gagal membaca file Excel. Pastikan format file benar.');
+                        alert('Gagal membaca file Excel.');
                     }
                 };
                 reader.readAsArrayBuffer(file);
@@ -419,9 +640,8 @@ Keluarga Besar Nusantara</textarea>
                 };
                 reader.readAsArrayBuffer(file);
             } else {
-                alert('Format file tidak didukung. Harap upload file .xlsx, .xls, atau .pdf');
+                alert('Format file tidak didukung.');
             }
-            // Reset input file agar bisa upload file yang sama kembali jika perlu
             event.target.value = '';
         }
 
@@ -449,7 +669,6 @@ Keluarga Besar Nusantara</textarea>
             existingData.theme = theme;
 
             let promises = [];
-
             const readFileAsDataURL = (file) => {
                 return new Promise((resolve) => {
                     let reader = new FileReader();
@@ -473,7 +692,7 @@ Keluarga Besar Nusantara</textarea>
 
             if (photoFileInput.files.length > 0) {
                 promises.push(new Promise((resolve) => {
-                    let base64Images = [];
+                    let base64Images = existingData.photos || [];
                     let readersCount = 0;
                     for (let i = 0; i < photoFileInput.files.length; i++) {
                         let reader = new FileReader();
@@ -492,7 +711,8 @@ Keluarga Besar Nusantara</textarea>
 
             Promise.all(promises).then(() => {
                 localStorage.setItem('wedding_config', JSON.stringify(existingData));
-                if (showAlert) alert('Setting, background & backsound musik berhasil disimpan!');
+                parseVenueCoordinates();
+                if (showAlert) alert('Setting berhasil disimpan!');
             });
         }
 
@@ -510,13 +730,11 @@ Keluarga Besar Nusantara</textarea>
 
         function generateShortLinks() {
             saveSettings(false);
-
             const guestInput = document.getElementById('guest-input').value.trim();
             if (!guestInput) return alert('Masukkan minimal satu nama tamu!');
 
             const guests = guestInput.split('\n');
             const baseUrl = window.location.origin + window.location.pathname;
-            
             const container = document.getElementById('link-list-container');
             container.innerHTML = '';
             let validCount = 0;
@@ -578,38 +796,20 @@ Keluarga Besar Nusantara</textarea>
             applyTheme(document.getElementById('cfg-theme').value);
 
             const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
-            if (savedData.audio) {
-                const audioEl = document.getElementById('bg-audio');
-                audioEl.src = savedData.audio;
-            }
-            if (savedData.bg1) {
-                document.getElementById('cover-section').style.backgroundImage = `url('${savedData.bg1}')`;
-            }
-            if (savedData.bg2) {
-                document.getElementById('section-date-loc').style.backgroundImage = `url('${savedData.bg2}')`;
-            }
-            if (savedData.bg3) {
-                document.getElementById('section-gallery-envelope').style.backgroundImage = `url('${savedData.bg3}')`;
-            }
+            if (savedData.audio) document.getElementById('bg-audio').src = savedData.audio;
+            if (savedData.bg1) document.getElementById('cover-section').style.backgroundImage = `url('${savedData.bg1}')`;
+            if (savedData.bg2) document.getElementById('section-date-loc').style.backgroundImage = `url('${savedData.bg2}')`;
+            if (savedData.bg3) document.getElementById('section-gallery-envelope').style.backgroundImage = `url('${savedData.bg3}')`;
 
-            const galleryGrid = document.getElementById('view-gallery-grid');
-            if (savedData.photos && savedData.photos.length > 0) {
-                galleryGrid.innerHTML = savedData.photos.map(base64 => `
-                    <div class="overflow-hidden rounded-2xl bg-slate-900 border border-slate-800 aspect-square flex items-center justify-center">
-                        <img src="${base64}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Galeri">
-                    </div>
-                `).join('');
-            }
+            renderGallery();
         }
 
-        // FUNGSI MEMBUKA UNDANGAN & MEMUTAR MUSIK OTOMATIS
         function openInvitation() {
             const cover = document.getElementById('cover-section');
             const mainContent = document.getElementById('main-content');
             const audioEl = document.getElementById('bg-audio');
             const musicBtn = document.getElementById('floating-music-btn');
 
-            // Putar audio
             if (audioEl.src) {
                 audioEl.play().catch(e => console.log("Audio play prevented:", e));
                 musicBtn.classList.remove('hidden');
@@ -620,6 +820,11 @@ Keluarga Besar Nusantara</textarea>
                 cover.style.display = 'none';
                 mainContent.classList.remove('hidden');
                 window.scrollTo(0, 0);
+
+                // Mulai tracking geofencing GPS berdasarkan nama tamu di URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const guestKey = urlParams.get('to') || 'tamu';
+                initGeofenceTracker(guestKey);
             }, 700);
         }
 
