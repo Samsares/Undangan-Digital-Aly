@@ -94,9 +94,9 @@
                         <input type="text" id="cfg-location" value="Gedung Serbaguna Grand Ballroom, Bandung" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500">
                     </div>
                     <div class="space-y-1.5">
-                        <label class="text-xs text-slate-400 uppercase font-medium">Link Google Maps (Pusat Radius 1 KM)</label>
+                        <label class="text-xs text-slate-400 uppercase font-medium">Link Google Maps (Pusat Koordinat GPS)</label>
                         <input type="text" id="cfg-maps" value="https://maps.google.com/?q=-6.9175,107.6191" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500" placeholder="https://maps.google.com/?q=lat,long">
-                        <p class="text-[10px] text-slate-500">Pastikan link Google Maps mengandung koordinat q=lat,long agar tombol dan GPS radius 1 km akurat di semua device.</p>
+                        <p class="text-[10px] text-slate-500">Pastikan link Google Maps mengandung koordinat q=lat,long agar radius 200 meter akurat di semua device.</p>
                     </div>
                 </div>
 
@@ -140,6 +140,13 @@
                         <label class="text-xs text-slate-400 uppercase font-medium">URL Background Bagian 3 (Galeri & Amplop)</label>
                         <input type="text" id="cfg-bg-3" placeholder="https://i.ibb.co/.../bg3.jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500">
                     </div>
+                </div>
+
+                <!-- LINK / URL GALERI UTAMA -->
+                <div class="space-y-2 pt-2 border-t border-slate-800">
+                    <label class="text-xs text-slate-400 uppercase font-medium">URL Foto Galeri Utama (Pisahkan dengan koma atau baris baru)</label>
+                    <textarea id="cfg-gallery-urls" rows="3" placeholder="https://i.ibb.co/.../foto1.jpg, https://i.ibb.co/.../foto2.jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm focus:outline-none focus:border-amber-500"></textarea>
+                    <p class="text-[10px] text-slate-500">Masukkan link gambar publik (ImgBB, Google Drive publik, dll) agar galeri muncul di semua device.</p>
                 </div>
 
                 <button onclick="saveSettings()" class="w-full py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-400 font-semibold rounded-xl transition-all text-sm">
@@ -272,7 +279,7 @@ Keluarga Besar Nusantara</textarea>
                             <div class="space-y-2">
                                 <span class="text-amber-500 tracking-[0.2em] uppercase text-xs font-semibold">Partisipasi Tamu</span>
                                 <h2 class="font-serif-custom text-2xl md:text-3xl font-bold">Bantu Kami Abadikan Moment</h2>
-                                <p class="text-xs text-slate-400">Bagikan foto keseruan Anda selama berada di area acara (Berfungsi dalam radius 1 KM).</p>
+                                <p class="text-xs text-slate-400">Bagikan foto keseruan Anda selama berada di area acara (Berfungsi dalam radius 200 Meter).</p>
                             </div>
                             <div id="camera-prompt-box" class="flex items-center justify-center gap-4 pt-2">
                                 <button onclick="handleCameraConsent(true)" class="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl transition-all shadow-lg text-sm">Yes</button>
@@ -326,33 +333,42 @@ Keluarga Besar Nusantara</textarea>
 
                 document.getElementById('view-guest-name').innerText = guestName.replace(/_/g, ' ');
                 
-                const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
-                
-                if (savedData.time) document.getElementById('view-time-box').innerText = savedData.time;
-                if (savedData.date) document.getElementById('view-date').innerText = savedData.date;
-                if (savedData.location) {
-                    document.getElementById('view-location-box').innerText = savedData.location;
-                    document.getElementById('view-location').innerText = savedData.location;
-                }
-                if (savedData.maps) document.getElementById('view-maps-btn').href = savedData.maps;
-                if (savedData.rek) document.getElementById('view-rek').innerText = savedData.rek;
-                if (savedData.theme) applyTheme(savedData.theme);
+                // Ambil konfigurasi dari parameter URL (agar terbaca di device lain) atau fallback ke localStorage
+                const timeParam = urlParams.get('time') || JSON.parse(localStorage.getItem('wedding_config'))?.time || "Pukul 09.00 WIB - Selesai";
+                const dateParam = urlParams.get('date') || JSON.parse(localStorage.getItem('wedding_config'))?.date || "Sabtu, 25 Desember 2026";
+                const locParam = urlParams.get('loc') || JSON.parse(localStorage.getItem('wedding_config'))?.location || "Gedung Serbaguna Grand Ballroom, Bandung";
+                const mapsParam = urlParams.get('maps') || JSON.parse(localStorage.getItem('wedding_config'))?.maps || "https://maps.google.com/?q=-6.9175,107.6191";
+                const rekParam = urlParams.get('rek') || JSON.parse(localStorage.getItem('wedding_config'))?.rek || "BCA 1234567890 a.n M. Rayhan Aly";
+                const themeParam = urlParams.get('theme') || JSON.parse(localStorage.getItem('wedding_config'))?.theme || "dark";
+                const audioParam = urlParams.get('audio') || JSON.parse(localStorage.getItem('wedding_config'))?.audio || "";
+                const bg1Param = urlParams.get('bg1') || JSON.parse(localStorage.getItem('wedding_config'))?.bg1 || "";
+                const bg2Param = urlParams.get('bg2') || JSON.parse(localStorage.getItem('wedding_config'))?.bg2 || "";
+                const bg3Param = urlParams.get('bg3') || JSON.parse(localStorage.getItem('wedding_config'))?.bg3 || "";
 
-                if (savedData.audio) {
-                    document.getElementById('bg-audio').src = savedData.audio;
-                }
-                if (savedData.bg1) document.getElementById('cover-section').style.backgroundImage = `url('${savedData.bg1}')`;
-                if (savedData.bg2) document.getElementById('section-date-loc').style.backgroundImage = `url('${savedData.bg2}')`;
-                if (savedData.bg3) document.getElementById('section-gallery-envelope').style.backgroundImage = `url('${savedData.bg3}')`;
+                document.getElementById('view-time-box').innerText = timeParam;
+                document.getElementById('view-date').innerText = dateParam;
+                document.getElementById('view-location-box').innerText = locParam;
+                document.getElementById('view-location').innerText = locParam;
+                document.getElementById('view-maps-btn').href = mapsParam;
+                document.getElementById('view-rek').innerText = rekParam;
+                applyTheme(themeParam);
 
+                if (audioParam) document.getElementById('bg-audio').src = audioParam;
+                if (bg1Param) document.getElementById('cover-section').style.backgroundImage = `url('${bg1Param}')`;
+                if (bg2Param) document.getElementById('section-date-loc').style.backgroundImage = `url('${bg2Param}')`;
+                if (bg3Param) document.getElementById('section-gallery-envelope').style.backgroundImage = `url('${bg3Param}')`;
+
+                parseVenueCoordinatesFromUrl(mapsParam);
                 renderGallery();
             }
         });
 
         function parseVenueCoordinates() {
             const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
-            const mapsUrl = savedData.maps || "https://maps.google.com/?q=-6.9175,107.6191";
-            
+            parseVenueCoordinatesFromUrl(savedData.maps || "https://maps.google.com/?q=-6.9175,107.6191");
+        }
+
+        function parseVenueCoordinatesFromUrl(mapsUrl) {
             const regexQ = /[?&]q=(-?\d+\.\d+),\s*(-?\d+\.\d+)/;
             const regexAt = /@(-?\d+\.\d+),(-?\d+\.\d+)/;
 
@@ -373,10 +389,11 @@ Keluarga Besar Nusantara</textarea>
                 const userLng = position.coords.longitude;
                 const distance = calculateDistance(userLat, userLng, venueCoordinates.lat, venueCoordinates.lng);
 
-                if (distance <= 1.0) {
+                // Radius 200 meter = 0.2 KM
+                if (distance <= 0.2) {
                     if (!isInsideGeofence) {
                         isInsideGeofence = true;
-                        document.getElementById('geofence-status').innerText = "Status: Anda berada di dalam area acara (Radius < 1 KM).";
+                        document.getElementById('geofence-status').innerText = "Status: Anda berada di dalam area acara (Radius < 200 Meter).";
                     }
                 } else {
                     if (isInsideGeofence) {
@@ -392,7 +409,7 @@ Keluarga Besar Nusantara</textarea>
                 }
             }, (error) => {
                 console.log("GPS Error:", error);
-                document.getElementById('geofence-status').innerText = "Mohon aktifkan izin Lokasi/GPS untuk fitur kamera area.";
+                document.getElementById('geofence-status').innerText = "Mohon aktifkan izin Lokasi/GPS untuk fitur kamera area 200 meter.";
             }, { enableHighAccuracy: true });
         }
 
@@ -415,8 +432,9 @@ Keluarga Besar Nusantara</textarea>
 
             navigator.geolocation.getCurrentPosition((position) => {
                 const dist = calculateDistance(position.coords.latitude, position.coords.longitude, venueCoordinates.lat, venueCoordinates.lng);
-                if (dist > 1.0) {
-                    alert(`Fitur ini hanya dapat digunakan di area pernikahan (Anda berada sekitar ${dist.toFixed(2)} km dari lokasi pusat).`);
+                // Cek radius 200 meter (0.2 KM)
+                if (dist > 0.2) {
+                    alert(`Fitur ini hanya dapat digunakan dalam radius 200 meter dari lokasi pernikahan (Jarak Anda saat ini sekitar ${(dist * 1000).toFixed(0)} meter).`);
                     return;
                 }
                 openCameraModal();
@@ -514,21 +532,32 @@ Keluarga Besar Nusantara</textarea>
 
             localStorage.removeItem(guestPhotosKey);
             document.getElementById('review-modal').classList.add('hidden');
-            alert('Foto pilihan Anda berhasil dikirim ke galeri utama tuan rumah!');
+            alert('Foto pilihan Anda berhasil dikirim ke galeri utama!');
             renderGallery();
         }
 
         function renderGallery() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const galleryParam = urlParams.get('gallery');
             const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
             const galleryGrid = document.getElementById('view-gallery-grid');
+            
+            let photosList = [];
+            if (galleryParam) {
+                photosList = galleryParam.split(',').map(s => s.trim()).filter(Boolean);
+            }
             if (savedData.photos && savedData.photos.length > 0) {
-                galleryGrid.innerHTML = savedData.photos.map(base64 => `
+                photosList.push(...savedData.photos);
+            }
+
+            if (photosList.length > 0) {
+                galleryGrid.innerHTML = photosList.map(url => `
                     <div class="overflow-hidden rounded-2xl bg-slate-900 border border-slate-800 aspect-square flex items-center justify-center">
-                        <img src="${base64}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Galeri">
+                        <img src="${url}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Galeri">
                     </div>
                 `).join('');
             } else {
-                galleryGrid.innerHTML = `<p class="col-span-full text-center text-xs text-slate-500">Belum ada foto di galeri.</p>`;
+                galleryGrid.innerHTML = `<p class="col-span-full text-center text-xs text-slate-500">Belum ada foto di galeri. Masukkan URL foto galeri di halaman admin.</p>`;
             }
         }
 
@@ -624,6 +653,7 @@ Keluarga Besar Nusantara</textarea>
             const bg1 = document.getElementById('cfg-bg-1').value;
             const bg2 = document.getElementById('cfg-bg-2').value;
             const bg3 = document.getElementById('cfg-bg-3').value;
+            const gallery = document.getElementById('cfg-gallery-urls').value;
             
             const existingData = JSON.parse(localStorage.getItem('wedding_config')) || {};
 
@@ -637,6 +667,7 @@ Keluarga Besar Nusantara</textarea>
             existingData.bg1 = bg1;
             existingData.bg2 = bg2;
             existingData.bg3 = bg3;
+            existingData.gallery = gallery;
 
             localStorage.setItem('wedding_config', JSON.stringify(existingData));
             parseVenueCoordinates();
@@ -657,6 +688,7 @@ Keluarga Besar Nusantara</textarea>
             if (savedData.bg1) document.getElementById('cfg-bg-1').value = savedData.bg1;
             if (savedData.bg2) document.getElementById('cfg-bg-2').value = savedData.bg2;
             if (savedData.bg3) document.getElementById('cfg-bg-3').value = savedData.bg3;
+            if (savedData.gallery) document.getElementById('cfg-gallery-urls').value = savedData.gallery;
         }
 
         function generateShortLinks() {
@@ -670,13 +702,25 @@ Keluarga Besar Nusantara</textarea>
             container.innerHTML = '';
             let validCount = 0;
 
+            const time = encodeURIComponent(document.getElementById('cfg-time').value);
+            const date = encodeURIComponent(document.getElementById('cfg-date').value);
+            const location = encodeURIComponent(document.getElementById('cfg-location').value);
+            const maps = encodeURIComponent(document.getElementById('cfg-maps').value);
+            const rek = encodeURIComponent(document.getElementById('cfg-rek').value);
+            const theme = encodeURIComponent(document.getElementById('cfg-theme').value);
+            const audio = encodeURIComponent(document.getElementById('cfg-audio-url').value);
+            const bg1 = encodeURIComponent(document.getElementById('cfg-bg-1').value);
+            const bg2 = encodeURIComponent(document.getElementById('cfg-bg-2').value);
+            const bg3 = encodeURIComponent(document.getElementById('cfg-bg-3').value);
+            const gallery = encodeURIComponent(document.getElementById('cfg-gallery-urls').value);
+
             guests.forEach(name => {
                 const cleanName = name.trim();
                 if (!cleanName || cleanName.toLowerCase() === "nama tamu") return;
                 validCount++;
 
-                const formattedName = cleanName.replace(/ /g, '_');
-                const uniqueLink = `${baseUrl}?to=${formattedName}`;
+                const formattedName = encodeURIComponent(cleanName.replace(/ /g, '_'));
+                const uniqueLink = `${baseUrl}?to=${formattedName}&time=${time}&date=${date}&loc=${location}&maps=${maps}&rek=${rek}&theme=${theme}&audio=${audio}&bg1=${bg1}&bg2=${bg2}&bg3=${bg3}&gallery=${gallery}`;
 
                 container.innerHTML += `
                     <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
