@@ -72,11 +72,11 @@
                     </div>
                 </div>
 
-                <!-- UPLOAD BACKGROUND KUSTOM -->
+                <!-- UPLOAD BACKGROUND KUSTOM (PNG, JPG, JPEG) -->
                 <div class="space-y-2">
-                    <label class="text-xs text-slate-400 uppercase font-medium">Ganti Background Utama (Format: PNG, JPG, JPEG)</label>
+                    <label class="text-xs text-slate-400 uppercase font-medium">Upload Background Utama (Format: PNG, JPG, JPEG)</label>
                     <input type="file" id="cfg-bg-file" accept="image/png, image/jpeg, image/jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
-                    <p class="text-[11px] text-slate-500">Opsional: Upload foto lain jika ingin mengganti tema background bawaan.</p>
+                    <p class="text-[11px] text-slate-500">Pilih satu foto terbaik untuk latar belakang halaman depan undangan.</p>
                 </div>
 
                 <!-- UPLOAD FOTO GALERI -->
@@ -129,30 +129,29 @@ Keluarga Besar Nusantara</textarea>
     <!-- ================================================= -->
     <div id="invitation-page" class="hidden">
         
-        <!-- COVER / HALAMAN UTAMA (DEFAULT BACKGROUND MAWAR PUTIH) -->
-        <section id="cover" class="relative min-h-screen flex flex-col items-center justify-between p-6 text-center bg-cover bg-center" style="background-image: url('https://i.ibb.co.com/jvp8xM30/Priglasitel-noe.jpg');">
-            <!-- Overlay gelap tipis agar teks tetap terbaca jelas di atas background foto -->
-            <div id="cover-overlay" class="absolute inset-0 bg-slate-950/50 backdrop-blur-[2px] z-0"></div>
+        <!-- COVER / HALAMAN UTAMA -->
+        <section id="cover" class="relative min-h-screen flex flex-col items-center justify-between p-6 text-center bg-gradient-to-b from-slate-900 to-slate-950 bg-cover bg-center">
+            <div id="cover-overlay" class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm z-0"></div>
 
-            <div class="relative z-10 space-y-3 pt-10">
-                <span class="tracking-[0.3em] uppercase text-xs text-amber-300 font-bold bg-slate-950/60 px-4 py-1.5 rounded-full border border-amber-500/30">The Wedding Of</span>
-                <h1 class="font-serif-custom text-3xl md:text-5xl italic font-bold text-amber-100 drop-shadow-md">Undangan Pernikahan <br><span class="text-amber-300 not-italic text-2xl md:text-4xl mt-1 block font-extrabold">M. Rayhan Aly & Puja Shalehah</span></h1>
+            <div class="relative z-10 space-y-4 pt-12">
+                <span class="tracking-[0.3em] uppercase text-xs text-amber-500 font-semibold">The Wedding Of</span>
+                <h1 class="font-serif-custom text-4xl md:text-6xl italic font-bold text-amber-100">Undangan Pernikahan <br><span class="text-amber-400 not-italic text-3xl md:text-5xl mt-2 block">M. Rayhan Aly & Puja Shalehah</span></h1>
             </div>
 
             <!-- KOTAK KEPADA (NAMA TAMU, PUKUL & LOKASI) -->
-            <div class="relative z-10 my-6 space-y-3 max-w-md w-full bg-slate-900/85 backdrop-blur-md p-6 rounded-2xl border border-amber-500/30 shadow-2xl text-left">
+            <div class="relative z-10 my-6 space-y-3 max-w-md w-full bg-slate-900/90 backdrop-blur-md p-6 rounded-2xl border border-slate-800 shadow-2xl text-left">
                 <div class="border-b border-slate-800 pb-3">
-                    <p class="text-[11px] tracking-wider text-slate-300 uppercase font-semibold">Kepada Yth:</p>
+                    <p class="text-[11px] tracking-wider text-slate-400 uppercase font-semibold">Kepada Yth:</p>
                     <h2 id="view-guest-name" class="font-serif-custom text-2xl font-bold text-amber-400 mt-0.5">Tamu Undangan</h2>
                 </div>
-                <div class="space-y-1 text-xs text-slate-200 pt-1">
-                    <p class="flex items-center gap-2"><strong class="text-amber-400 w-14">Waktu:</strong> <span id="view-time-box">-</span></p>
-                    <p class="flex items-center gap-2"><strong class="text-amber-400 w-14">Lokasi:</strong> <span id="view-location-box">-</span></p>
+                <div class="space-y-1 text-xs text-slate-300 pt-1">
+                    <p class="flex items-center gap-2"><strong class="text-amber-500 w-14">Waktu:</strong> <span id="view-time-box">-</span></p>
+                    <p class="flex items-center gap-2"><strong class="text-amber-500 w-14">Lokasi:</strong> <span id="view-location-box">-</span></p>
                 </div>
             </div>
 
             <div class="relative z-10 pb-10 space-y-3">
-                <button onclick="openInvitation()" class="px-8 py-4 bg-amber-500 text-slate-950 font-bold rounded-full shadow-xl hover:bg-amber-400 transition-all duration-300 transform hover:scale-105">
+                <button onclick="openInvitation()" class="px-8 py-4 bg-amber-500 text-slate-950 font-semibold rounded-full shadow-lg hover:bg-amber-400 transition-all duration-300 transform hover:scale-105">
                     Buka Undangan
                 </button>
             </div>
@@ -224,18 +223,21 @@ Keluarga Besar Nusantara</textarea>
             const urlParams = new URLSearchParams(window.location.search);
             const guestName = urlParams.get('to');
 
-            // Keamanan: Jika dibuka tanpa parameter tamu (?to=...), diarahkan ke default tamu jika sudah disetting
+            // Jika dibuka tanpa parameter tamu (?to=...), otomatis diarahkan ke default tamu agar tidak bisa masuk panel admin
             if (!guestName) {
+                // Cek apakah ada data tersimpan, jika tidak ada, buat dummy admin view
                 const savedData = JSON.parse(localStorage.getItem('wedding_config'));
                 if (!savedData) {
-                    return; // Tetap di halaman admin jika belum pernah disave
+                    // Belum di-setup sama sekali, biarkan di halaman admin
+                    return;
                 } else {
+                    // Jika sudah ada data tapi diakses tanpa parameter "to", arahkan otomatis ke tamu umum
                     window.location.href = window.location.pathname + "?to=Tamu_Kehormatan";
                     return;
                 }
             }
 
-            // Tampilkan halaman undangan publik
+            // Jika ada parameter tamu, buka tampilan undangan publik
             document.getElementById('admin-page').classList.add('hidden');
             document.getElementById('invitation-page').classList.remove('hidden');
 
@@ -253,9 +255,10 @@ Keluarga Besar Nusantara</textarea>
             if (savedData.rek) document.getElementById('view-rek').innerText = savedData.rek;
             if (savedData.theme) applyTheme(savedData.theme);
 
-            // Pasang custom background jika ada di penyimpanan, jika tidak pakai default foto mawar putih
+            // Pasang custom background jika ada
             if (savedData.customBg) {
-                document.getElementById('cover').style.backgroundImage = `url('${savedData.customBg}')`;
+                const cover = document.getElementById('cover');
+                cover.style.backgroundImage = `url('${savedData.customBg}')`;
             }
 
             const galleryGrid = document.getElementById('view-gallery-grid');
@@ -289,6 +292,7 @@ Keluarga Besar Nusantara</textarea>
 
             let promises = [];
 
+            // Proses Background Kustom jika diunggah
             if (bgFileInput.files.length > 0) {
                 promises.push(new Promise((resolve) => {
                     let reader = new FileReader();
@@ -300,6 +304,7 @@ Keluarga Besar Nusantara</textarea>
                 }));
             }
 
+            // Proses Foto Galeri jika diunggah
             if (photoFileInput.files.length > 0) {
                 promises.push(new Promise((resolve) => {
                     let base64Images = [];
@@ -321,7 +326,7 @@ Keluarga Besar Nusantara</textarea>
 
             Promise.all(promises).then(() => {
                 localStorage.setItem('wedding_config', JSON.stringify(existingData));
-                if (showAlert) alert('Setting & foto berhasil disimpan!');
+                if (showAlert) alert('Setting, background & foto berhasil disimpan!');
             });
         }
 
