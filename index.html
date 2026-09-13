@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Undangan Pernikahan M. Rayhan Aly & Puja Shalehah</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- SheetJS (XLSX) untuk membaca & menulis file Excel -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <!-- PDF.js untuk membaca file PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
@@ -28,17 +25,15 @@
 </head>
 <body id="body-theme" class="bg-slate-950 text-slate-100 antialiased selection:bg-amber-500 selection:text-slate-950 transition-colors duration-500">
 
-    <!-- AUDIO BACKSOUND ELEMENT -->
     <audio id="bg-audio" loop preload="auto"></audio>
 
-    <!-- FLOATING MUSIC BUTTON -->
     <div id="floating-music-btn" class="fixed bottom-6 right-6 z-50 hidden">
         <button onclick="toggleAudio()" class="w-12 h-12 rounded-full bg-slate-900/90 border border-amber-500/40 text-amber-400 flex items-center justify-center shadow-2xl backdrop-blur-md hover:scale-110 transition-all">
             <svg id="music-icon" class="w-5 h-5 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
         </button>
     </div>
 
-    <!-- MODAL KAMERA INTERAKTIF (LIVE CAPTURE) -->
+    <!-- MODAL KAMERA INTERAKTIF -->
     <div id="camera-modal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md hidden flex flex-col items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl max-w-md w-full space-y-4 text-center relative shadow-2xl">
             <h3 class="font-serif-custom text-xl font-bold text-amber-300">Abadikan Momen di Lokasi</h3>
@@ -53,21 +48,17 @@
         </div>
     </div>
 
-    <!-- MODAL REVIEW KELUAR LOKASI (GEOFENCE EXIT NOTIFICATION) -->
+    <!-- MODAL REVIEW KELUAR LOKASI -->
     <div id="review-modal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md hidden flex flex-col items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl max-w-lg w-full space-y-4 shadow-2xl">
             <h3 class="font-serif-custom text-xl font-bold text-amber-300 text-center">Kurasi Foto Anda</h3>
             <p class="text-xs text-slate-400 text-center">Anda telah meninggalkan area pernikahan. Pilih foto mana saja yang ingin Anda simpan untuk dikirim ke galeri utama.</p>
-            <div id="review-photos-container" class="grid grid-cols-3 gap-3 max-h-64 overflow-y-auto pr-1">
-                <!-- Foto hasil jepretan dimunculkan di sini untuk dipilih/hapus -->
-            </div>
+            <div id="review-photos-container" class="grid grid-cols-3 gap-3 max-h-64 overflow-y-auto pr-1"></div>
             <button onclick="submitCuratedPhotos()" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl transition-all text-sm">Kirim Foto Terpilih ke Galeri Utama</button>
         </div>
     </div>
 
-    <!-- ================================================= -->
-    <!-- HALAMAN ADMIN (HANYA MUNCUL DI LINK UTAMA)        -->
-    <!-- ================================================= -->
+    <!-- HALAMAN ADMIN -->
     <div id="admin-page" class="min-h-screen py-10 px-4 md:px-8 max-w-4xl mx-auto">
         <div class="bg-slate-900 border border-slate-800 p-6 md:p-10 rounded-3xl shadow-2xl space-y-8">
             
@@ -82,9 +73,9 @@
                 </button>
             </div>
 
-            <!-- FORM SETTING -->
+            <!-- FORM SETTING MENGGUNAKAN URL LINK -->
             <div class="space-y-6">
-                <h3 class="font-serif-custom text-lg font-bold text-amber-300">1. Konfigurasi Waktu, Lokasi & Musik Backsound</h3>
+                <h3 class="font-serif-custom text-lg font-bold text-amber-300">1. Konfigurasi Waktu, Lokasi & Tautan Publik</h3>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-1.5">
@@ -104,18 +95,18 @@
                     </div>
                     <div class="space-y-1.5">
                         <label class="text-xs text-slate-400 uppercase font-medium">Link Google Maps (Pusat Radius 1 KM)</label>
-                        <input type="text" id="cfg-maps" value="https://maps.google.com/?q=-6.9175,107.6191" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500" placeholder="Masukkan link google maps atau koordinat lat,long">
-                        <p class="text-[10px] text-slate-500">Sistem akan mendeteksi koordinat dari link ini untuk fitur kamera radius 1 km.</p>
+                        <input type="text" id="cfg-maps" value="https://maps.google.com/?q=-6.9175,107.6191" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500" placeholder="https://maps.google.com/?q=lat,long">
+                        <p class="text-[10px] text-slate-500">Pastikan link Google Maps mengandung koordinat q=lat,long agar tombol dan GPS radius 1 km akurat di semua device.</p>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-1.5">
-                        <label class="text-xs text-slate-400 uppercase font-medium">Nomor Rekening Tuan Rumah (Amplop)</label>
+                        <label class="text-xs text-slate-400 uppercase font-medium">Nomor Rekening Tuan Rumah</label>
                         <input type="text" id="cfg-rek" value="BCA 1234567890 a.n M. Rayhan Aly" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500">
                     </div>
                     <div class="space-y-1.5">
-                        <label class="text-xs text-slate-400 uppercase font-medium">Tema Warna Latar Belakang</label>
+                        <label class="text-xs text-slate-400 uppercase font-medium">Tema Warna</label>
                         <select id="cfg-theme" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 text-slate-300">
                             <option value="dark">Deep Midnight (Gelap Elegan)</option>
                             <option value="emerald">Emerald Luxury (Hijau Mewah)</option>
@@ -124,37 +115,31 @@
                     </div>
                 </div>
 
-                <!-- UPLOAD BACKSOUND MUSIK -->
+                <!-- URL BACKSOUND MUSIK -->
                 <div class="space-y-2 pt-2 border-t border-slate-800">
-                    <label class="text-xs text-slate-400 uppercase font-medium">Upload Backsound Musik Undangan (Format: MP3, WAV, AAC)</label>
-                    <input type="file" id="cfg-audio-file" accept="audio/mp3, audio/wav, audio/aac, audio/*" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
+                    <label class="text-xs text-slate-400 uppercase font-medium">URL Link Musik Backsound (Format: MP3 langsung)</label>
+                    <input type="text" id="cfg-audio-url" placeholder="https://contoh.com/musik.mp3" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500">
+                    <p class="text-[10px] text-slate-500">Gunakan direct link file audio (.mp3) agar bisa dimainkan di semua device tamu.</p>
                 </div>
 
-                <!-- PENGATURAN BACKGROUND TERPISAH PER BAGIAN -->
+                <!-- URL BACKGROUND PER BAGIAN -->
                 <div class="space-y-4 pt-2 border-t border-slate-800">
-                    <h3 class="font-serif-custom text-lg font-bold text-amber-300">2. Kustomisasi Background Per Bagian (Opsional)</h3>
+                    <h3 class="font-serif-custom text-lg font-bold text-amber-300">2. Link Gambar Background Per Bagian (URL Gambar)</h3>
                     
-                    <div class="space-y-2">
-                        <label class="text-xs text-slate-400 uppercase font-medium">Background Bagian 1: Cover Utama</label>
-                        <input type="file" id="cfg-bg-1" accept="image/png, image/jpeg, image/jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
+                    <div class="space-y-1.5">
+                        <label class="text-xs text-slate-400 uppercase font-medium">URL Background Bagian 1 (Cover Utama)</label>
+                        <input type="text" id="cfg-bg-1" value="https://i.ibb.co.com/jvp8xM30/Priglasitel-noe.jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500">
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="text-xs text-slate-400 uppercase font-medium">Background Bagian 2: Tanggal & Lokasi</label>
-                        <input type="file" id="cfg-bg-2" accept="image/png, image/jpeg, image/jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
+                    <div class="space-y-1.5">
+                        <label class="text-xs text-slate-400 uppercase font-medium">URL Background Bagian 2 (Tanggal & Lokasi)</label>
+                        <input type="text" id="cfg-bg-2" placeholder="https://i.ibb.co/.../bg2.jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500">
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="text-xs text-slate-400 uppercase font-medium">Background Bagian 3: Galeri & Amplop</label>
-                        <input type="file" id="cfg-bg-3" accept="image/png, image/jpeg, image/jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
+                    <div class="space-y-1.5">
+                        <label class="text-xs text-slate-400 uppercase font-medium">URL Background Bagian 3 (Galeri & Amplop)</label>
+                        <input type="text" id="cfg-bg-3" placeholder="https://i.ibb.co/.../bg3.jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500">
                     </div>
-                </div>
-
-                <!-- UPLOAD FOTO GALERI UTAMA -->
-                <div class="space-y-2 pt-2 border-t border-slate-800">
-                    <label class="text-xs text-slate-400 uppercase font-medium">Upload Foto Galeri Utama (Link Induk)</label>
-                    <input type="file" id="cfg-photo-files" accept="image/png, image/jpeg, image/jpg" multiple class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
-                    <p class="text-[11px] text-slate-500">Foto kontribusi tamu dari berbagai link akan otomatis masuk ke galeri ini.</p>
                 </div>
 
                 <button onclick="saveSettings()" class="w-full py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-400 font-semibold rounded-xl transition-all text-sm">
@@ -177,7 +162,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-1.5">
                         <label class="text-xs text-slate-400 uppercase font-medium">Ketik Manual (1 Nama Per Baris)</label>
-                        <textarea id="guest-input" rows="5" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm focus:outline-none focus:border-amber-500" placeholder="Budi Santoso&#10;Siti Aminah">Budi Santoso
+                        <textarea id="guest-input" rows="5" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm focus:outline-none focus:border-amber-500">Budi Santoso
 Siti Aminah
 Keluarga Besar Nusantara</textarea>
                     </div>
@@ -186,9 +171,8 @@ Keluarga Besar Nusantara</textarea>
                         <label class="text-xs text-slate-400 uppercase font-medium">Atau Upload File Excel (.xlsx/.xls) / PDF</label>
                         <div class="border-2 border-dashed border-slate-800 hover:border-amber-500/50 rounded-xl p-6 text-center flex flex-col items-center justify-center bg-slate-950 transition-colors h-[132px] relative cursor-pointer">
                             <svg class="w-8 h-8 text-amber-500/70 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                            <input type="file" id="guest-file-upload" accept=".xlsx, .xls, .pdf" onchange="handleFileUpload(event)" class="absolute opacity-0 w-full h-full cursor-pointer inset-0 z-20" title="Klik atau seret file ke sini">
+                            <input type="file" id="guest-file-upload" accept=".xlsx, .xls, .pdf" onchange="handleFileUpload(event)" class="absolute opacity-0 w-full h-full cursor-pointer inset-0 z-20">
                             <span class="text-xs text-slate-300 font-medium">Klik untuk upload file Excel atau PDF</span>
-                            <span class="text-[10px] text-slate-500 mt-1">Nama tamu akan otomatis masuk ke kotak teks</span>
                         </div>
                     </div>
                 </div>
@@ -210,14 +194,11 @@ Keluarga Besar Nusantara</textarea>
         </div>
     </div>
 
-
-    <!-- ================================================= -->
-    <!-- HALAMAN PUBLIK / UNDANGAN                        -->
-    <!-- ================================================= -->
+    <!-- HALAMAN PUBLIK / UNDANGAN -->
     <div id="invitation-page" class="hidden">
         
         <!-- BAGIAN 1: COVER -->
-        <section id="cover-section" class="relative min-h-screen flex flex-col items-center justify-between p-6 text-center bg-cover bg-center" style="background-image: url('https://i.ibb.co.com/jvp8xM30/Priglasitel-noe.jpg');">
+        <section id="cover-section" class="relative min-h-screen flex flex-col items-center justify-between p-6 text-center bg-cover bg-center">
             <div class="absolute inset-0 bg-slate-950/50 backdrop-blur-[2px] z-0"></div>
 
             <div class="relative z-10 space-y-3 pt-10">
@@ -247,7 +228,7 @@ Keluarga Besar Nusantara</textarea>
         <div id="main-content" class="hidden">
             
             <!-- BAGIAN 2: TANGGAL & LOKASI -->
-            <section id="section-date-loc" class="relative py-24 px-6 text-center bg-cover bg-center" style="background-image: none;">
+            <section id="section-date-loc" class="relative py-24 px-6 text-center bg-cover bg-center">
                 <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-[2px] z-0"></div>
                 <div class="relative z-10 max-w-4xl mx-auto space-y-10">
                     <div class="space-y-3">
@@ -270,7 +251,7 @@ Keluarga Besar Nusantara</textarea>
             </section>
 
             <!-- BAGIAN 3: GALERI & AMPLOP DIGITAL -->
-            <div id="section-gallery-envelope" class="relative bg-cover bg-center" style="background-image: none;">
+            <div id="section-gallery-envelope" class="relative bg-cover bg-center">
                 <div class="absolute inset-0 bg-slate-950/85 backdrop-blur-[2px] z-0"></div>
                 
                 <div class="relative z-10">
@@ -281,12 +262,11 @@ Keluarga Besar Nusantara</textarea>
                                 <span class="text-amber-500 tracking-[0.2em] uppercase text-xs font-semibold">Galeri Momen</span>
                                 <h2 class="font-serif-custom text-4xl md:text-5xl">Our Gallery</h2>
                             </div>
-
                             <div id="view-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
                         </div>
                     </section>
 
-                    <!-- FITUR TAMBAHAN: "BANTU KAMI ABADIKAN MOMENT" -->
+                    <!-- FITUR KARTU: "BANTU KAMI ABADIKAN MOMENT" -->
                     <section class="py-16 px-6 border-b border-slate-900/50">
                         <div class="max-w-lg mx-auto text-center space-y-6 bg-slate-900/90 p-8 rounded-3xl border border-amber-500/30 shadow-2xl">
                             <div class="space-y-2">
@@ -329,8 +309,7 @@ Keluarga Besar Nusantara</textarea>
     <!-- SCRIPT LOGIKA -->
     <script>
         let currentStream = null;
-        let tempCapturedPhotos = [];
-        let venueCoordinates = { lat: -6.9175, lng: 107.6191 }; // Default Bandung
+        let venueCoordinates = { lat: -6.9175, lng: 107.6191 };
         let isInsideGeofence = false;
         let watchPositionId = null;
 
@@ -374,7 +353,6 @@ Keluarga Besar Nusantara</textarea>
             const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
             const mapsUrl = savedData.maps || "https://maps.google.com/?q=-6.9175,107.6191";
             
-            // Coba ekstrak koordinat dari query parameter 'q' atau '@' di URL Google Maps
             const regexQ = /[?&]q=(-?\d+\.\d+),\s*(-?\d+\.\d+)/;
             const regexAt = /@(-?\d+\.\d+),(-?\d+\.\d+)/;
 
@@ -384,7 +362,6 @@ Keluarga Besar Nusantara</textarea>
             }
         }
 
-        // Pantau Geofencing GPS (Radius 1 KM)
         function initGeofenceTracker(guestKey) {
             if (!navigator.geolocation) {
                 document.getElementById('geofence-status').innerText = "GPS tidak didukung oleh browser ini.";
@@ -397,18 +374,15 @@ Keluarga Besar Nusantara</textarea>
                 const distance = calculateDistance(userLat, userLng, venueCoordinates.lat, venueCoordinates.lng);
 
                 if (distance <= 1.0) {
-                    // Di dalam radius 1 km
                     if (!isInsideGeofence) {
                         isInsideGeofence = true;
                         document.getElementById('geofence-status').innerText = "Status: Anda berada di dalam area acara (Radius < 1 KM).";
                     }
                 } else {
-                    // Di luar radius 1 km
                     if (isInsideGeofence) {
                         isInsideGeofence = false;
                         document.getElementById('geofence-status').innerText = "Status: Anda telah meninggalkan area acara.";
                         
-                        // Jika sebelumnya tamu sempat mengambil foto, munculkan modal kurasi saat meninggalkan lokasi
                         const guestPhotosKey = `temp_photos_${guestKey}`;
                         const savedTemp = JSON.parse(localStorage.getItem(guestPhotosKey)) || [];
                         if (savedTemp.length > 0) {
@@ -422,9 +396,8 @@ Keluarga Besar Nusantara</textarea>
             }, { enableHighAccuracy: true });
         }
 
-        // Hitung jarak Haversine (dalam Kilometer)
         function calculateDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371; // Radius bumi dalam KM
+            const R = 6371; 
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
             const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
@@ -440,7 +413,6 @@ Keluarga Besar Nusantara</textarea>
                 return;
             }
 
-            // Validasi radius 1 KM
             navigator.geolocation.getCurrentPosition((position) => {
                 const dist = calculateDistance(position.coords.latitude, position.coords.longitude, venueCoordinates.lat, venueCoordinates.lng);
                 if (dist > 1.0) {
@@ -534,14 +506,12 @@ Keluarga Besar Nusantara</textarea>
                 return;
             }
 
-            // Masukkan ke link induk / galeri utama global
             const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
             if (!savedData.photos) savedData.photos = [];
             
             savedData.photos.push(...curatedPhotos);
             localStorage.setItem('wedding_config', JSON.stringify(savedData));
 
-            // Bersihkan temporary storage tamu
             localStorage.removeItem(guestPhotosKey);
             document.getElementById('review-modal').classList.add('hidden');
             alert('Foto pilihan Anda berhasil dikirim ke galeri utama tuan rumah!');
@@ -562,7 +532,6 @@ Keluarga Besar Nusantara</textarea>
             }
         }
 
-        // Fitur Download Template Excel (Hanya Kolom Nama Tamu)
         function downloadExcelTemplate() {
             const templateData = [
                 { "Nama Tamu": "Budi Santoso" },
@@ -575,7 +544,6 @@ Keluarga Besar Nusantara</textarea>
             XLSX.writeFile(workbook, "Template_Nama_Tamu.xlsx");
         }
 
-        // Fitur Handle Upload File Excel / PDF
         function handleFileUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -652,12 +620,10 @@ Keluarga Besar Nusantara</textarea>
             const maps = document.getElementById('cfg-maps').value;
             const rek = document.getElementById('cfg-rek').value;
             const theme = document.getElementById('cfg-theme').value;
-
-            const audioInput = document.getElementById('cfg-audio-file');
-            const bg1Input = document.getElementById('cfg-bg-1');
-            const bg2Input = document.getElementById('cfg-bg-2');
-            const bg3Input = document.getElementById('cfg-bg-3');
-            const photoFileInput = document.getElementById('cfg-photo-files');
+            const audio = document.getElementById('cfg-audio-url').value;
+            const bg1 = document.getElementById('cfg-bg-1').value;
+            const bg2 = document.getElementById('cfg-bg-2').value;
+            const bg3 = document.getElementById('cfg-bg-3').value;
             
             const existingData = JSON.parse(localStorage.getItem('wedding_config')) || {};
 
@@ -667,53 +633,14 @@ Keluarga Besar Nusantara</textarea>
             existingData.maps = maps;
             existingData.rek = rek;
             existingData.theme = theme;
+            existingData.audio = audio;
+            existingData.bg1 = bg1;
+            existingData.bg2 = bg2;
+            existingData.bg3 = bg3;
 
-            let promises = [];
-            const readFileAsDataURL = (file) => {
-                return new Promise((resolve) => {
-                    let reader = new FileReader();
-                    reader.onload = function(e) { resolve(e.target.result); };
-                    reader.readAsDataURL(file);
-                });
-            };
-
-            if (audioInput.files.length > 0) {
-                promises.push(readFileAsDataURL(audioInput.files[0]).then(res => { existingData.audio = res; }));
-            }
-            if (bg1Input.files.length > 0) {
-                promises.push(readFileAsDataURL(bg1Input.files[0]).then(res => { existingData.bg1 = res; }));
-            }
-            if (bg2Input.files.length > 0) {
-                promises.push(readFileAsDataURL(bg2Input.files[0]).then(res => { existingData.bg2 = res; }));
-            }
-            if (bg3Input.files.length > 0) {
-                promises.push(readFileAsDataURL(bg3Input.files[0]).then(res => { existingData.bg3 = res; }));
-            }
-
-            if (photoFileInput.files.length > 0) {
-                promises.push(new Promise((resolve) => {
-                    let base64Images = existingData.photos || [];
-                    let readersCount = 0;
-                    for (let i = 0; i < photoFileInput.files.length; i++) {
-                        let reader = new FileReader();
-                        reader.onload = function(e) {
-                            base64Images.push(e.target.result);
-                            readersCount++;
-                            if (readersCount === photoFileInput.files.length) {
-                                existingData.photos = base64Images;
-                                resolve();
-                            }
-                        };
-                        reader.readAsDataURL(photoFileInput.files[i]);
-                    }
-                }));
-            }
-
-            Promise.all(promises).then(() => {
-                localStorage.setItem('wedding_config', JSON.stringify(existingData));
-                parseVenueCoordinates();
-                if (showAlert) alert('Setting berhasil disimpan!');
-            });
+            localStorage.setItem('wedding_config', JSON.stringify(existingData));
+            parseVenueCoordinates();
+            if (showAlert) alert('Setting berhasil disimpan!');
         }
 
         function loadSavedSettingsToForm() {
@@ -726,6 +653,10 @@ Keluarga Besar Nusantara</textarea>
             if (savedData.maps) document.getElementById('cfg-maps').value = savedData.maps;
             if (savedData.rek) document.getElementById('cfg-rek').value = savedData.rek;
             if (savedData.theme) document.getElementById('cfg-theme').value = savedData.theme;
+            if (savedData.audio) document.getElementById('cfg-audio-url').value = savedData.audio;
+            if (savedData.bg1) document.getElementById('cfg-bg-1').value = savedData.bg1;
+            if (savedData.bg2) document.getElementById('cfg-bg-2').value = savedData.bg2;
+            if (savedData.bg3) document.getElementById('cfg-bg-3').value = savedData.bg3;
         }
 
         function generateShortLinks() {
@@ -821,7 +752,6 @@ Keluarga Besar Nusantara</textarea>
                 mainContent.classList.remove('hidden');
                 window.scrollTo(0, 0);
 
-                // Mulai tracking geofencing GPS berdasarkan nama tamu di URL
                 const urlParams = new URLSearchParams(window.location.search);
                 const guestKey = urlParams.get('to') || 'tamu';
                 initGeofenceTracker(guestKey);
