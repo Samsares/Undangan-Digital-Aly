@@ -15,7 +15,7 @@
 <body id="body-theme" class="bg-slate-950 text-slate-100 antialiased selection:bg-amber-500 selection:text-slate-950 transition-colors duration-500">
 
     <!-- ================================================= -->
-    <!-- HALAMAN ADMIN (HANYA MUNCUL DI LINK UTAMA / INDUK) -->
+    <!-- HALAMAN ADMIN (SELALU MUNCUL)                     -->
     <!-- ================================================= -->
     <div id="admin-page" class="min-h-screen py-10 px-4 md:px-8 max-w-4xl mx-auto">
         <div class="bg-slate-900 border border-slate-800 p-6 md:p-10 rounded-3xl shadow-2xl space-y-8">
@@ -129,6 +129,13 @@ Keluarga Besar Nusantara</textarea>
     <!-- ================================================= -->
     <div id="invitation-page" class="hidden">
         
+        <!-- TOMBOL KEMBALI KE ADMIN (JIKA INGIN EDIT LAGI) -->
+        <div class="fixed top-4 left-4 z-50">
+            <button onclick="switchToAdmin()" class="px-4 py-2 bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-amber-400 text-xs font-semibold rounded-xl shadow-lg backdrop-blur-md transition-all flex items-center gap-2">
+                <span>← Kembali ke Admin</span>
+            </button>
+        </div>
+
         <!-- COVER / HALAMAN UTAMA (DEFAULT BACKGROUND MAWAR PUTIH) -->
         <section id="cover" class="relative min-h-screen flex flex-col items-center justify-between p-6 text-center bg-cover bg-center" style="background-image: url('https://i.ibb.co.com/jvp8xM30/Priglasitel-noe.jpg');">
             <!-- Overlay gelap tipis agar teks tetap terbaca jelas -->
@@ -224,41 +231,37 @@ Keluarga Besar Nusantara</textarea>
             const urlParams = new URLSearchParams(window.location.search);
             const guestName = urlParams.get('to');
 
-            // Logika: Jika TIDAK ADA parameter ?to= (artinya dibuka lewat link induk/utama), 
-            // biarkan halaman admin tetap tampil secara utuh.
-            if (!guestName) {
-                return; 
-            }
+            // Jika dibuka dengan link tamu (?to=...), otomatis tampilkan preview undangan untuk tamu tersebut
+            if (guestName) {
+                document.getElementById('admin-page').classList.add('hidden');
+                document.getElementById('invitation-page').classList.remove('hidden');
 
-            // Jika ADA parameter ?to= (artinya dibuka oleh tamu), sembunyikan admin dan buka undangan publik
-            document.getElementById('admin-page').classList.add('hidden');
-            document.getElementById('invitation-page').classList.remove('hidden');
+                document.getElementById('view-guest-name').innerText = guestName.replace(/_/g, ' ');
+                
+                const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
+                
+                if (savedData.time) document.getElementById('view-time-box').innerText = savedData.time;
+                if (savedData.date) document.getElementById('view-date').innerText = savedData.date;
+                if (savedData.location) {
+                    document.getElementById('view-location-box').innerText = savedData.location;
+                    document.getElementById('view-location').innerText = savedData.location;
+                }
+                if (savedData.maps) document.getElementById('view-maps-btn').href = savedData.maps;
+                if (savedData.rek) document.getElementById('view-rek').innerText = savedData.rek;
+                if (savedData.theme) applyTheme(savedData.theme);
 
-            document.getElementById('view-guest-name').innerText = guestName.replace(/_/g, ' ');
-            
-            const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
-            
-            if (savedData.time) document.getElementById('view-time-box').innerText = savedData.time;
-            if (savedData.date) document.getElementById('view-date').innerText = savedData.date;
-            if (savedData.location) {
-                document.getElementById('view-location-box').innerText = savedData.location;
-                document.getElementById('view-location').innerText = savedData.location;
-            }
-            if (savedData.maps) document.getElementById('view-maps-btn').href = savedData.maps;
-            if (savedData.rek) document.getElementById('view-rek').innerText = savedData.rek;
-            if (savedData.theme) applyTheme(savedData.theme);
+                if (savedData.customBg) {
+                    document.getElementById('cover').style.backgroundImage = `url('${savedData.customBg}')`;
+                }
 
-            if (savedData.customBg) {
-                document.getElementById('cover').style.backgroundImage = `url('${savedData.customBg}')`;
-            }
-
-            const galleryGrid = document.getElementById('view-gallery-grid');
-            if (savedData.photos && savedData.photos.length > 0) {
-                galleryGrid.innerHTML = savedData.photos.map(base64 => `
-                    <div class="overflow-hidden rounded-2xl bg-slate-900 border border-slate-800 aspect-square flex items-center justify-center">
-                        <img src="${base64}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Galeri">
-                    </div>
-                `).join('');
+                const galleryGrid = document.getElementById('view-gallery-grid');
+                if (savedData.photos && savedData.photos.length > 0) {
+                    galleryGrid.innerHTML = savedData.photos.map(base64 => `
+                        <div class="overflow-hidden rounded-2xl bg-slate-900 border border-slate-800 aspect-square flex items-center justify-center">
+                            <img src="${base64}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Galeri">
+                        </div>
+                    `).join('');
+                }
             }
         });
 
@@ -413,6 +416,12 @@ Keluarga Besar Nusantara</textarea>
                     </div>
                 `).join('');
             }
+        }
+
+        function switchToAdmin() {
+            document.getElementById('invitation-page').classList.add('hidden');
+            document.getElementById('admin-page').classList.remove('hidden');
+            loadSavedSettingsToForm();
         }
 
         function openInvitation() {
