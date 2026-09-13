@@ -72,15 +72,28 @@
                     </div>
                 </div>
 
-                <!-- UPLOAD BACKGROUND KUSTOM -->
-                <div class="space-y-2">
-                    <label class="text-xs text-slate-400 uppercase font-medium">Ganti Background Utama (Format: PNG, JPG, JPEG)</label>
-                    <input type="file" id="cfg-bg-file" accept="image/png, image/jpeg, image/jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
-                    <p class="text-[11px] text-slate-500">Opsional: Upload foto mawar putih atau lainnya untuk background undangan.</p>
+                <!-- PENGATURAN BACKGROUND TERPISAH PER BAGIAN -->
+                <div class="space-y-4 pt-2 border-t border-slate-800">
+                    <h3 class="font-serif-custom text-lg font-bold text-amber-300">2. Kustomisasi Background Per Bagian (Opsional)</h3>
+                    
+                    <div class="space-y-2">
+                        <label class="text-xs text-slate-400 uppercase font-medium">Background Bagian 1: Cover Utama (Saat Link Dibuka)</label>
+                        <input type="file" id="cfg-bg-1" accept="image/png, image/jpeg, image/jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-xs text-slate-400 uppercase font-medium">Background Bagian 2: Bagian Tanggal & Lokasi (Setelah Dibuka)</label>
+                        <input type="file" id="cfg-bg-2" accept="image/png, image/jpeg, image/jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-xs text-slate-400 uppercase font-medium">Background Bagian 3: Bagian Galeri & Amplop Digital</label>
+                        <input type="file" id="cfg-bg-3" accept="image/png, image/jpeg, image/jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
+                    </div>
                 </div>
 
                 <!-- UPLOAD FOTO GALERI -->
-                <div class="space-y-2">
+                <div class="space-y-2 pt-2 border-t border-slate-800">
                     <label class="text-xs text-slate-400 uppercase font-medium">Upload Foto Galeri (Format: PNG, JPG, JPEG)</label>
                     <input type="file" id="cfg-photo-files" accept="image/png, image/jpeg, image/jpg" multiple class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
                     <p class="text-[11px] text-slate-500">Pilih beberapa foto galeri sekaligus.</p>
@@ -96,7 +109,7 @@
             <!-- INPUT DAFTAR NAMA TAMU -->
             <div class="space-y-4">
                 <div class="flex items-center justify-between">
-                    <h3 class="font-serif-custom text-lg font-bold text-amber-300">2. Masukkan Daftar Nama Tamu</h3>
+                    <h3 class="font-serif-custom text-lg font-bold text-amber-300">3. Masukkan Daftar Nama Tamu</h3>
                     <span class="text-xs text-slate-500">Ketik 1 nama per baris</span>
                 </div>
                 
@@ -129,10 +142,9 @@ Keluarga Besar Nusantara</textarea>
     <!-- ================================================= -->
     <div id="invitation-page" class="hidden">
         
-        <!-- COVER / HALAMAN UTAMA (DEFAULT BACKGROUND MAWAR PUTIH) -->
-        <section id="cover" class="relative min-h-screen flex flex-col items-center justify-between p-6 text-center bg-cover bg-center" style="background-image: url('https://i.ibb.co.com/jvp8xM30/Priglasitel-noe.jpg');">
-            <!-- Overlay gelap tipis agar teks tetap terbaca jelas -->
-            <div id="cover-overlay" class="absolute inset-0 bg-slate-950/50 backdrop-blur-[2px] z-0"></div>
+        <!-- BAGIAN 1: COVER / HALAMAN UTAMA -->
+        <section id="cover-section" class="relative min-h-screen flex flex-col items-center justify-between p-6 text-center bg-cover bg-center" style="background-image: url('https://i.ibb.co.com/jvp8xM30/Priglasitel-noe.jpg');">
+            <div class="absolute inset-0 bg-slate-950/50 backdrop-blur-[2px] z-0"></div>
 
             <div class="relative z-10 space-y-3 pt-10">
                 <span class="tracking-[0.3em] uppercase text-xs text-amber-300 font-bold bg-slate-950/60 px-4 py-1.5 rounded-full border border-amber-500/30">The Wedding Of</span>
@@ -158,58 +170,69 @@ Keluarga Besar Nusantara</textarea>
             </div>
         </section>
 
-        <!-- KONTEN UTAMA -->
+        <!-- KONTEN UTAMA SETELAH DIBUKA -->
         <div id="main-content" class="hidden">
             
-            <section class="py-24 px-6 max-w-4xl mx-auto text-center space-y-10">
-                <div class="space-y-3">
-                    <span class="text-amber-500 tracking-[0.2em] uppercase text-xs font-semibold">Save The Date</span>
-                    <h2 class="font-serif-custom text-4xl md:text-5xl">M. Rayhan Aly & Puja Shalehah</h2>
-                    <p id="view-date" class="text-amber-200 font-semibold text-base pt-2"></p>
-                </div>
-
-                <div class="bg-slate-900/60 p-8 rounded-3xl border border-slate-800 space-y-3 shadow-xl max-w-lg mx-auto">
-                    <h3 class="font-serif-custom text-2xl text-amber-400">Resepsi & Akad</h3>
-                    <p id="view-location" class="text-slate-300 text-sm font-medium"></p>
-                </div>
-
-                <div>
-                    <a id="view-maps-btn" href="#" target="_blank" class="inline-flex items-center gap-2 px-8 py-4 bg-amber-500 hover:bg-amber-400 text-slate-950 text-sm font-semibold rounded-full shadow-lg transition-all">
-                        <span>Buka Petunjuk Google Maps</span>
-                    </a>
-                </div>
-            </section>
-
-            <!-- GALERI FOTO -->
-            <section class="py-20 px-6 bg-slate-900/30 border-y border-slate-900">
-                <div class="max-w-4xl mx-auto space-y-10">
-                    <div class="text-center space-y-3">
-                        <span class="text-amber-500 tracking-[0.2em] uppercase text-xs font-semibold">Galeri Momen</span>
-                        <h2 class="font-serif-custom text-4xl md:text-5xl">Our Gallery</h2>
+            <!-- BAGIAN 2: TANGGAL & LOKASI -->
+            <section id="section-date-loc" class="relative py-24 px-6 text-center bg-cover bg-center" style="background-image: none;">
+                <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-[2px] z-0"></div>
+                <div class="relative z-10 max-w-4xl mx-auto space-y-10">
+                    <div class="space-y-3">
+                        <span class="text-amber-500 tracking-[0.2em] uppercase text-xs font-semibold">Save The Date</span>
+                        <h2 class="font-serif-custom text-4xl md:text-5xl">M. Rayhan Aly & Puja Shalehah</h2>
+                        <p id="view-date" class="text-amber-200 font-semibold text-base pt-2"></p>
                     </div>
 
-                    <div id="view-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                        <!-- Foto render otomatis -->
+                    <div class="bg-slate-900/80 p-8 rounded-3xl border border-slate-800 space-y-3 shadow-xl max-w-lg mx-auto">
+                        <h3 class="font-serif-custom text-2xl text-amber-400">Resepsi & Akad</h3>
+                        <p id="view-location" class="text-slate-300 text-sm font-medium"></p>
+                    </div>
+
+                    <div>
+                        <a id="view-maps-btn" href="#" target="_blank" class="inline-flex items-center gap-2 px-8 py-4 bg-amber-500 hover:bg-amber-400 text-slate-950 text-sm font-semibold rounded-full shadow-lg transition-all">
+                            <span>Buka Petunjuk Google Maps</span>
+                        </a>
                     </div>
                 </div>
             </section>
 
-            <!-- AMPLOP DIGITAL -->
-            <section class="py-20 px-6">
-                <div class="max-w-xl mx-auto text-center space-y-6 bg-slate-900/60 p-8 rounded-3xl border border-slate-800 shadow-2xl">
-                    <div class="space-y-2">
-                        <span class="text-amber-500 tracking-[0.2em] uppercase text-xs font-semibold">Tanda Kasih</span>
-                        <h2 class="font-serif-custom text-3xl">Amplop Digital</h2>
-                        <p class="text-xs text-slate-400">Doa restu Anda merupakan karunia terindah bagi kami.</p>
-                    </div>
-                    <div class="p-5 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
-                        <p id="view-rek" class="font-mono text-base font-bold tracking-wider text-amber-200">-</p>
-                        <button onclick="copyRek(this)" class="mt-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs rounded-lg transition-colors text-amber-300">Salin Nomor Rekening</button>
-                    </div>
-                </div>
-            </section>
+            <!-- BAGIAN 3: GALERI & AMPLOP DIGITAL -->
+            <div id="section-gallery-envelope" class="relative bg-cover bg-center" style="background-image: none;">
+                <div class="absolute inset-0 bg-slate-950/85 backdrop-blur-[2px] z-0"></div>
+                
+                <div class="relative z-10">
+                    <!-- GALERI FOTO -->
+                    <section class="py-20 px-6 border-b border-slate-900/50">
+                        <div class="max-w-4xl mx-auto space-y-10">
+                            <div class="text-center space-y-3">
+                                <span class="text-amber-500 tracking-[0.2em] uppercase text-xs font-semibold">Galeri Momen</span>
+                                <h2 class="font-serif-custom text-4xl md:text-5xl">Our Gallery</h2>
+                            </div>
 
-            <footer class="py-12 text-center text-xs text-slate-500 border-t border-slate-900">
+                            <div id="view-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                <!-- Foto render otomatis -->
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- AMPLOP DIGITAL -->
+                    <section class="py-20 px-6">
+                        <div class="max-w-xl mx-auto text-center space-y-6 bg-slate-900/80 p-8 rounded-3xl border border-slate-800 shadow-2xl">
+                            <div class="space-y-2">
+                                <span class="text-amber-500 tracking-[0.2em] uppercase text-xs font-semibold">Tanda Kasih</span>
+                                <h2 class="font-serif-custom text-3xl">Amplop Digital</h2>
+                                <p class="text-xs text-slate-400">Doa restu Anda merupakan karunia terindah bagi kami.</p>
+                            </div>
+                            <div class="p-5 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
+                                <p id="view-rek" class="font-mono text-base font-bold tracking-wider text-amber-200">-</p>
+                                <button onclick="copyRek(this)" class="mt-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs rounded-lg transition-colors text-amber-300">Salin Nomor Rekening</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <footer class="relative z-10 py-12 text-center text-xs text-slate-500 border-t border-slate-900 bg-slate-950">
                 <p>© 2026 M. Rayhan Aly & Puja Shalehah. All rights reserved.</p>
             </footer>
 
@@ -224,8 +247,6 @@ Keluarga Besar Nusantara</textarea>
             const urlParams = new URLSearchParams(window.location.search);
             const guestName = urlParams.get('to');
 
-            // KUNCI KEAMANAN:
-            // Jika link dibuka dengan parameter tamu (?to=...), sembunyikan admin dan tampilkan halaman undangan khusus tamu.
             if (guestName) {
                 document.getElementById('admin-page').classList.add('hidden');
                 document.getElementById('invitation-page').classList.remove('hidden');
@@ -244,8 +265,17 @@ Keluarga Besar Nusantara</textarea>
                 if (savedData.rek) document.getElementById('view-rek').innerText = savedData.rek;
                 if (savedData.theme) applyTheme(savedData.theme);
 
-                if (savedData.customBg) {
-                    document.getElementById('cover').style.backgroundImage = `url('${savedData.customBg}')`;
+                // Terapkan Background Bagian 1 (Cover)
+                if (savedData.bg1) {
+                    document.getElementById('cover-section').style.backgroundImage = `url('${savedData.bg1}')`;
+                }
+                // Terapkan Background Bagian 2 (Tanggal & Lokasi)
+                if (savedData.bg2) {
+                    document.getElementById('section-date-loc').style.backgroundImage = `url('${savedData.bg2}')`;
+                }
+                // Terapkan Background Bagian 3 (Galeri & Amplop)
+                if (savedData.bg3) {
+                    document.getElementById('section-gallery-envelope').style.backgroundImage = `url('${savedData.bg3}')`;
                 }
 
                 const galleryGrid = document.getElementById('view-gallery-grid');
@@ -257,7 +287,6 @@ Keluarga Besar Nusantara</textarea>
                     `).join('');
                 }
             }
-            // Jika dibuka lewat link utama (tanpa parameter ?to=...), halaman admin akan tampil penuh secara normal.
         });
 
         function saveSettings(showAlert = true) {
@@ -268,8 +297,11 @@ Keluarga Besar Nusantara</textarea>
             const rek = document.getElementById('cfg-rek').value;
             const theme = document.getElementById('cfg-theme').value;
 
-            const bgFileInput = document.getElementById('cfg-bg-file');
+            const bg1Input = document.getElementById('cfg-bg-1');
+            const bg2Input = document.getElementById('cfg-bg-2');
+            const bg3Input = document.getElementById('cfg-bg-3');
             const photoFileInput = document.getElementById('cfg-photo-files');
+            
             const existingData = JSON.parse(localStorage.getItem('wedding_config')) || {};
 
             existingData.time = time;
@@ -281,15 +313,23 @@ Keluarga Besar Nusantara</textarea>
 
             let promises = [];
 
-            if (bgFileInput.files.length > 0) {
-                promises.push(new Promise((resolve) => {
+            // Helper untuk membaca file gambar ke base64
+            const readFileAsDataURL = (file) => {
+                return new Promise((resolve) => {
                     let reader = new FileReader();
-                    reader.onload = function(e) {
-                        existingData.customBg = e.target.result;
-                        resolve();
-                    };
-                    reader.readAsDataURL(bgFileInput.files[0]);
-                }));
+                    reader.onload = function(e) { resolve(e.target.result); };
+                    reader.readAsDataURL(file);
+                });
+            };
+
+            if (bg1Input.files.length > 0) {
+                promises.push(readFileAsDataURL(bg1Input.files[0]).then(res => { existingData.bg1 = res; }));
+            }
+            if (bg2Input.files.length > 0) {
+                promises.push(readFileAsDataURL(bg2Input.files[0]).then(res => { existingData.bg2 = res; }));
+            }
+            if (bg3Input.files.length > 0) {
+                promises.push(readFileAsDataURL(bg3Input.files[0]).then(res => { existingData.bg3 = res; }));
             }
 
             if (photoFileInput.files.length > 0) {
@@ -313,7 +353,7 @@ Keluarga Besar Nusantara</textarea>
 
             Promise.all(promises).then(() => {
                 localStorage.setItem('wedding_config', JSON.stringify(existingData));
-                if (showAlert) alert('Setting & foto berhasil disimpan!');
+                if (showAlert) alert('Setting & background berhasil disimpan!');
             });
         }
 
@@ -399,8 +439,14 @@ Keluarga Besar Nusantara</textarea>
             applyTheme(document.getElementById('cfg-theme').value);
 
             const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
-            if (savedData.customBg) {
-                document.getElementById('cover').style.backgroundImage = `url('${savedData.customBg}')`;
+            if (savedData.bg1) {
+                document.getElementById('cover-section').style.backgroundImage = `url('${savedData.bg1}')`;
+            }
+            if (savedData.bg2) {
+                document.getElementById('section-date-loc').style.backgroundImage = `url('${savedData.bg2}')`;
+            }
+            if (savedData.bg3) {
+                document.getElementById('section-gallery-envelope').style.backgroundImage = `url('${savedData.bg3}')`;
             }
 
             const galleryGrid = document.getElementById('view-gallery-grid');
@@ -414,7 +460,7 @@ Keluarga Besar Nusantara</textarea>
         }
 
         function openInvitation() {
-            const cover = document.getElementById('cover');
+            const cover = document.getElementById('cover-section');
             const mainContent = document.getElementById('main-content');
             cover.classList.add('opacity-0', 'transition-opacity', 'duration-700');
             setTimeout(() => {
