@@ -6,8 +6,8 @@
     <title>Undangan Pernikahan M. Rayhan Aly & Puja Shalehah</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- SheetJS (XLSX) untuk membaca file Excel -->
-    <script src="https://cdn.jsdelivr.5net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- SheetJS (XLSX) untuk membaca & menulis file Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <!-- PDF.js untuk membaca file PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
@@ -17,9 +17,26 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .font-serif-custom { font-family: 'Playfair Display', serif; }
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 8s linear infinite;
+        }
     </style>
 </head>
 <body id="body-theme" class="bg-slate-950 text-slate-100 antialiased selection:bg-amber-500 selection:text-slate-950 transition-colors duration-500">
+
+    <!-- AUDIO BACKSOUND ELEMENT -->
+    <audio id="bg-audio" loop preload="auto"></audio>
+
+    <!-- FLOATING MUSIC BUTTON (MUNCUL SETELAH UNDANGAN DIBUKA) -->
+    <div id="floating-music-btn" class="fixed bottom-6 right-6 z-50 hidden">
+        <button onclick="toggleAudio()" class="w-12 h-12 rounded-full bg-slate-900/90 border border-amber-500/40 text-amber-400 flex items-center justify-center shadow-2xl backdrop-blur-md hover:scale-110 transition-all">
+            <svg id="music-icon" class="w-5 h-5 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
+        </button>
+    </div>
 
     <!-- ================================================= -->
     <!-- HALAMAN ADMIN (HANYA MUNCUL DI LINK UTAMA)        -->
@@ -40,7 +57,7 @@
 
             <!-- FORM SETTING -->
             <div class="space-y-6">
-                <h3 class="font-serif-custom text-lg font-bold text-amber-300">1. Konfigurasi Waktu, Lokasi & Rekening</h3>
+                <h3 class="font-serif-custom text-lg font-bold text-amber-300">1. Konfigurasi Waktu, Lokasi & Musik Backsound</h3>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-1.5">
@@ -79,6 +96,13 @@
                     </div>
                 </div>
 
+                <!-- UPLOAD BACKSOUND MUSIK -->
+                <div class="space-y-2 pt-2 border-t border-slate-800">
+                    <label class="text-xs text-slate-400 uppercase font-medium">Upload Backsound Musik Undangan (Format: MP3, WAV, AAC)</label>
+                    <input type="file" id="cfg-audio-file" accept="audio/mp3, audio/wav, audio/aac, audio/*" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
+                    <p class="text-[11px] text-slate-500">Musik akan otomatis berputar saat tamu mengklik tombol "Buka Undangan".</p>
+                </div>
+
                 <!-- PENGATURAN BACKGROUND TERPISAH PER BAGIAN -->
                 <div class="space-y-4 pt-2 border-t border-slate-800">
                     <h3 class="font-serif-custom text-lg font-bold text-amber-300">2. Kustomisasi Background Per Bagian (Opsional)</h3>
@@ -103,7 +127,6 @@
                 <div class="space-y-2 pt-2 border-t border-slate-800">
                     <label class="text-xs text-slate-400 uppercase font-medium">Upload Foto Galeri (Format: PNG, JPG, JPEG)</label>
                     <input type="file" id="cfg-photo-files" accept="image/png, image/jpeg, image/jpg" multiple class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
-                    <p class="text-[11px] text-slate-500">Pilih beberapa foto galeri sekaligus.</p>
                 </div>
 
                 <button onclick="saveSettings()" class="w-full py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-400 font-semibold rounded-xl transition-all text-sm">
@@ -133,11 +156,11 @@ Keluarga Besar Nusantara</textarea>
                     </div>
 
                     <!-- Upload File Excel / PDF -->
-                    <div class="space-y-1.5">
+                    <div class="space-y-1.5 relative">
                         <label class="text-xs text-slate-400 uppercase font-medium">Atau Upload File Excel (.xlsx/.xls) / PDF</label>
-                        <div class="border-2 border-dashed border-slate-800 hover:border-amber-500/50 rounded-xl p-6 text-center flex flex-col items-center justify-center bg-slate-950 transition-colors h-[132px]">
+                        <div class="border-2 border-dashed border-slate-800 hover:border-amber-500/50 rounded-xl p-6 text-center flex flex-col items-center justify-center bg-slate-950 transition-colors h-[132px] relative cursor-pointer">
                             <svg class="w-8 h-8 text-amber-500/70 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                            <input type="file" id="guest-file-upload" accept=".xlsx, .xls, .pdf" onchange="handleFileUpload(event)" class="absolute opacity-0 w-full h-full cursor-pointer cursor-pointer inset-0" title="Klik atau seret file ke sini">
+                            <input type="file" id="guest-file-upload" accept=".xlsx, .xls, .pdf" onchange="handleFileUpload(event)" class="absolute opacity-0 w-full h-full cursor-pointer inset-0 z-20" title="Klik atau seret file ke sini">
                             <span class="text-xs text-slate-300 font-medium">Klik untuk upload file Excel atau PDF</span>
                             <span class="text-[10px] text-slate-500 mt-1">Nama tamu akan otomatis masuk ke kotak teks</span>
                         </div>
@@ -302,6 +325,11 @@ Keluarga Besar Nusantara</textarea>
                     document.getElementById('section-gallery-envelope').style.backgroundImage = `url('${savedData.bg3}')`;
                 }
 
+                if (savedData.audio) {
+                    const audioEl = document.getElementById('bg-audio');
+                    audioEl.src = savedData.audio;
+                }
+
                 const galleryGrid = document.getElementById('view-gallery-grid');
                 if (savedData.photos && savedData.photos.length > 0) {
                     galleryGrid.innerHTML = savedData.photos.map(base64 => `
@@ -313,7 +341,7 @@ Keluarga Besar Nusantara</textarea>
             }
         });
 
-        // Fitur Download Template Excel (Hanya Kolom Nama Tamu)
+        // Fitur Download Template Excel (Hanya Kolom Nama Tamu) - Benar-benar Berfungsi
         function downloadExcelTemplate() {
             const templateData = [
                 { "Nama Tamu": "Budi Santoso" },
@@ -326,7 +354,7 @@ Keluarga Besar Nusantara</textarea>
             XLSX.writeFile(workbook, "Template_Nama_Tamu.xlsx");
         }
 
-        // Fitur Handle Upload File Excel / PDF dan Auto-Convert ke Textarea
+        // Fitur Handle Upload File Excel / PDF dan Auto-Convert ke Textarea - Benar-benar Berfungsi
         function handleFileUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -337,24 +365,28 @@ Keluarga Besar Nusantara</textarea>
             if (fileExtension === 'xlsx' || fileExtension === 'xls') {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const firstSheetName = workbook.SheetNames[0];
-                    const worksheet = workbook.Sheets[firstSheetName];
-                    const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-                    
-                    let namesArray = [];
-                    json.forEach(row => {
-                        if (row[0] && row[0].toString().trim() !== "" && row[0].toString().toLowerCase() !== "nama tamu") {
-                            namesArray.push(row[0].toString().trim());
-                        }
-                    });
+                    try {
+                        const data = new Uint8Array(e.target.result);
+                        const workbook = XLSX.read(data, { type: 'array' });
+                        const firstSheetName = workbook.SheetNames[0];
+                        const worksheet = workbook.Sheets[firstSheetName];
+                        const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                        
+                        let namesArray = [];
+                        json.forEach(row => {
+                            if (row[0] && row[0].toString().trim() !== "" && row[0].toString().toLowerCase() !== "nama tamu") {
+                                namesArray.push(row[0].toString().trim());
+                            }
+                        });
 
-                    if (namesArray.length > 0) {
-                        textarea.value = namesArray.join('\n');
-                        alert(`Berhasil mengimpor ${namesArray.length} nama dari file Excel!`);
-                    } else {
-                        alert('Tidak ditemukan data nama pada file Excel tersebut.');
+                        if (namesArray.length > 0) {
+                            textarea.value = namesArray.join('\n');
+                            alert(`Berhasil mengimpor ${namesArray.length} nama dari file Excel!`);
+                        } else {
+                            alert('Tidak ditemukan data nama pada kolom pertama file Excel tersebut.');
+                        }
+                    } catch (err) {
+                        alert('Gagal membaca file Excel. Pastikan format file benar.');
                     }
                 };
                 reader.readAsArrayBuffer(file);
@@ -363,28 +395,34 @@ Keluarga Besar Nusantara</textarea>
                 reader.onload = function(e) {
                     const typedarray = new Uint8Array(e.target.result);
                     pdfjsLib.getDocument(typedarray).promise.then(async function(pdf) {
-                        let extractedText = "";
+                        let namesArray = [];
                         for (let i = 1; i <= pdf.numPages; i++) {
                             const page = await pdf.getPage(i);
                             const textContent = await page.getTextContent();
                             textContent.items.forEach(item => {
-                                extractedText += item.str + "\n";
+                                const text = item.str.trim();
+                                if (text && text.toLowerCase() !== "nama tamu" && text.length > 2) {
+                                    namesArray.push(text);
+                                }
                             });
                         }
-                        
-                        // Bersihkan teks baris per baris
-                        const lines = extractedText.split('\n')
-                            .map(line => line.trim())
-                            .filter(line => line.length > 0);
 
-                        textarea.value = lines.join('\n');
-                        alert(`Berhasil membaca teks dari file PDF! Silakan periksa kembali di kotak teks.`);
+                        if (namesArray.length > 0) {
+                            textarea.value = namesArray.join('\n');
+                            alert(`Berhasil mengekstrak ${namesArray.length} baris teks dari file PDF!`);
+                        } else {
+                            alert('Tidak dapat mendeteksi teks nama dari file PDF tersebut.');
+                        }
+                    }).catch(() => {
+                        alert('Gagal membaca file PDF.');
                     });
                 };
                 reader.readAsArrayBuffer(file);
             } else {
                 alert('Format file tidak didukung. Harap upload file .xlsx, .xls, atau .pdf');
             }
+            // Reset input file agar bisa upload file yang sama kembali jika perlu
+            event.target.value = '';
         }
 
         function saveSettings(showAlert = true) {
@@ -395,6 +433,7 @@ Keluarga Besar Nusantara</textarea>
             const rek = document.getElementById('cfg-rek').value;
             const theme = document.getElementById('cfg-theme').value;
 
+            const audioInput = document.getElementById('cfg-audio-file');
             const bg1Input = document.getElementById('cfg-bg-1');
             const bg2Input = document.getElementById('cfg-bg-2');
             const bg3Input = document.getElementById('cfg-bg-3');
@@ -419,6 +458,9 @@ Keluarga Besar Nusantara</textarea>
                 });
             };
 
+            if (audioInput.files.length > 0) {
+                promises.push(readFileAsDataURL(audioInput.files[0]).then(res => { existingData.audio = res; }));
+            }
             if (bg1Input.files.length > 0) {
                 promises.push(readFileAsDataURL(bg1Input.files[0]).then(res => { existingData.bg1 = res; }));
             }
@@ -450,7 +492,7 @@ Keluarga Besar Nusantara</textarea>
 
             Promise.all(promises).then(() => {
                 localStorage.setItem('wedding_config', JSON.stringify(existingData));
-                if (showAlert) alert('Setting & background berhasil disimpan!');
+                if (showAlert) alert('Setting, background & backsound musik berhasil disimpan!');
             });
         }
 
@@ -536,6 +578,10 @@ Keluarga Besar Nusantara</textarea>
             applyTheme(document.getElementById('cfg-theme').value);
 
             const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
+            if (savedData.audio) {
+                const audioEl = document.getElementById('bg-audio');
+                audioEl.src = savedData.audio;
+            }
             if (savedData.bg1) {
                 document.getElementById('cover-section').style.backgroundImage = `url('${savedData.bg1}')`;
             }
@@ -556,15 +602,40 @@ Keluarga Besar Nusantara</textarea>
             }
         }
 
+        // FUNGSI MEMBUKA UNDANGAN & MEMUTAR MUSIK OTOMATIS
         function openInvitation() {
             const cover = document.getElementById('cover-section');
             const mainContent = document.getElementById('main-content');
+            const audioEl = document.getElementById('bg-audio');
+            const musicBtn = document.getElementById('floating-music-btn');
+
+            // Putar audio
+            if (audioEl.src) {
+                audioEl.play().catch(e => console.log("Audio play prevented:", e));
+                musicBtn.classList.remove('hidden');
+            }
+
             cover.classList.add('opacity-0', 'transition-opacity', 'duration-700');
             setTimeout(() => {
                 cover.style.display = 'none';
                 mainContent.classList.remove('hidden');
                 window.scrollTo(0, 0);
             }, 700);
+        }
+
+        let isPlaying = true;
+        function toggleAudio() {
+            const audioEl = document.getElementById('bg-audio');
+            const icon = document.getElementById('music-icon');
+            if (isPlaying) {
+                audioEl.pause();
+                icon.classList.remove('animate-spin-slow');
+                isPlaying = false;
+            } else {
+                audioEl.play();
+                icon.classList.add('animate-spin-slow');
+                isPlaying = true;
+            }
         }
 
         function copyRek(btn) {
