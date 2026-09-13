@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Admin & Undangan Pernikahan</title>
+    <title>Undangan Pernikahan M. Rayhan Aly & Puja Shalehah</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
 <body id="body-theme" class="bg-slate-950 text-slate-100 antialiased selection:bg-amber-500 selection:text-slate-950 transition-colors duration-500">
 
     <!-- ================================================= -->
-    <!-- HALAMAN ADMIN (PENGATURAN & UPLOAD FOTO)          -->
+    <!-- HALAMAN ADMIN (PENGATURAN & UPLOAD KUSTOM)        -->
     <!-- ================================================= -->
     <div id="admin-page" class="min-h-screen py-10 px-4 md:px-8 max-w-4xl mx-auto">
         <div class="bg-slate-900 border border-slate-800 p-6 md:p-10 rounded-3xl shadow-2xl space-y-8">
@@ -72,11 +72,18 @@
                     </div>
                 </div>
 
-                <!-- UPLOAD FOTO (PNG, JPG, JPEG) -->
+                <!-- UPLOAD BACKGROUND KUSTOM (PNG, JPG, JPEG) -->
+                <div class="space-y-2">
+                    <label class="text-xs text-slate-400 uppercase font-medium">Upload Background Utama (Format: PNG, JPG, JPEG)</label>
+                    <input type="file" id="cfg-bg-file" accept="image/png, image/jpeg, image/jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
+                    <p class="text-[11px] text-slate-500">Pilih satu foto terbaik untuk latar belakang halaman depan undangan.</p>
+                </div>
+
+                <!-- UPLOAD FOTO GALERI -->
                 <div class="space-y-2">
                     <label class="text-xs text-slate-400 uppercase font-medium">Upload Foto Galeri (Format: PNG, JPG, JPEG)</label>
                     <input type="file" id="cfg-photo-files" accept="image/png, image/jpeg, image/jpg" multiple class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
-                    <p class="text-[11px] text-slate-500">Pilih beberapa foto sekaligus. Foto akan otomatis tersimpan di memori setting.</p>
+                    <p class="text-[11px] text-slate-500">Pilih beberapa foto galeri sekaligus.</p>
                 </div>
 
                 <button onclick="saveSettings()" class="w-full py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-400 font-semibold rounded-xl transition-all text-sm">
@@ -89,7 +96,7 @@
             <!-- INPUT DAFTAR NAMA TAMU -->
             <div class="space-y-4">
                 <div class="flex items-center justify-between">
-                    <h3 class="font-serif-custom text-lg font-bold text-amber-300">2. Masukkan Daftar Nama Tamu (Link Menjadi Singkat)</h3>
+                    <h3 class="font-serif-custom text-lg font-bold text-amber-300">2. Masukkan Daftar Nama Tamu</h3>
                     <span class="text-xs text-slate-500">Ketik 1 nama per baris</span>
                 </div>
                 
@@ -123,15 +130,16 @@ Keluarga Besar Nusantara</textarea>
     <div id="invitation-page" class="hidden">
         
         <!-- COVER / HALAMAN UTAMA -->
-        <section id="cover" class="relative min-h-screen flex flex-col items-center justify-between p-6 text-center bg-gradient-to-b from-slate-900 to-slate-950">
+        <section id="cover" class="relative min-h-screen flex flex-col items-center justify-between p-6 text-center bg-gradient-to-b from-slate-900 to-slate-950 bg-cover bg-center">
+            <div id="cover-overlay" class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm z-0"></div>
+
             <div class="relative z-10 space-y-4 pt-12">
                 <span class="tracking-[0.3em] uppercase text-xs text-amber-500 font-semibold">The Wedding Of</span>
-                <!-- TEMPLATE NAMA PASANGAN -->
                 <h1 class="font-serif-custom text-4xl md:text-6xl italic font-bold text-amber-100">Undangan Pernikahan <br><span class="text-amber-400 not-italic text-3xl md:text-5xl mt-2 block">M. Rayhan Aly & Puja Shalehah</span></h1>
             </div>
 
             <!-- KOTAK KEPADA (NAMA TAMU, PUKUL & LOKASI) -->
-            <div class="relative z-10 my-6 space-y-3 max-w-md w-full bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-800 shadow-2xl text-left">
+            <div class="relative z-10 my-6 space-y-3 max-w-md w-full bg-slate-900/90 backdrop-blur-md p-6 rounded-2xl border border-slate-800 shadow-2xl text-left">
                 <div class="border-b border-slate-800 pb-3">
                     <p class="text-[11px] tracking-wider text-slate-400 uppercase font-semibold">Kepada Yth:</p>
                     <h2 id="view-guest-name" class="font-serif-custom text-2xl font-bold text-amber-400 mt-0.5">Tamu Undangan</h2>
@@ -146,9 +154,6 @@ Keluarga Besar Nusantara</textarea>
                 <button onclick="openInvitation()" class="px-8 py-4 bg-amber-500 text-slate-950 font-semibold rounded-full shadow-lg hover:bg-amber-400 transition-all duration-300 transform hover:scale-105">
                     Buka Undangan
                 </button>
-                <div>
-                    <button onclick="backToAdmin()" class="text-xs text-slate-500 hover:text-slate-300 underline">Kembali ke Panel Setting</button>
-                </div>
             </div>
         </section>
 
@@ -174,7 +179,7 @@ Keluarga Besar Nusantara</textarea>
                 </div>
             </section>
 
-            <!-- GALERI FOTO (Presisi & Center) -->
+            <!-- GALERI FOTO -->
             <section class="py-20 px-6 bg-slate-900/30 border-y border-slate-900">
                 <div class="max-w-4xl mx-auto space-y-10">
                     <div class="text-center space-y-3">
@@ -212,40 +217,57 @@ Keluarga Besar Nusantara</textarea>
 
     <!-- SCRIPT LOGIKA -->
     <script>
-        // Load data saat pertama kali dibuka
         window.addEventListener('DOMContentLoaded', () => {
             loadSavedSettingsToForm();
 
             const urlParams = new URLSearchParams(window.location.search);
             const guestName = urlParams.get('to');
 
-            if (guestName) {
-                document.getElementById('admin-page').classList.add('hidden');
-                document.getElementById('invitation-page').classList.remove('hidden');
-
-                document.getElementById('view-guest-name').innerText = guestName.replace(/_/g, ' ');
-                
-                // Ambil data setting dari LocalStorage
-                const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
-                
-                if (savedData.time) document.getElementById('view-time-box').innerText = savedData.time;
-                if (savedData.date) document.getElementById('view-date').innerText = savedData.date;
-                if (savedData.location) {
-                    document.getElementById('view-location-box').innerText = savedData.location;
-                    document.getElementById('view-location').innerText = savedData.location;
+            // Jika dibuka tanpa parameter tamu (?to=...), otomatis diarahkan ke default tamu agar tidak bisa masuk panel admin
+            if (!guestName) {
+                // Cek apakah ada data tersimpan, jika tidak ada, buat dummy admin view
+                const savedData = JSON.parse(localStorage.getItem('wedding_config'));
+                if (!savedData) {
+                    // Belum di-setup sama sekali, biarkan di halaman admin
+                    return;
+                } else {
+                    // Jika sudah ada data tapi diakses tanpa parameter "to", arahkan otomatis ke tamu umum
+                    window.location.href = window.location.pathname + "?to=Tamu_Kehormatan";
+                    return;
                 }
-                if (savedData.maps) document.getElementById('view-maps-btn').href = savedData.maps;
-                if (savedData.rek) document.getElementById('view-rek').innerText = savedData.rek;
-                if (savedData.theme) applyTheme(savedData.theme);
+            }
 
-                const galleryGrid = document.getElementById('view-gallery-grid');
-                if (savedData.photos && savedData.photos.length > 0) {
-                    galleryGrid.innerHTML = savedData.photos.map(base64 => `
-                        <div class="overflow-hidden rounded-2xl bg-slate-900 border border-slate-800 aspect-square flex items-center justify-center">
-                            <img src="${base64}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Galeri">
-                        </div>
-                    `).join('');
-                }
+            // Jika ada parameter tamu, buka tampilan undangan publik
+            document.getElementById('admin-page').classList.add('hidden');
+            document.getElementById('invitation-page').classList.remove('hidden');
+
+            document.getElementById('view-guest-name').innerText = guestName.replace(/_/g, ' ');
+            
+            const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
+            
+            if (savedData.time) document.getElementById('view-time-box').innerText = savedData.time;
+            if (savedData.date) document.getElementById('view-date').innerText = savedData.date;
+            if (savedData.location) {
+                document.getElementById('view-location-box').innerText = savedData.location;
+                document.getElementById('view-location').innerText = savedData.location;
+            }
+            if (savedData.maps) document.getElementById('view-maps-btn').href = savedData.maps;
+            if (savedData.rek) document.getElementById('view-rek').innerText = savedData.rek;
+            if (savedData.theme) applyTheme(savedData.theme);
+
+            // Pasang custom background jika ada
+            if (savedData.customBg) {
+                const cover = document.getElementById('cover');
+                cover.style.backgroundImage = `url('${savedData.customBg}')`;
+            }
+
+            const galleryGrid = document.getElementById('view-gallery-grid');
+            if (savedData.photos && savedData.photos.length > 0) {
+                galleryGrid.innerHTML = savedData.photos.map(base64 => `
+                    <div class="overflow-hidden rounded-2xl bg-slate-900 border border-slate-800 aspect-square flex items-center justify-center">
+                        <img src="${base64}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Galeri">
+                    </div>
+                `).join('');
             }
         });
 
@@ -257,47 +279,55 @@ Keluarga Besar Nusantara</textarea>
             const rek = document.getElementById('cfg-rek').value;
             const theme = document.getElementById('cfg-theme').value;
 
-            const fileInput = document.getElementById('cfg-photo-files');
-            const files = fileInput.files;
-
+            const bgFileInput = document.getElementById('cfg-bg-file');
+            const photoFileInput = document.getElementById('cfg-photo-files');
             const existingData = JSON.parse(localStorage.getItem('wedding_config')) || {};
 
-            if (files.length === 0) {
-                existingData.time = time;
-                existingData.date = date;
-                existingData.location = location;
-                existingData.maps = maps;
-                existingData.rek = rek;
-                existingData.theme = theme;
-                localStorage.setItem('wedding_config', JSON.stringify(existingData));
-                if (showAlert) alert('Setting berhasil disimpan!');
-            } else {
-                let readers = [];
-                let base64Images = [];
+            existingData.time = time;
+            existingData.date = date;
+            existingData.location = location;
+            existingData.maps = maps;
+            existingData.rek = rek;
+            existingData.theme = theme;
 
-                for (let i = 0; i < files.length; i++) {
-                    readers.push(new Promise((resolve) => {
+            let promises = [];
+
+            // Proses Background Kustom jika diunggah
+            if (bgFileInput.files.length > 0) {
+                promises.push(new Promise((resolve) => {
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        existingData.customBg = e.target.result;
+                        resolve();
+                    };
+                    reader.readAsDataURL(bgFileInput.files[0]);
+                }));
+            }
+
+            // Proses Foto Galeri jika diunggah
+            if (photoFileInput.files.length > 0) {
+                promises.push(new Promise((resolve) => {
+                    let base64Images = [];
+                    let readersCount = 0;
+                    for (let i = 0; i < photoFileInput.files.length; i++) {
                         let reader = new FileReader();
                         reader.onload = function(e) {
                             base64Images.push(e.target.result);
-                            resolve();
-                        }
-                        reader.readAsDataURL(files[i]);
-                    }));
-                }
-
-                Promise.all(readers).then(() => {
-                    existingData.time = time;
-                    existingData.date = date;
-                    existingData.location = location;
-                    existingData.maps = maps;
-                    existingData.rek = rek;
-                    existingData.theme = theme;
-                    existingData.photos = base64Images;
-                    localStorage.setItem('wedding_config', JSON.stringify(existingData));
-                    if (showAlert) alert('Setting & Foto berhasil disimpan!');
-                });
+                            readersCount++;
+                            if (readersCount === photoFileInput.files.length) {
+                                existingData.photos = base64Images;
+                                resolve();
+                            }
+                        };
+                        reader.readAsDataURL(photoFileInput.files[i]);
+                    }
+                }));
             }
+
+            Promise.all(promises).then(() => {
+                localStorage.setItem('wedding_config', JSON.stringify(existingData));
+                if (showAlert) alert('Setting, background & foto berhasil disimpan!');
+            });
         }
 
         function loadSavedSettingsToForm() {
@@ -313,7 +343,7 @@ Keluarga Besar Nusantara</textarea>
         }
 
         function generateShortLinks() {
-            saveSettings(false); // Simpan otomatis setting sebelum generate
+            saveSettings(false);
 
             const guestInput = document.getElementById('guest-input').value.trim();
             if (!guestInput) return alert('Masukkan minimal satu nama tamu!');
@@ -382,6 +412,10 @@ Keluarga Besar Nusantara</textarea>
             applyTheme(document.getElementById('cfg-theme').value);
 
             const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
+            if (savedData.customBg) {
+                document.getElementById('cover').style.backgroundImage = `url('${savedData.customBg}')`;
+            }
+
             const galleryGrid = document.getElementById('view-gallery-grid');
             if (savedData.photos && savedData.photos.length > 0) {
                 galleryGrid.innerHTML = savedData.photos.map(base64 => `
@@ -391,8 +425,6 @@ Keluarga Besar Nusantara</textarea>
                 `).join('');
             }
         }
-
-        function backToAdmin() { window.location.href = window.location.pathname; }
 
         function openInvitation() {
             const cover = document.getElementById('cover');
