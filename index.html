@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Wedding Invitation & Dashboard</title>
+    <title>Digital Wedding Invitation & Dashboard Generator</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- SheetJS untuk Excel Parsing -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <!-- PDF.js untuk PDF Parsing -->
+    <!-- SheetJS untuk Excel Parser -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- PDF.js untuk Ekstraksi Nama dari PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
@@ -23,262 +23,249 @@
         }
     </style>
 </head>
-<body id="body-theme" class="bg-slate-950 text-slate-100 antialiased selection:bg-amber-500 selection:text-slate-950">
+<body id="body-theme" class="bg-slate-950 text-slate-100 antialiased selection:bg-amber-500 selection:text-slate-950 font-sans">
 
-    <!-- ================= ADMIN DASHBOARD PAGE ================= -->
+    <!-- ================= BAGIAN 1: HALAMAN ADMIN & GENERATOR ================= -->
     <div id="admin-page" class="min-h-screen p-4 md:p-8 max-w-5xl mx-auto">
-        <header class="mb-8 border-b border-slate-800 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <header class="mb-8 border-b border-slate-800 pb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-amber-400 tracking-tight">Dashboard Admin Undangan</h1>
-                <p class="text-xs text-slate-400 mt-1">Kelola data acara, impor daftar tamu (Excel/PDF), dan buat tautan unik.</p>
+                <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-amber-400">Wedding Invitation Generator</h1>
+                <p class="text-xs md:text-sm text-slate-400 mt-1">Kelola konfigurasi acara, impor data tamu via Excel/PDF, dan buat link personal.</p>
             </div>
-            <button onclick="switchToPreview()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-semibold rounded-xl transition-all shadow-lg shadow-amber-500/20">
-                Pratinjau Undangan &rarr;
+            <button onclick="switchToPreview()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-xs md:text-sm rounded-xl transition-all shadow-lg shadow-amber-500/10 self-start md:self-auto">
+                Pratinjau Undangan
             </button>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Form Pengaturan Acara -->
-            <div class="md:col-span-1 bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4">
-                <h2 class="text-sm font-semibold text-amber-300 border-b border-slate-800 pb-2">Pengaturan Acara</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Form Konfigurasi -->
+            <div class="lg:col-span-1 bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4">
+                <h2 class="text-base font-semibold text-amber-300 border-b border-slate-800 pb-3">Konfigurasi Acara</h2>
                 
                 <div>
-                    <label class="block text-[11px] text-slate-400 mb-1">Tanggal Acara</label>
-                    <input type="text" id="cfg-date" value="Minggu, 20 Oktober 2026" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Tanggal Acara</label>
+                    <input type="text" id="cfg-date" value="Sabtu, 25 Desember 2026" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
                 </div>
+
                 <div>
-                    <label class="block text-[11px] text-slate-400 mb-1">Waktu / Pukul</label>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Waktu / Pukul</label>
                     <input type="text" id="cfg-time" value="08.00 WIB - Selesai" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
                 </div>
+
                 <div>
-                    <label class="block text-[11px] text-slate-400 mb-1">Nama Lokasi / Gedung</label>
-                    <input type="text" id="cfg-location" value="Grand Ballroom Hotel Savoy Homann, Bandung" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Nama / Alamat Lokasi</label>
+                    <input type="text" id="cfg-location" value="Grand Ballroom Hotel Bidakara, Bandung" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
                 </div>
+
                 <div>
-                    <label class="block text-[11px] text-slate-400 mb-1">Link Google Maps (URL / Share Link)</label>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Link Google Maps</label>
                     <input type="text" id="cfg-maps" value="https://maps.google.com/?q=-6.9175,107.6191" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
                 </div>
+
                 <div>
-                    <label class="block text-[11px] text-slate-400 mb-1">Rekening / Kado Digital</label>
-                    <input type="text" id="cfg-rek" value="BCA 1234567890 a.n. Nama Mempelai" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Nomor Rekening / Kado Digital</label>
+                    <input type="text" id="cfg-rek" value="BCA 1234567890 a.n. Pengantin" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
                 </div>
+
                 <div>
-                    <label class="block text-[11px] text-slate-400 mb-1">Tema Warna</label>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Tema Warna</label>
                     <select id="cfg-theme" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
-                        <option value="amber">Amber Gold (Dark)</option>
-                        <option value="emerald">Emerald Green</option>
-                        <option value="rose">Rose Luxury</option>
+                        <option value="slate">Dark Slate & Amber (Default)</option>
+                        <option value="emerald">Emerald Deep</option>
+                        <option value="rose">Rose Gold</option>
                     </select>
                 </div>
+
                 <div>
-                    <label class="block text-[11px] text-slate-400 mb-1">URL Musik Latar (Audio MP3)</label>
-                    <input type="text" id="cfg-audio-url" placeholder="https://example.com/song.mp3" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                    <label class="block text-xs font-medium text-slate-400 mb-1">URL Musik Latar (MP3)</label>
+                    <input type="text" id="cfg-audio-url" placeholder="https://.../music.mp3" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
                 </div>
-                <div class="space-y-2 pt-2 border-t border-slate-800">
-                    <label class="block text-[11px] text-slate-400">URL Gambar Background (Cover, Acara, Galeri)</label>
-                    <input type="text" id="cfg-bg-1" placeholder="URL Cover Background" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-[11px] text-slate-200">
-                    <input type="text" id="cfg-bg-2" placeholder="URL Section Acara" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-[11px] text-slate-200">
-                    <input type="text" id="cfg-bg-3" placeholder="URL Section Amplop/Galeri" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-[11px] text-slate-200">
-                </div>
+
                 <div>
-                    <label class="block text-[11px] text-slate-400 mb-1">URL Galeri Foto Utama (Pisahkan dengan koma)</label>
-                    <textarea id="cfg-gallery-urls" rows="2" placeholder="https://img1.jpg, https://img2.jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500"></textarea>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">URL Foto Sampul (Cover BG)</label>
+                    <input type="text" id="cfg-bg-1" placeholder="https://..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
                 </div>
-                <button onclick="saveSettings(true)" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-xl text-amber-400 transition-colors">
+
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">URL Section Tanggal BG</label>
+                    <input type="text" id="cfg-bg-2" placeholder="https://..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">URL Section Galeri/Amplop BG</label>
+                    <input type="text" id="cfg-bg-3" placeholder="https://..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">URL Galeri Utama (Pisahkan koma)</label>
+                    <textarea id="cfg-gallery-urls" rows="3" placeholder="https://img1.jpg, https://img2.jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500"></textarea>
+                </div>
+
+                <button onclick="saveSettings()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-amber-400 font-semibold text-xs rounded-xl transition-colors border border-slate-700">
                     Simpan Pengaturan
                 </button>
             </div>
 
-            <!-- Generator Tamu & Import -->
-            <div class="md:col-span-2 space-y-6">
-                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4">
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-sm font-semibold text-amber-300">Daftar Tamu & Generator Link</h2>
-                        <button onclick="downloadExcelTemplate()" class="text-[11px] text-amber-400 hover:underline">Unduh Template Excel</button>
-                    </div>
-
-                    <div class="flex flex-col sm:flex-row gap-3 items-center">
-                        <label class="w-full sm:w-auto flex-1 flex items-center justify-center px-4 py-3 border border-dashed border-slate-700 hover:border-amber-500 rounded-xl cursor-pointer bg-slate-950 text-xs text-slate-400 transition-colors">
-                            <span>📂 Upload File Excel / PDF Tamu</span>
-                            <input type="file" id="file-upload" accept=".xlsx, .xls, .pdf" onchange="handleFileUpload(event)" class="hidden">
-                        </label>
+            <!-- Panel Generator & Daftar Tamu -->
+            <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-3xl p-6 flex flex-col justify-between">
+                <div class="space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-800 pb-3">
+                        <h2 class="text-base font-semibold text-amber-300">Daftar Tamu & Impor Data</h2>
+                        <div class="flex items-center gap-2">
+                            <label class="cursor-pointer px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-xl border border-slate-700 text-slate-200 transition-colors">
+                                Impor Excel / PDF
+                                <input type="file" id="import-file" accept=".xlsx, .xls, .pdf" onchange="handleFileUpload(event)" class="hidden">
+                            </label>
+                            <button onclick="downloadExcelTemplate()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-xl border border-slate-700 text-slate-300 transition-colors">
+                                Template Excel
+                            </button>
+                        </div>
                     </div>
 
                     <div>
-                        <label class="block text-[11px] text-slate-400 mb-1">Atau Ketik / Tempel Nama Tamu (Satu nama per baris)</label>
-                        <textarea id="guest-input" rows="5" placeholder="Budi Santoso&#10;Siti Aminah&#10;Keluarga Besar Nusantara" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-amber-500 font-mono"></textarea>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Nama Tamu (Satu nama per baris atau hasil impor otomatis):</label>
+                        <textarea id="guest-input" rows="6" placeholder="Budi Santoso&#10;Siti Aminah&#10;Keluarga Besar Nusantara" class="w-full bg-slate-950 border border-slate-800 rounded-2xl p-3 text-xs text-slate-200 focus:outline-none focus:border-amber-500 font-mono"></textarea>
                     </div>
 
-                    <button onclick="generateShortLinks()" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-xl transition-all shadow-lg shadow-amber-500/20">
-                        Buat Tautan Undangan Unik
+                    <button onclick="generateShortLinks()" class="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs rounded-xl shadow-lg shadow-amber-500/10 transition-all">
+                        Buat Link Undangan Personal
                     </button>
                 </div>
 
-                <!-- Hasil Generate -->
-                <div id="result-box" class="hidden bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-sm font-semibold text-amber-300">Daftar Link Undangan</h3>
-                        <span id="counter-badge" class="px-2.5 py-0.5 bg-amber-500/20 text-amber-400 text-[10px] rounded-full font-mono">0 Tamu</span>
+                <!-- Hasil Link -->
+                <div id="result-box" class="hidden mt-6 pt-6 border-t border-slate-800 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400">Tautan Berhasil Dibuat</h3>
+                        <span id="counter-badge" class="px-2.5 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-mono rounded-full">0 Tamu</span>
                     </div>
-                    <div id="link-list-container" class="space-y-3 max-h-96 overflow-y-auto pr-1"></div>
+                    <div id="link-list-container" class="space-y-2.5 max-h-72 overflow-y-auto pr-2"></div>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <!-- ================= INVITATION PREVIEW PAGE ================= -->
-    <div id="invitation-page" class="hidden min-h-screen relative overflow-x-hidden">
-        <!-- Background Audio -->
+    <!-- ================= BAGIAN 2: HALAMAN PRATINJAU / UNDANGAN ================= -->
+    <div id="invitation-page" class="hidden min-h-screen relative overflow-hidden">
+        <!-- Musik & Audio Player -->
         <audio id="bg-audio" loop></audio>
-
-        <!-- Floating Music Control Button -->
-        <button id="floating-music-btn" onclick="toggleAudio()" class="hidden fixed bottom-5 right-5 z-50 w-12 h-12 bg-slate-900/80 backdrop-blur border border-slate-700 text-amber-400 rounded-full flex items-center justify-center shadow-xl hover:scale-105 transition-transform">
+        <button id="floating-music-btn" onclick="toggleAudio()" class="hidden fixed bottom-5 right-5 z-50 p-3 bg-slate-900/80 backdrop-blur-md border border-slate-700 text-amber-400 rounded-full shadow-2xl hover:scale-110 transition-transform">
             <svg id="music-icon" class="w-5 h-5 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
         </button>
 
         <!-- Cover Section -->
-        <section id="cover-section" class="relative h-screen flex flex-col items-center justify-center text-center p-6 bg-cover bg-center bg-slate-950" style="background-image: linear-gradient(to bottom, rgba(2,6,23,0.7), rgba(2,6,23,0.95))">
-            <div class="max-w-md space-y-6 z-10">
-                <p class="text-xs uppercase tracking-[0.3em] text-amber-400 font-medium">The Wedding Of</p>
-                <h1 class="text-4xl md:text-5xl font-serif font-bold text-slate-100">Nadia & Rekan</h1>
-                <div class="py-3 px-6 bg-slate-900/80 backdrop-blur border border-slate-800 rounded-2xl inline-block">
-                    <p class="text-[11px] text-slate-400 uppercase tracking-wider">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
-                    <p id="view-guest-name" class="text-base font-bold text-amber-300 mt-1">Tamu Kehormatan</p>
+        <section id="cover-section" class="relative min-h-screen flex flex-col items-center justify-center p-6 text-center bg-cover bg-center" style="background-image: linear-gradient(to bottom, rgba(2, 6, 23, 0.8), rgba(2, 6, 23, 0.95)), url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80')">
+            <div class="max-w-md w-full space-y-6 z-10">
+                <span class="text-xs font-mono uppercase tracking-widest text-amber-400/90 border border-amber-500/30 px-3 py-1 rounded-full bg-amber-500/10">The Wedding Of</span>
+                <h1 class="text-4xl md:text-5xl font-serif text-slate-100 tracking-tight">Nadia & Raihan</h1>
+                <div class="bg-slate-900/60 backdrop-blur-md border border-slate-800/80 p-6 rounded-3xl shadow-xl space-y-2">
+                    <p class="text-xs text-slate-400 uppercase tracking-widest">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
+                    <h2 id="view-guest-name" class="text-xl font-bold text-amber-300">Tamu Kehormatan</h2>
                 </div>
-                <p class="text-xs text-slate-400 max-w-xs mx-auto">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.</p>
-                <button onclick="openInvitation()" class="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold rounded-2xl shadow-xl shadow-amber-500/30 transition-all">
+                <button onclick="openInvitation()" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold text-sm rounded-2xl shadow-xl shadow-amber-500/20 hover:scale-[1.02] transition-transform">
                     Buka Undangan
                 </button>
             </div>
         </section>
 
-        <!-- Main Content Section -->
+        <!-- Main Content -->
         <div id="main-content" class="hidden">
-            <!-- Section Date & Location -->
-            <section id="section-date-loc" class="py-20 px-6 text-center bg-slate-900/50 bg-cover bg-center border-b border-slate-800/60">
-                <div class="max-w-xl mx-auto space-y-8">
-                    <h2 class="text-2xl font-serif font-bold text-amber-400">Waktu & Tempat</h2>
+            <!-- Tanggal & Lokasi Section -->
+            <section id="section-date-loc" class="py-20 px-6 max-w-3xl mx-auto text-center bg-cover bg-center rounded-3xl my-8 border border-slate-800/60 relative" style="background-image: linear-gradient(to bottom, rgba(2, 6, 23, 0.9), rgba(2, 6, 23, 0.95)), url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80')">
+                <div class="space-y-8 z-10 relative">
+                    <h2 class="text-3xl font-serif text-amber-300">Waktu & Tempat</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="p-6 bg-slate-950/80 backdrop-blur border border-slate-800 rounded-2xl">
-                            <p class="text-xs text-amber-400 font-semibold uppercase tracking-wider mb-2">Tanggal & Waktu</p>
-                            <p id="view-date" class="text-sm font-medium text-slate-200">Minggu, 20 Oktober 2026</p>
-                            <p id="view-time-box" class="text-xs text-slate-400 mt-1">08.00 WIB - Selesai</p>
+                        <div class="p-6 bg-slate-900/80 backdrop-blur border border-slate-800 rounded-2xl space-y-2">
+                            <p class="text-xs uppercase tracking-widest text-slate-400 font-mono">Hari & Tanggal</p>
+                            <p id="view-date" class="text-sm font-semibold text-slate-200">Sabtu, 25 Desember 2026</p>
+                            <p id="view-time-box" class="text-xs text-amber-400 font-mono">08.00 WIB - Selesai</p>
                         </div>
-                        <div class="p-6 bg-slate-950/80 backdrop-blur border border-slate-800 rounded-2xl">
-                            <p class="text-xs text-amber-400 font-semibold uppercase tracking-wider mb-2">Lokasi Acara</p>
-                            <p id="view-location-box" class="text-sm font-medium text-slate-200">Grand Ballroom Hotel Savoy Homann</p>
-                            <p id="view-location" class="text-xs text-slate-400 mt-1">Bandung</p>
+                        <div class="p-6 bg-slate-900/80 backdrop-blur border border-slate-800 rounded-2xl space-y-2">
+                            <p class="text-xs uppercase tracking-widest text-slate-400 font-mono">Lokasi</p>
+                            <p id="view-location-box" class="text-sm font-semibold text-slate-200">Grand Ballroom Hotel Bidakara, Bandung</p>
+                            <a id="view-maps-btn" href="#" target="_blank" class="inline-block text-xs text-amber-400 underline pt-1">Buka Google Maps</a>
                         </div>
                     </div>
-                    <a id="view-maps-btn" href="#" target="_blank" class="inline-block px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-xl text-amber-400 transition-colors">
-                        📍 Buka Petunjuk Google Maps
-                    </a>
                 </div>
             </section>
 
-            <!-- Section Gallery & Camera Geofence -->
+            <!-- Galeri & Fitur Kamera / Geofence Section -->
             <section id="section-gallery-envelope" class="py-20 px-6 max-w-4xl mx-auto space-y-12">
-                <div class="text-center space-y-3">
-                    <h2 class="text-2xl font-serif font-bold text-amber-400">Galeri & Momen Spesial</h2>
-                    <p class="text-xs text-slate-400 max-w-md mx-auto">Abadikan momen kehadiran Anda langsung di lokasi acara (Fitur kamera aktif otomatis dalam radius 200 meter).</p>
-                    
-                    <button onclick="checkGeofenceAndOpen()" class="mt-4 px-6 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold rounded-2xl shadow-lg transition-all">
-                        📸 Ambil Foto di Lokasi Acara
-                    </button>
+                <div class="text-center space-y-2">
+                    <h2 class="text-3xl font-serif text-amber-300">Galeri Kenangan</h2>
+                    <p class="text-xs text-slate-400">Momen kebersamaan kami</p>
                 </div>
 
+                <!-- Grid Galeri -->
                 <div id="view-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    <!-- Dinamis terisi dari galeri -->
+                    <!-- Dinamis terisi dari localstorage / URL parameter -->
                 </div>
 
-                <!-- Amplop / Kado Digital -->
-                <div class="p-6 bg-slate-900 border border-slate-800 rounded-3xl text-center max-w-md mx-auto space-y-4">
-                    <h3 class="text-base font-serif font-semibold text-amber-300">Kado Digital</h3>
-                    <p class="text-xs text-slate-400">Doa restu Anda merupakan karunia terindah bagi kami. Namun jika ingin mengirimkan tanda kasih:</p>
-                    <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl font-mono text-xs text-amber-400 select-all" id="view-rek">
-                        BCA 1234567890 a.n. Nama Mempelai
-                    </div>
-                    <button onclick="copyRek(this)" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs rounded-xl font-medium text-slate-200 transition-colors">
-                        Salin Rekening
+                <!-- Tombol Akses Kamera & Geofence Check (< 200 Meter) -->
+                <div class="p-6 bg-slate-900 border border-slate-800 rounded-3xl text-center space-y-4">
+                    <h3 class="text-sm font-semibold text-amber-300">Abadikan Momen di Lokasi Acara</h3>
+                    <p class="text-xs text-slate-400 max-w-md mx-auto">Fitur pengambilan foto langsung aktif otomatis saat Anda berada di radius 200 meter dari venue pernikahan.</p>
+                    <button onclick="checkGeofenceAndOpen()" class="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-xl shadow-lg transition-all">
+                        Buka Kamera Venue
                     </button>
+                </div>
+
+                <!-- Angpao / Kado Digital -->
+                <div class="p-8 bg-slate-900 border border-slate-800 rounded-3xl text-center space-y-4 max-w-md mx-auto">
+                    <h3 class="text-sm font-semibold text-amber-300">Kado Digital</h3>
+                    <p class="text-xs text-slate-400">Doa restu Anda merupakan karunia terindah. Jika ingin mengirimkan tanda kasih:</p>
+                    <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl flex items-center justify-between">
+                        <span id="view-rek" class="text-xs font-mono text-slate-300">BCA 1234567890 a.n. Pengantin</span>
+                        <button onclick="copyRek(this)" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-[10px] text-amber-400 rounded-xl">Salin</button>
+                    </div>
                 </div>
             </section>
         </div>
     </div>
 
-
-    <!-- ================= CAMERA MODAL ================= -->
-    <div id="camera-modal" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur flex flex-col items-center justify-center p-4">
-        <div class="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden p-4 space-y-4 shadow-2xl">
-            <div class="flex justify-between items-center">
-                <h3 class="text-sm font-semibold text-amber-400">Kamera Lokasi Pernikahan</h3>
-                <button onclick="closeCameraModal()" class="text-slate-400 hover:text-white text-sm">✕</button>
-            </div>
-            <div class="relative aspect-[3/4] bg-slate-950 rounded-2xl overflow-hidden border border-slate-800">
+    <!-- ================= MODAL KAMERA & REVIEW ================= -->
+    <div id="camera-modal" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full space-y-4 text-center">
+            <h3 class="text-sm font-semibold text-amber-300">Kamera Venue</h3>
+            <div class="aspect-video bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 relative flex items-center justify-center">
                 <video id="live-camera" autoplay playsinline class="w-full h-full object-cover"></video>
                 <canvas id="snapshot-canvas" class="hidden"></canvas>
             </div>
-            <button onclick="capturePhoto()" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold rounded-xl transition-all">
-                Ambil & Simpan Foto
-            </button>
-        </div>
-    </div>
-
-    <!-- ================= REVIEW MODAL (GEOFENCE TRIGGER) ================= -->
-    <div id="review-modal" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur flex flex-col items-center justify-center p-4">
-        <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4 shadow-2xl">
-            <h3 class="text-sm font-semibold text-amber-400 text-center">Kurasi Foto Anda di Venue</h3>
-            <p class="text-xs text-slate-400 text-center">Anda terdeteksi berada di lokasi acara. Berikut foto yang telah Anda ambil secara lokal:</p>
-            <div id="review-photos-container" class="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto"></div>
-            <div class="flex gap-2 pt-2">
-                <button onclick="document.getElementById('review-modal').classList.add('hidden')" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-xl text-slate-300">Tutup</button>
-                <button onclick="submitCuratedPhotos()" class="flex-1 py-2.5 bg-amber-500 hover:bg-amber-400 text-xs font-bold rounded-xl text-slate-950">Kirim ke Galeri</button>
+            <div class="flex gap-3">
+                <button onclick="capturePhoto()" class="flex-1 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-xl">Ambil Foto</button>
+                <button onclick="closeCameraModal()" class="px-4 py-2.5 bg-slate-800 text-slate-300 font-medium text-xs rounded-xl">Tutup</button>
             </div>
         </div>
     </div>
 
+    <div id="review-modal" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-lg w-full space-y-4">
+            <h3 class="text-sm font-semibold text-amber-300 text-center">Kurasi Foto Anda</h3>
+            <p class="text-xs text-slate-400 text-center">Anda terdeteksi di area venue. Pilih foto yang ingin dikirimkan ke galeri utama.</p>
+            <div id="review-photos-container" class="grid grid-cols-3 gap-3 max-h-60 overflow-y-auto p-2"></div>
+            <div class="flex gap-3 pt-2">
+                <button onclick="submitCuratedPhotos()" class="flex-1 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-xl">Kirim ke Galeri</button>
+            </div>
+        </div>
+    </div>
 
-    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <!-- ================= JAVASCRIPT LOGIC & PENYELESAIAN MASALAH ================= -->
     <script>
         let venueCoordinates = { lat: -6.9175, lng: 107.6191 };
         let currentStream = null;
         let geofenceInterval = null;
 
-        window.addEventListener('DOMContentLoaded', () => {
-            loadSavedSettingsToForm();
-            parseUrlParameters();
-        });
-
-        function parseUrlParameters() {
+        function parseVenueCoordinates() {
             const urlParams = new URLSearchParams(window.location.search);
-            const toName = urlParams.get('to');
-            const mapsParam = urlParams.get('maps');
-
-            if (toName) {
-                document.getElementById('admin-page').classList.add('hidden');
-                document.getElementById('invitation-page').classList.remove('hidden');
-                document.getElementById('view-guest-name').innerText = decodeURIComponent(toName.replace(/_/g, ' '));
-
-                // Load custom URL params if available
-                if (urlParams.get('time')) document.getElementById('view-time-box').innerText = decodeURIComponent(urlParams.get('time'));
-                if (urlParams.get('date')) document.getElementById('view-date').innerText = decodeURIComponent(urlParams.get('date'));
-                if (urlParams.get('loc')) {
-                    const loc = decodeURIComponent(urlParams.get('loc'));
-                    document.getElementById('view-location-box').innerText = loc;
-                    document.getElementById('view-location').innerText = loc;
-                }
-                if (mapsParam) document.getElementById('view-maps-btn').href = decodeURIComponent(mapsParam);
-                if (urlParams.get('rek')) document.getElementById('view-rek').innerText = decodeURIComponent(urlParams.get('rek'));
-                if (urlParams.get('theme')) applyTheme(urlParams.get('theme'));
-                if (urlParams.get('audio')) document.getElementById('bg-audio').src = decodeURIComponent(urlParams.get('audio'));
-                
-                renderGallery();
+            let mapsUrl = urlParams.get('maps');
+            
+            if (!mapsUrl) {
+                const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
+                mapsUrl = savedData.maps;
             }
 
-            if (mapsParam) {
+            if (mapsUrl) {
                 const regex = /(-?\d+\.\d+),\s*(-?\d+\.\d+)/;
-                const match = decodeURIComponent(mapsParam).match(regex);
+                const match = mapsUrl.match(regex);
                 if (match && match.length >= 3) {
                     venueCoordinates.lat = parseFloat(match[1]);
                     venueCoordinates.lng = parseFloat(match[2]);
@@ -287,17 +274,21 @@
         }
 
         function calculateDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371; // Radius bumi dalam km
+            const R = 6371; 
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const a = 
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
         }
 
         function initGeofenceTracker(guestKey) {
+            parseVenueCoordinates();
             if (!navigator.geolocation) return;
+
             geofenceInterval = setInterval(() => {
                 navigator.geolocation.getCurrentPosition((position) => {
                     const dist = calculateDistance(position.coords.latitude, position.coords.longitude, venueCoordinates.lat, venueCoordinates.lng);
@@ -308,24 +299,28 @@
                         clearInterval(geofenceInterval);
                         triggerReviewModal(existingTemp, guestKey);
                     }
-                }, () => {}, { enableHighAccuracy: true, maximumAge: 10000, timeout: 5000 });
+                }, (err) => {
+                    console.log("Geofence tracking error:", err);
+                }, { enableHighAccuracy: true, maximumAge: 10000, timeout: 5000 });
             }, 10000);
         }
 
         function checkGeofenceAndOpen() {
+            parseVenueCoordinates();
             if (!navigator.geolocation) {
-                alert('Geolocation tidak didukung browser ini.');
+                alert('Geolocation tidak didukung oleh browser Anda.');
                 return;
             }
+
             navigator.geolocation.getCurrentPosition((position) => {
                 const dist = calculateDistance(position.coords.latitude, position.coords.longitude, venueCoordinates.lat, venueCoordinates.lng);
                 if (dist > 0.2) {
-                    alert(`Fitur kamera aktif dalam radius 200 meter dari lokasi acara. Jarak Anda saat ini: ${(dist * 1000).toFixed(0)} meter.`);
+                    alert(`Fitur ini hanya dapat digunakan dalam radius 200 meter dari lokasi pernikahan (Jarak Anda saat ini sekitar ${(dist * 1000).toFixed(0)} meter).`);
                     return;
                 }
                 openCameraModal();
-            }, () => {
-                alert('Gagal mendeteksi lokasi GPS Anda. Aktifkan izin lokasi.');
+            }, (err) => {
+                alert('Gagal mendeteksi lokasi GPS Anda. Pastikan izin lokasi diaktifkan.');
             }, { enableHighAccuracy: true });
         }
 
@@ -339,14 +334,15 @@
                     currentStream = stream;
                     video.srcObject = stream;
                 })
-                .catch(() => {
+                .catch((err) => {
                     alert('Tidak dapat mengakses kamera perangkat.');
                     modal.classList.add('hidden');
                 });
         }
 
         function closeCameraModal() {
-            document.getElementById('camera-modal').classList.add('hidden');
+            const modal = document.getElementById('camera-modal');
+            modal.classList.add('hidden');
             if (currentStream) {
                 currentStream.getTracks().forEach(track => track.stop());
                 currentStream = null;
@@ -370,7 +366,7 @@
             existing.push(dataURL);
             localStorage.setItem(guestPhotosKey, JSON.stringify(existing));
 
-            alert('Foto berhasil disimpan sementara!');
+            alert('Foto berhasil diambil dan tersimpan sementara!');
             closeCameraModal();
         }
 
@@ -380,9 +376,11 @@
             reviewModal.classList.remove('hidden');
 
             container.innerHTML = photosArray.map((photo, index) => `
-                <div class="relative aspect-square bg-slate-950 rounded-xl overflow-hidden border border-slate-800">
+                <div class="relative group aspect-square bg-slate-950 rounded-xl overflow-hidden border border-slate-800">
                     <img src="${photo}" class="w-full h-full object-cover">
-                    <button onclick="removeTempPhoto('${guestKey}', ${index})" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-[10px]">✕</button>
+                    <button onclick="removeTempPhoto('${guestKey}', ${index})" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-[10px] shadow hover:bg-red-500">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
                 </div>
             `).join('');
         }
@@ -402,18 +400,20 @@
             const curatedPhotos = JSON.parse(localStorage.getItem(guestPhotosKey)) || [];
 
             if (curatedPhotos.length === 0) {
+                alert('Tidak ada foto yang disimpan.');
                 document.getElementById('review-modal').classList.add('hidden');
                 return;
             }
 
             const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
             if (!savedData.photos) savedData.photos = [];
+            
             savedData.photos.push(...curatedPhotos);
             localStorage.setItem('wedding_config', JSON.stringify(savedData));
 
             localStorage.removeItem(guestPhotosKey);
             document.getElementById('review-modal').classList.add('hidden');
-            alert('Foto berhasil dikirim ke galeri utama!');
+            alert('Foto pilihan Anda berhasil dikirim ke galeri utama!');
             renderGallery();
         }
 
@@ -424,23 +424,30 @@
             const galleryGrid = document.getElementById('view-gallery-grid');
             
             let photosList = [];
-            if (galleryParam) photosList.push(...galleryParam.split(',').map(s => s.trim()).filter(Boolean));
-            if (savedData.gallery) photosList.push(...savedData.gallery.split(',').map(s => s.trim()).filter(Boolean));
-            if (savedData.photos) photosList.push(...savedData.photos);
+            if (galleryParam) {
+                photosList = galleryParam.split(',').map(s => s.trim()).filter(Boolean);
+            }
+            if (savedData.photos && savedData.photos.length > 0) {
+                photosList.push(...savedData.photos);
+            }
 
             if (photosList.length > 0) {
                 galleryGrid.innerHTML = photosList.map(url => `
-                    <div class="overflow-hidden rounded-2xl bg-slate-900 border border-slate-800 aspect-square">
-                        <img src="${url}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                    <div class="overflow-hidden rounded-2xl bg-slate-900 border border-slate-800 aspect-square flex items-center justify-center">
+                        <img src="${url}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Galeri">
                     </div>
                 `).join('');
             } else {
-                galleryGrid.innerHTML = `<p class="col-span-full text-center text-xs text-slate-500">Belum ada foto di galeri.</p>`;
+                galleryGrid.innerHTML = `<p class="col-span-full text-center text-xs text-slate-500">Belum ada foto di galeri. Masukkan URL foto galeri di halaman admin.</p>`;
             }
         }
 
         function downloadExcelTemplate() {
-            const templateData = [{ "Nama Tamu": "Budi Santoso" }, { "Nama Tamu": "Siti Aminah" }];
+            const templateData = [
+                { "Nama Tamu": "Budi Santoso" },
+                { "Nama Tamu": "Siti Aminah" },
+                { "Nama Tamu": "Keluarga Besar Nusantara" }
+            ];
             const worksheet = XLSX.utils.json_to_sheet(templateData);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "Daftar Tamu");
@@ -450,168 +457,269 @@
         function handleFileUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
-            const ext = file.name.split('.').pop().toLowerCase();
+
+            const fileExtension = file.name.split('.').pop().toLowerCase();
             const textarea = document.getElementById('guest-input');
 
-            if (ext === 'xlsx' || ext === 'xls') {
+            if (fileExtension === 'xlsx' || fileExtension === 'xls') {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
-                    let names = [];
-                    json.forEach(row => { if (row[0] && row[0].toString().trim() !== "") names.push(row[0].toString().trim()); });
-                    textarea.value = names.join('\n');
-                    alert(`Berhasil memuat ${names.length} nama dari Excel!`);
+                    try {
+                        const data = new Uint8Array(e.target.result);
+                        const workbook = XLSX.read(data, { type: 'array' });
+                        const firstSheetName = workbook.SheetNames[0];
+                        const worksheet = workbook.Sheets[firstSheetName];
+                        const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                        
+                        let namesArray = [];
+                        json.forEach(row => {
+                            if (row[0] && row[0].toString().trim() !== "" && row[0].toString().toLowerCase() !== "nama tamu") {
+                                namesArray.push(row[0].toString().trim());
+                            }
+                        });
+
+                        if (namesArray.length > 0) {
+                            textarea.value = namesArray.join('\n');
+                            alert(`Berhasil mengimpor ${namesArray.length} nama dari file Excel!`);
+                        } else {
+                            alert('Tidak ditemukan data nama pada kolom pertama file Excel tersebut.');
+                        }
+                    } catch (err) {
+                        alert('Gagal membaca file Excel.');
+                    }
                 };
                 reader.readAsArrayBuffer(file);
-            } else if (ext === 'pdf') {
+            } else if (fileExtension === 'pdf') {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    pdfjsLib.getDocument(new Uint8Array(e.target.result)).promise.then(async function(pdf) {
-                        let names = [];
+                    const typedarray = new Uint8Array(e.target.result);
+                    pdfjsLib.getDocument(typedarray).promise.then(async function(pdf) {
+                        let namesArray = [];
                         for (let i = 1; i <= pdf.numPages; i++) {
                             const page = await pdf.getPage(i);
-                            const text = await page.getTextContent();
-                            text.items.forEach(item => { if (item.str.trim().length > 2) names.push(item.str.trim()); });
+                            const textContent = await page.getTextContent();
+                            textContent.items.forEach(item => {
+                                const text = item.str.trim();
+                                if (text && text.toLowerCase() !== "nama tamu" && text.length > 2) {
+                                    namesArray.push(text);
+                                }
+                            });
                         }
-                        textarea.value = names.join('\n');
-                        alert(`Berhasil mengekstrak teks dari PDF!`);
+
+                        if (namesArray.length > 0) {
+                            textarea.value = namesArray.join('\n');
+                            alert(`Berhasil mengekstrak ${namesArray.length} baris teks dari file PDF!`);
+                        } else {
+                            alert('Tidak dapat mendeteksi teks nama dari file PDF tersebut.');
+                        }
+                    }).catch(() => {
+                        alert('Gagal membaca file PDF.');
                     });
                 };
-                reader.readAsArrayBuffer(e.target.result); // Perbaikan penanganan file reader PDF
+                reader.readAsArrayBuffer(file);
+            } else {
+                alert('Format file tidak didukung.');
             }
+            event.target.value = '';
         }
 
         function saveSettings(showAlert = true) {
-            const config = {
-                time: document.getElementById('cfg-time').value,
-                date: document.getElementById('cfg-date').value,
-                location: document.getElementById('cfg-location').value,
-                maps: document.getElementById('cfg-maps').value,
-                rek: document.getElementById('cfg-rek').value,
-                theme: document.getElementById('cfg-theme').value,
-                audio: document.getElementById('cfg-audio-url').value,
-                bg1: document.getElementById('cfg-bg-1').value,
-                bg2: document.getElementById('cfg-bg-2').value,
-                bg3: document.getElementById('cfg-bg-3').value,
-                gallery: document.getElementById('cfg-gallery-urls').value
-            };
-            localStorage.setItem('wedding_config', JSON.stringify(config));
-            if (showAlert) alert('Pengaturan berhasil disimpan!');
+            const time = document.getElementById('cfg-time').value;
+            const date = document.getElementById('cfg-date').value;
+            const location = document.getElementById('cfg-location').value;
+            const maps = document.getElementById('cfg-maps').value;
+            const rek = document.getElementById('cfg-rek').value;
+            const theme = document.getElementById('cfg-theme').value;
+            const audio = document.getElementById('cfg-audio-url').value;
+            const bg1 = document.getElementById('cfg-bg-1').value;
+            const bg2 = document.getElementById('cfg-bg-2').value;
+            const bg3 = document.getElementById('cfg-bg-3').value;
+            const gallery = document.getElementById('cfg-gallery-urls').value;
+            
+            const existingData = JSON.parse(localStorage.getItem('wedding_config')) || {};
+
+            existingData.time = time;
+            existingData.date = date;
+            existingData.location = location;
+            existingData.maps = maps;
+            existingData.rek = rek;
+            existingData.theme = theme;
+            existingData.audio = audio;
+            existingData.bg1 = bg1;
+            existingData.bg2 = bg2;
+            existingData.bg3 = bg3;
+            existingData.gallery = gallery;
+
+            localStorage.setItem('wedding_config', JSON.stringify(existingData));
+            parseVenueCoordinates();
+            if (showAlert) alert('Setting berhasil disimpan!');
         }
 
         function loadSavedSettingsToForm() {
-            const saved = JSON.parse(localStorage.getItem('wedding_config'));
-            if (!saved) return;
-            if (saved.time) document.getElementById('cfg-time').value = saved.time;
-            if (saved.date) document.getElementById('cfg-date').value = saved.date;
-            if (saved.location) document.getElementById('cfg-location').value = saved.location;
-            if (saved.maps) document.getElementById('cfg-maps').value = saved.maps;
-            if (saved.rek) document.getElementById('cfg-rek').value = saved.rek;
-            if (saved.theme) document.getElementById('cfg-theme').value = saved.theme;
-            if (saved.audio) document.getElementById('cfg-audio-url').value = saved.audio;
-            if (saved.bg1) document.getElementById('cfg-bg-1').value = saved.bg1;
-            if (saved.bg2) document.getElementById('cfg-bg-2').value = saved.bg2;
-            if (saved.bg3) document.getElementById('cfg-bg-3').value = saved.bg3;
-            if (saved.gallery) document.getElementById('cfg-gallery-urls').value = saved.gallery;
+            const savedData = JSON.parse(localStorage.getItem('wedding_config'));
+            if (!savedData) return;
+
+            if (savedData.time) document.getElementById('cfg-time').value = savedData.time;
+            if (savedData.date) document.getElementById('cfg-date').value = savedData.date;
+            if (savedData.location) document.getElementById('cfg-location').value = savedData.location;
+            if (savedData.maps) document.getElementById('cfg-maps').value = savedData.maps;
+            if (savedData.rek) document.getElementById('cfg-rek').value = savedData.rek;
+            if (savedData.theme) document.getElementById('cfg-theme').value = savedData.theme;
+            if (savedData.audio) document.getElementById('cfg-audio-url').value = savedData.audio;
+            if (savedData.bg1) document.getElementById('cfg-bg-1').value = savedData.bg1;
+            if (savedData.bg2) document.getElementById('cfg-bg-2').value = savedData.bg2;
+            if (savedData.bg3) document.getElementById('cfg-bg-3').value = savedData.bg3;
+            if (savedData.gallery) document.getElementById('cfg-gallery-urls').value = savedData.gallery;
         }
 
         function generateShortLinks() {
             saveSettings(false);
-            const input = document.getElementById('guest-input').value.trim();
-            if (!input) return alert('Masukkan minimal satu nama tamu!');
+            const guestInput = document.getElementById('guest-input').value.trim();
+            if (!guestInput) return alert('Masukkan minimal satu nama tamu!');
 
-            const guests = input.split('\n');
+            const guests = guestInput.split('\n');
             const baseUrl = window.location.origin + window.location.pathname;
             const container = document.getElementById('link-list-container');
             container.innerHTML = '';
-            let count = 0;
+            let validCount = 0;
 
-            const params = {
-                time: encodeURIComponent(document.getElementById('cfg-time').value),
-                date: encodeURIComponent(document.getElementById('cfg-date').value),
-                loc: encodeURIComponent(document.getElementById('cfg-location').value),
-                maps: encodeURIComponent(document.getElementById('cfg-maps').value),
-                rek: encodeURIComponent(document.getElementById('cfg-rek').value),
-                theme: encodeURIComponent(document.getElementById('cfg-theme').value),
-                audio: encodeURIComponent(document.getElementById('cfg-audio-url').value),
-                gallery: encodeURIComponent(document.getElementById('cfg-gallery-urls').value)
-            };
+            const time = encodeURIComponent(document.getElementById('cfg-time').value);
+            const date = encodeURIComponent(document.getElementById('cfg-date').value);
+            const location = encodeURIComponent(document.getElementById('cfg-location').value);
+            const maps = encodeURIComponent(document.getElementById('cfg-maps').value);
+            const rek = encodeURIComponent(document.getElementById('cfg-rek').value);
+            const theme = encodeURIComponent(document.getElementById('cfg-theme').value);
+            const audio = encodeURIComponent(document.getElementById('cfg-audio-url').value);
+            const bg1 = encodeURIComponent(document.getElementById('cfg-bg-1').value);
+            const bg2 = encodeURIComponent(document.getElementById('cfg-bg-2').value);
+            const bg3 = encodeURIComponent(document.getElementById('cfg-bg-3').value);
+            const gallery = encodeURIComponent(document.getElementById('cfg-gallery-urls').value);
 
             guests.forEach(name => {
-                const clean = name.trim();
-                if (!clean) return;
-                count++;
-                const link = `${baseUrl}?to=${encodeURIComponent(clean.replace(/ /g, '_'))}&time=${params.time}&date=${params.date}&loc=${params.loc}&maps=${params.maps}&rek=${params.rek}&theme=${params.theme}&audio=${params.audio}&gallery=${params.gallery}`;
+                const cleanName = name.trim();
+                if (!cleanName || cleanName.toLowerCase() === "nama tamu") return;
+                validCount++;
+
+                const formattedName = encodeURIComponent(cleanName.replace(/ /g, '_'));
+                const uniqueLink = `${baseUrl}?to=${formattedName}&time=${time}&date=${date}&loc=${location}&maps=${maps}&rek=${rek}&theme=${theme}&audio=${audio}&bg1=${bg1}&bg2=${bg2}&bg3=${bg3}&gallery=${gallery}`;
 
                 container.innerHTML += `
-                    <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between gap-2">
+                    <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
                         <div class="overflow-hidden">
-                            <p class="text-xs font-semibold text-amber-300">${count}. ${clean}</p>
-                            <p class="text-[10px] text-slate-500 truncate font-mono">${link}</p>
+                            <p class="font-semibold text-amber-300 text-sm flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 text-xs flex items-center justify-center font-mono">${validCount}</span>
+                                ${cleanName}
+                            </p>
+                            <p class="text-xs text-slate-500 truncate max-w-md mt-1 font-mono">${uniqueLink}</p>
                         </div>
-                        <button onclick="navigator.clipboard.writeText('${link}'); alert('Link tersalin!');" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-[10px] rounded-lg text-amber-400 whitespace-nowrap">Salin</button>
+                        <button onclick="copyLink('${uniqueLink}', this)" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs rounded-xl font-medium text-amber-400 transition-colors whitespace-nowrap">
+                            Salin Link
+                        </button>
                     </div>
                 `;
             });
 
-            document.getElementById('counter-badge').innerText = `${count} Tamu`;
+            document.getElementById('counter-badge').innerText = `${validCount} Tamu`;
             document.getElementById('result-box').classList.remove('hidden');
         }
 
         function applyTheme(theme) {
             const body = document.getElementById('body-theme');
-            if (theme === 'emerald') body.className = "bg-emerald-950 text-emerald-100 antialiased";
-            else if (theme === 'rose') body.className = "bg-stone-950 text-rose-100 antialiased";
+            if (theme === 'emerald') body.className = "bg-emerald-950 text-emerald-100 antialiased selection:bg-emerald-500 selection:text-slate-950";
+            else if (theme === 'rose') body.className = "bg-stone-950 text-rose-100 antialiased selection:bg-rose-500 selection:text-slate-950";
+        }
+
+        function copyLink(text, btn) {
+            navigator.clipboard.writeText(text);
+            const originalText = btn.innerText;
+            btn.innerText = "Tersalin!";
+            setTimeout(() => { btn.innerText = originalText; }, 2000);
         }
 
         function switchToPreview() {
             saveSettings(false);
             document.getElementById('admin-page').classList.add('hidden');
             document.getElementById('invitation-page').classList.remove('hidden');
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const toParam = urlParams.get('to');
+            if (toParam) {
+                document.getElementById('view-guest-name').innerText = decodeURIComponent(toParam).replace(/_/g, ' ');
+            }
+
+            document.getElementById('view-time-box').innerText = decodeURIComponent(urlParams.get('time') || document.getElementById('cfg-time').value);
+            document.getElementById('view-date').innerText = decodeURIComponent(urlParams.get('date') || document.getElementById('cfg-date').value);
+            const locVal = decodeURIComponent(urlParams.get('loc') || document.getElementById('cfg-location').value);
+            document.getElementById('view-location-box').innerText = locVal;
+            document.getElementById('view-maps-btn').href = decodeURIComponent(urlParams.get('maps') || document.getElementById('cfg-maps').value);
+            document.getElementById('view-rek').innerText = decodeURIComponent(urlParams.get('rek') || document.getElementById('cfg-rek').value);
+            applyTheme(decodeURIComponent(urlParams.get('theme') || document.getElementById('cfg-theme').value));
+
+            const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
+            const audioUrl = decodeURIComponent(urlParams.get('audio') || savedData.audio || '');
+            if (audioUrl) document.getElementById('bg-audio').src = audioUrl;
+
+            const bg1 = decodeURIComponent(urlParams.get('bg1') || savedData.bg1 || '');
+            if (bg1) document.getElementById('cover-section').style.backgroundImage = `linear-gradient(to bottom, rgba(2, 6, 23, 0.8), rgba(2, 6, 23, 0.95)), url('${bg1}')`;
+
+            const bg2 = decodeURIComponent(urlParams.get('bg2') || savedData.bg2 || '');
+            if (bg2) document.getElementById('section-date-loc').style.backgroundImage = `linear-gradient(to bottom, rgba(2, 6, 23, 0.9), rgba(2, 6, 23, 0.95)), url('${bg2}')`;
+
             renderGallery();
         }
 
         function openInvitation() {
             const cover = document.getElementById('cover-section');
-            const main = document.getElementById('main-content');
-            const audio = document.getElementById('bg-audio');
-            
-            if (audio.src) {
-                audio.play().catch(() => {});
-                document.getElementById('floating-music-btn').classList.remove('hidden');
+            const mainContent = document.getElementById('main-content');
+            const audioEl = document.getElementById('bg-audio');
+            const musicBtn = document.getElementById('floating-music-btn');
+
+            if (audioEl.src) {
+                audioEl.play().catch(e => console.log("Audio play prevented:", e));
+                musicBtn.classList.remove('hidden');
             }
+
             cover.classList.add('opacity-0', 'transition-opacity', 'duration-700');
             setTimeout(() => {
                 cover.style.display = 'none';
-                main.classList.remove('hidden');
+                mainContent.classList.remove('hidden');
                 window.scrollTo(0, 0);
+
                 const urlParams = new URLSearchParams(window.location.search);
-                initGeofenceTracker(urlParams.get('to') || 'tamu');
+                const guestKey = urlParams.get('to') || 'tamu';
+                initGeofenceTracker(guestKey);
             }, 700);
         }
 
         let isPlaying = true;
         function toggleAudio() {
-            const audio = document.getElementById('bg-audio');
+            const audioEl = document.getElementById('bg-audio');
             const icon = document.getElementById('music-icon');
             if (isPlaying) {
-                audio.pause();
+                audioEl.pause();
                 icon.classList.remove('animate-spin-slow');
+                isPlaying = false;
             } else {
-                audio.play();
+                audioEl.play();
                 icon.classList.add('animate-spin-slow');
+                isPlaying = true;
             }
-            isPlaying = !isPlaying;
         }
 
         function copyRek(btn) {
             navigator.clipboard.writeText(document.getElementById('view-rek').innerText);
-            const orig = btn.innerText;
-            btn.innerText = "Tersalin!";
-            setTimeout(() => { btn.innerText = orig; }, 2000);
+            const originalText = btn.innerText;
+            btn.innerText = "Berhasil Disalin!";
+            setTimeout(() => { btn.innerText = originalText; }, 2000);
         }
+
+        window.onload = function() {
+            loadSavedSettingsToForm();
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('to')) {
+                switchToPreview();
+            }
+        };
     </script>
 </body>
 </html>
