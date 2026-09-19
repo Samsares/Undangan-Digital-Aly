@@ -217,10 +217,9 @@
 
     </div>
 
-    <!-- AUDIO LATAR LOKAL (Sound/pernikahan.mp3) -->
+    <!-- AUDIO LATAR MENGGUNAKAN FILE LOKAL -->
     <audio id="bg-music" loop>
         <source src="Sound/pernikahan.mp3" type="audio/mpeg">
-        Browser Anda tidak mendukung elemen audio.
     </audio>
 
     <!-- KONTROL MUSIK MELAYANG -->
@@ -249,10 +248,13 @@
                 mainContent.classList.remove('opacity-0');
             }, 50);
 
+            // Auto-play backsound saat tombol buka undangan diklik
             bgMusic.play().then(() => {
                 isPlaying = true;
                 document.getElementById('music-control').classList.remove('hidden');
-            }).catch(e => console.log("Autoplay diblokir browser"));
+            }).catch(e => {
+                console.log("Autoplay dicegah oleh browser:", e);
+            });
         }
 
         function toggleMusic() {
