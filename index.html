@@ -199,22 +199,55 @@
 
                 <!-- Daftar Komentar / Ucapan -->
                 <div id="comments-container" class="space-y-4 max-h-96 overflow-y-auto pr-2">
-                    <div class="glass-card p-4 rounded-xl border border-slate-800">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="font-semibold text-white text-sm">Rian Pratama</span>
-                            <span class="text-xs px-2 py-0.5 bg-blue-900/50 text-blue-300 rounded-full border border-blue-500/30">Hadir</span>
-                        </div>
-                        <p class="text-slate-300 text-sm">Selamat menempuh hidup baru Aly & pasangan! Semoga sakinah, mawaddah, warahmah.</p>
-                    </div>
+                    <!-- Komentar default / dinamis -->
                 </div>
             </div>
         </section>
 
-        <!-- FOOTER -->
-        <footer class="py-8 bg-slate-950 text-center border-t border-slate-900 text-slate-500 text-xs">
+        <!-- FOOTER & TOMBOL ADMIN -->
+        <footer class="py-8 bg-slate-950 text-center border-t border-slate-900 text-slate-500 text-xs space-y-3">
             <p>&copy; 2026 Undangan Digital Aly. All Rights Reserved.</p>
+            <div>
+                <button onclick="openAdminModal()" class="text-blue-400 hover:underline inline-flex items-center gap-1">
+                    <i class="fa-solid fa-lock text-[10px]"></i> Panel Admin
+                </button>
+            </div>
         </footer>
 
+    </div>
+
+    <!-- MODAL DASHBOARD ADMIN -->
+    <div id="admin-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="glass-card p-6 rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col border border-blue-500/40 shadow-2xl">
+            <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-800">
+                <h3 class="font-serif text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-gauge-high text-blue-400"></i> Dashboard Admin
+                </h3>
+                <button onclick="closeAdminModal()" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Statistik Singkat -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 text-center">
+                    <span id="admin-total-guest" class="text-2xl font-bold text-blue-400 block">0</span>
+                    <span class="text-xs text-slate-400 uppercase">Total Ucapan / Tamu</span>
+                </div>
+                <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 text-center">
+                    <span id="admin-total-attending" class="text-2xl font-bold text-emerald-400 block">0</span>
+                    <span class="text-xs text-slate-400 uppercase">Konfirmasi Hadir</span>
+                </div>
+            </div>
+
+            <!-- Tabel Data Tamu -->
+            <div class="flex-1 overflow-y-auto pr-1 space-y-3" id="admin-guest-list">
+                <!-- Data akan di-load lewat JavaScript -->
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-800 flex justify-between items-center">
+                <button onclick="clearData()" class="px-4 py-2 bg-red-600/20 hover:bg-red-600/40 text-red-300 text-xs rounded-lg transition border border-red-500/30">Reset Data</button>
+                <button onclick="closeAdminModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg transition">Tutup</button>
+            </div>
+        </div>
     </div>
 
     <!-- AUDIO LATAR MENGGUNAKAN FILE LOKAL -->
@@ -233,6 +266,11 @@
         const guestParam = urlParams.get('to');
         if (guestParam) {
             document.getElementById('guest-name').innerText = decodeURIComponent(guestParam);
+        }
+
+        // Cek jika membuka lewat hash #admin
+        if (window.location.hash === '#admin') {
+            setTimeout(openAdminModal, 500);
         }
 
         const bgMusic = document.getElementById('bg-music');
@@ -293,30 +331,93 @@
             document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
         }, 1000);
 
-        const rsvpForm = document.getElementById('rsvp-form');
-        const commentsContainer = document.getElementById('comments-container');
+        // Data Tamu & Komentar (Disimpan di localStorage agar persisten)
+        let commentsData = JSON.parse(localStorage.getItem('wedding_comments')) || [
+            { name: 'Rian Pratama', status: 'Hadir', message: 'Selamat menempuh hidup baru Aly & pasangan! Semoga sakinah, mawaddah, warahmah.' }
+        ];
 
+        function renderComments() {
+            const commentsContainer = document.getElementById('comments-container');
+            commentsContainer.innerHTML = '';
+
+            commentsData.slice().reverse().forEach(item => {
+                const badgeColor = item.status === 'Hadir' ? 'bg-blue-900/50 text-blue-300 border-blue-500/30' : 'bg-red-900/50 text-red-300 border-red-500/30';
+                const div = document.createElement('div');
+                div.className = 'glass-card p-4 rounded-xl border border-slate-800';
+                div.innerHTML = `
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="font-semibold text-white text-sm">${escapeHtml(item.name)}</span>
+                        <span class="text-xs px-2 py-0.5 rounded-full border ${badgeColor}">${item.status}</span>
+                    </div>
+                    <p class="text-slate-300 text-sm">${escapeHtml(item.message)}</p>
+                `;
+                commentsContainer.appendChild(div);
+            });
+        }
+
+        renderComments();
+
+        const rsvpForm = document.getElementById('rsvp-form');
         rsvpForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const name = document.getElementById('sender-name').value;
             const status = document.getElementById('attendance-status').value;
             const message = document.getElementById('sender-message').value;
 
-            const badgeColor = status === 'Hadir' ? 'bg-blue-900/50 text-blue-300 border-blue-500/30' : 'bg-red-900/50 text-red-300 border-red-500/30';
+            commentsData.push({ name, status, message });
+            localStorage.setItem('wedding_comments', JSON.stringify(commentsData));
 
-            const newComment = document.createElement('div');
-            newComment.className = 'glass-card p-4 rounded-xl border border-slate-800 animate-fade-in';
-            newComment.innerHTML = `
-                <div class="flex justify-between items-center mb-1">
-                    <span class="font-semibold text-white text-sm">${escapeHtml(name)}</span>
-                    <span class="text-xs px-2 py-0.5 rounded-full border ${badgeColor}">${status}</span>
-                </div>
-                <p class="text-slate-300 text-sm">${escapeHtml(message)}</p>
-            `;
-
-            commentsContainer.prepend(newComment);
+            renderComments();
             rsvpForm.reset();
+            alert('Ucapan dan konfirmasi kehadiran berhasil dikirim!');
         });
+
+        // Fungsi Admin Panel
+        function openAdminModal() {
+            document.getElementById('admin-modal').classList.remove('hidden');
+            updateAdminDashboard();
+        }
+
+        function closeAdminModal() {
+            document.getElementById('admin-modal').classList.add('hidden');
+        }
+
+        function updateAdminDashboard() {
+            document.getElementById('admin-total-guest').innerText = commentsData.length;
+            const attendingCount = commentsData.filter(item => item.status === 'Hadir').length;
+            document.getElementById('admin-total-attending').innerText = attendingCount;
+
+            const listContainer = document.getElementById('admin-guest-list');
+            listContainer.innerHTML = '';
+
+            if (commentsData.length === 0) {
+                listContainer.innerHTML = '<p class="text-slate-500 text-center text-sm py-4">Belum ada data ucapan.</p>';
+                return;
+            }
+
+            commentsData.slice().reverse().forEach((item, index) => {
+                const badgeColor = item.status === 'Hadir' ? 'text-emerald-400 bg-emerald-950/50 border-emerald-500/30' : 'text-red-400 bg-red-950/50 border-red-500/30';
+                const card = document.createElement('div');
+                card.className = 'bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-sm flex flex-col gap-1';
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-white">${escapeHtml(item.name)}</span>
+                        <span class="text-xs px-2 py-0.5 rounded border ${badgeColor}">${item.status}</span>
+                    </div>
+                    <p class="text-slate-300 text-xs italic">"${escapeHtml(item.message)}"</p>
+                `;
+                listContainer.appendChild(card);
+            });
+        }
+
+        function clearData() {
+            if (confirm('Yakin ingin mereset semua data ucapan dan kehadiran?')) {
+                commentsData = [];
+                localStorage.removeItem('wedding_comments');
+                renderComments();
+                updateAdminDashboard();
+            }
+        }
 
         function escapeHtml(text) {
             const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
