@@ -187,6 +187,48 @@
                 </div>
             </section>
 
+            <!-- ================= WISHES & COMMENTS SECTION ================= -->
+            <section class="py-20 px-6 max-w-2xl mx-auto space-y-8 border-b border-slate-800/60">
+                <div class="text-center space-y-2">
+                    <h2 class="text-2xl font-serif font-bold text-amber-400">Ucapan & Doa Restu</h2>
+                    <p class="text-xs text-slate-400">Berikan ucapan, doa, dan konfirmasi kehadiran untuk kedua mempelai.</p>
+                </div>
+
+                <!-- Form Kirim Komentar -->
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-xl">
+                    <div>
+                        <label class="block text-[11px] text-slate-400 mb-1">Nama Tamu</label>
+                        <input type="text" id="comment-name" placeholder="Nama Anda" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-slate-400 mb-1">Konfirmasi Kehadiran</label>
+                        <select id="comment-attendance" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                            <option value="Hadir">Hadir</option>
+                            <option value="Berhalangan Hadir">Berhalangan Hadir</option>
+                            <option value="Masih Ragu">Masih Ragu</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-slate-400 mb-1">Ucapan & Doa</label>
+                        <textarea id="comment-text" rows="3" placeholder="Tulis ucapan dan doa restu di sini..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-amber-500"></textarea>
+                    </div>
+                    <button onclick="submitComment()" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-xl transition-all shadow-lg shadow-amber-500/20">
+                        Kirim Ucapan
+                    </button>
+                </div>
+
+                <!-- Daftar Komentar (Tampil 5 dulu, ada tombol See More) -->
+                <div class="space-y-4">
+                    <h3 class="text-sm font-semibold text-amber-300">Daftar Ucapan Tamu (<span id="comment-count">0</span>)</h3>
+                    <div id="comments-container" class="space-y-3 max-h-[500px] overflow-y-auto pr-1"></div>
+                    <div id="see-more-container" class="text-center pt-2 hidden">
+                        <button onclick="toggleSeeMoreComments()" id="see-more-btn" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-medium text-amber-400 rounded-xl transition-colors">
+                            See More (Lihat Semua)
+                        </button>
+                    </div>
+                </div>
+            </section>
+
             <section id="section-gallery-envelope" class="py-20 px-6 max-w-4xl mx-auto space-y-12">
                 <div class="text-center space-y-3">
                     <h2 class="text-2xl font-serif font-bold text-amber-400">Galeri & Momen Spesial</h2>
@@ -250,10 +292,19 @@
         let venueCoordinates = { lat: -6.9175, lng: 107.6191 };
         let currentStream = null;
         let geofenceInterval = null;
+        let showAllComments = false;
 
         window.addEventListener('DOMContentLoaded', () => {
             loadSavedSettingsToForm();
             parseUrlParameters();
+            renderComments();
+
+            // Event listener agar komentar ter-update secara realtime antar tab/link di browser yang sama via localStorage storage event
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'wedding_config') {
+                    renderComments();
+                }
+            });
         });
 
         // Handle File Local (Convert ke Base64 agar tersimpan permanen di localStorage lintas sesi & link tamu)
@@ -288,9 +339,11 @@
             applyConfigToView(saved);
 
             if (toName) {
+                const decodedName = decodeURIComponent(toName.replace(/_/g, ' '));
                 document.getElementById('admin-page').classList.add('hidden');
                 document.getElementById('invitation-page').classList.remove('hidden');
-                document.getElementById('view-guest-name').innerText = decodeURIComponent(toName.replace(/_/g, ' '));
+                document.getElementById('view-guest-name').innerText = decodedName;
+                document.getElementById('comment-name').value = decodedName; // Otomatis isi nama dari parameter link
             }
 
             if (mapsParam) {
@@ -328,6 +381,92 @@
             }
 
             renderGallery();
+            renderComments();
+        }
+
+        // ================= SISTEM KOMENTAR & UCAPAN =================
+        function submitComment() {
+            const name = document.getElementById('comment-name').value.trim();
+            const attendance = document.getElementById('comment-attendance').value;
+            const text = document.getElementById('comment-text').value.trim();
+
+            if (!name) return alert('Mohon masukkan nama Anda!');
+            if (!text) return alert('Mohon tuliskan ucapan atau doa restu!');
+
+            const newComment = {
+                name: name,
+                attendance: attendance,
+                text: text,
+                date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+            };
+
+            const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
+            if (!saved.comments) saved.comments = [];
+            
+            // Masukkan ke urutan paling atas (terbaru)
+            saved.comments.unshift(newComment);
+            localStorage.setItem('wedding_config', JSON.stringify(saved));
+
+            document.getElementById('comment-text').value = '';
+            alert('Ucapan & doa berhasil dikirim dan tampil di semua undangan!');
+            renderComments();
+        }
+
+        function renderComments() {
+            const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
+            const comments = saved.comments || [];
+            const container = document.getElementById('comments-container');
+            const countBadge = document.getElementById('comment-count');
+            const seeMoreContainer = document.getElementById('see-more-container');
+            const seeMoreBtn = document.getElementById('see-more-btn');
+
+            countBadge.innerText = comments.length;
+
+            if (comments.length === 0) {
+                container.innerHTML = `<p class="text-center text-xs text-slate-500 py-4">Belum ada ucapan. Jadilah yang pertama memberikan ucapan!</p>`;
+                seeMoreContainer.classList.add('hidden');
+                return;
+            }
+
+            // Tentukan jumlah yang ditampilkan (5 atau semua)
+            const limit = showAllComments ? comments.length : 5;
+            const displayedComments = comments.slice(0, limit);
+
+            container.innerHTML = displayedComments.map(c => {
+                let badgeColor = "bg-amber-500/20 text-amber-400";
+                if (c.attendance === "Berhalangan Hadir") badgeColor = "bg-red-500/20 text-red-400";
+                if (c.attendance === "Masih Ragu") badgeColor = "bg-yellow-500/20 text-yellow-400";
+
+                return `
+                    <div class="p-4 bg-slate-900 border border-slate-800 rounded-2xl space-y-2">
+                        <div class="flex justify-between items-start gap-2">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-200">${escapeHtml(c.name)}</span>
+                                <span class="px-2 py-0.5 text-[10px] font-medium rounded-full ${badgeColor}">${escapeHtml(c.attendance)}</span>
+                            </div>
+                            <span class="text-[10px] text-slate-500">${escapeHtml(c.date)}</span>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">${escapeHtml(c.text)}</p>
+                    </div>
+                `;
+            }).join('');
+
+            // Tampilkan tombol See More jika komentar lebih dari 5
+            if (comments.length > 5) {
+                seeMoreContainer.classList.remove('hidden');
+                seeMoreBtn.innerText = showAllComments ? "Tampilkan Lebih Sedikit" : `See More (${comments.length - 5} lainnya)`;
+            } else {
+                seeMoreContainer.classList.add('hidden');
+            }
+        }
+
+        function toggleSeeMoreComments() {
+            showAllComments = !showAllComments;
+            renderComments();
+        }
+
+        function escapeHtml(string) {
+            return String(string).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
         function calculateDistance(lat1, lon1, lat2, lon2) {
