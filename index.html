@@ -178,7 +178,7 @@
             <svg id="music-icon" class="w-5 h-5 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
         </button>
 
-        <!-- Cover Section (Menggunakan img/1.png, Posisi Leher ke Bawah, Warna Teks Putih) -->
+        <!-- Cover Section -->
         <section id="cover-section" class="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-6 py-10 bg-cover-permanent">
             <div class="max-w-md w-full space-y-3 z-10 mx-auto mt-[28vh]">
                 <p class="text-[11px] uppercase tracking-[0.3em] font-extrabold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">The Wedding Of</p>
@@ -200,32 +200,32 @@
         <!-- Main Content Section -->
         <div id="main-content" class="hidden min-h-screen w-full">
             
-            <!-- 1. BAGIAN ATAS (Background: 1.png, Nama, Tanggal, & Countdown Timer) -->
-            <section class="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-6 py-16 bg-top-section">
-                <div class="max-w-md w-full space-y-6 z-10 mx-auto">
+            <!-- 1. BAGIAN ATAS (Background: 1.png, Informasi diatur di bawah area foto bingkai) -->
+            <section class="relative min-h-screen w-full flex flex-col items-center justify-end text-center px-6 pb-20 pt-32 bg-top-section">
+                <div class="max-w-md w-full space-y-5 z-10 mx-auto">
                     <!-- Nama Pengantin -->
-                    <h2 id="view-couple-names" class="text-3xl md:text-4xl font-serif font-bold text-slate-900">M. Raihan Aly & Puja Shalehah</h2>
+                    <h2 id="view-couple-names" class="text-2xl md:text-3xl font-serif font-bold text-slate-900">M. Raihan Aly & Puja Shalehah</h2>
                     
                     <!-- Hari & Tanggal -->
-                    <p id="view-date-text" class="text-sm md:text-base font-medium text-slate-800">Minggu, 20 Oktober 2026</p>
+                    <p id="view-date-text" class="text-xs md:text-sm font-medium text-slate-800">Minggu, 20 Oktober 2026</p>
                     
-                    <!-- Countdown Timer ala Contoh (Kotak Biru Tua / Navy) -->
+                    <!-- Countdown Timer (Kotak Biru Tua / Navy) -->
                     <div class="grid grid-cols-4 gap-2 pt-2 max-w-xs mx-auto">
-                        <div class="bg-slate-900 text-slate-100 p-3 rounded-2xl shadow-lg flex flex-col items-center justify-center">
-                            <span id="days" class="text-lg md:text-xl font-bold font-mono">00</span>
-                            <span class="text-[10px] text-slate-300 font-medium">Hari</span>
+                        <div class="bg-slate-900 text-slate-100 p-2.5 rounded-xl shadow-lg flex flex-col items-center justify-center">
+                            <span id="days" class="text-base md:text-lg font-bold font-mono">00</span>
+                            <span class="text-[9px] text-slate-300 font-medium">Hari</span>
                         </div>
-                        <div class="bg-slate-900 text-slate-100 p-3 rounded-2xl shadow-lg flex flex-col items-center justify-center">
-                            <span id="hours" class="text-lg md:text-xl font-bold font-mono">00</span>
-                            <span class="text-[10px] text-slate-300 font-medium">Jam</span>
+                        <div class="bg-slate-900 text-slate-100 p-2.5 rounded-xl shadow-lg flex flex-col items-center justify-center">
+                            <span id="hours" class="text-base md:text-lg font-bold font-mono">00</span>
+                            <span class="text-[9px] text-slate-300 font-medium">Jam</span>
                         </div>
-                        <div class="bg-slate-900 text-slate-100 p-3 rounded-2xl shadow-lg flex flex-col items-center justify-center">
-                            <span id="minutes" class="text-lg md:text-xl font-bold font-mono">00</span>
-                            <span class="text-[10px] text-slate-300 font-medium">Menit</span>
+                        <div class="bg-slate-900 text-slate-100 p-2.5 rounded-xl shadow-lg flex flex-col items-center justify-center">
+                            <span id="minutes" class="text-base md:text-lg font-bold font-mono">00</span>
+                            <span class="text-[9px] text-slate-300 font-medium">Menit</span>
                         </div>
-                        <div class="bg-slate-900 text-slate-100 p-3 rounded-2xl shadow-lg flex flex-col items-center justify-center">
-                            <span id="seconds" class="text-lg md:text-xl font-bold font-mono">00</span>
-                            <span class="text-[10px] text-slate-300 font-medium">Detik</span>
+                        <div class="bg-slate-900 text-slate-100 p-2.5 rounded-xl shadow-lg flex flex-col items-center justify-center">
+                            <span id="seconds" class="text-base md:text-lg font-bold font-mono">00</span>
+                            <span class="text-[9px] text-slate-300 font-medium">Detik</span>
                         </div>
                     </div>
                 </div>
@@ -350,7 +350,6 @@
             });
         });
 
-        // Hitung Mundur (Countdown Timer)
         function startCountdown() {
             const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
             const targetDateStr = saved.date || '2026-10-20T08:00:00';
