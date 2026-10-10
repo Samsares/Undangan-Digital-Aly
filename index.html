@@ -124,12 +124,16 @@
                     <input type="text" id="cfg-address" value="3H92+VF7, Jl. Dirgantara Raya, Gempolsari, Kec. Bandung Kulon, Kota Bandung, Jawa Barat 40215" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
-                    <label class="block text-[11px] text-slate-400 mb-1">Link Google Maps</label>
-                    <input type="text" id="cfg-maps" value="https://maps.app.goo.gl/cYtW1kHVZTv44hLPA" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
+                    <label class="block text-[11px] text-slate-400 mb-1">Nama Bank</label>
+                    <input type="text" id="cfg-bank-name" value="BCA" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
-                    <label class="block text-[11px] text-slate-400 mb-1">Rekening / Kado Digital</label>
-                    <input type="text" id="cfg-rek" value="BCA 1234567890 a.n. M. Raihan Aly" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
+                    <label class="block text-[11px] text-slate-400 mb-1">Atas Nama Rekening</label>
+                    <input type="text" id="cfg-bank-owner" value="a.n M. Raihan Aly" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] text-slate-400 mb-1">Nomor Rekening</label>
+                    <input type="text" id="cfg-bank-number" value="1234567890" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
 
                 <!-- UPLOAD GALERI & BACKSOUND -->
@@ -381,7 +385,7 @@
                     </div>
                 </section>
 
-                <!-- Galeri & Kado -->
+                <!-- Galeri & Kado Digital -->
                 <section id="section-gallery-envelope" class="py-16 md:py-24 px-4 md:px-6 max-w-4xl mx-auto space-y-12">
                     <div class="text-center space-y-3">
                         <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900">Galeri Spesial</h2>
@@ -389,13 +393,21 @@
 
                     <div id="view-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4"></div>
 
-                    <div class="p-4 text-center max-w-md mx-auto space-y-3">
-                        <h3 class="text-base font-serif font-bold text-slate-900">Kado Digital</h3>
-                        <p class="text-xs text-slate-800 font-semibold">Doa restu Anda merupakan karunia terindah bagi kami. Namun jika ingin mengirimkan tanda kasih:</p>
-                        <div class="p-3 bg-slate-100/60 border border-slate-400/80 rounded-2xl font-mono text-xs text-slate-900 font-extrabold select-all" id="view-rek">
-                            BCA 1234567890 a.n. M. Raihan Aly
+                    <!-- BAGIAN KADO DIGITAL BARU -->
+                    <div class="p-6 text-center max-w-md mx-auto space-y-4">
+                        <h3 class="text-lg font-serif font-bold text-slate-900">Kado Digital</h3>
+                        <p class="text-xs text-slate-800 font-semibold leading-relaxed">
+                            Doa restu Anda merupakan karunia terindah bagi kami. Namun jika ingin mengirimkan tanda kasih:
+                        </p>
+                        
+                        <!-- KOTAK INFORMASI REKENING (SUSUNAN BERSIH & TERPISAH) -->
+                        <div class="p-4 bg-slate-100/70 border border-slate-300 rounded-2xl shadow-sm space-y-1.5 text-center">
+                            <p id="view-bank-name" class="text-base font-extrabold text-slate-900 tracking-wider">BCA</p>
+                            <p id="view-bank-owner" class="text-xs font-bold text-slate-700">a.n M. Raihan Aly</p>
+                            <p id="view-bank-number" class="text-lg font-mono font-extrabold text-slate-900 tracking-widest pt-1">1234567890</p>
                         </div>
-                        <button onclick="copyRek(this)" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-xs rounded-xl font-bold text-slate-100 transition-colors">
+
+                        <button onclick="copyRek(this)" class="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-xs rounded-xl font-bold text-slate-100 transition-colors shadow-md">
                             Salin Rekening
                         </button>
                     </div>
@@ -414,7 +426,6 @@
         let countdownTimerInterval = null;
 
         window.addEventListener('DOMContentLoaded', () => {
-            // Bersihkan data lama jika target tanggal masih menggunakan tanggal lama Oktober
             const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
             if (!saved.date || saved.date.includes('2026-10-20')) {
                 saved.date = DEFAULT_TARGET_DATE;
@@ -443,7 +454,6 @@
                 const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
                 const targetDateStr = saved.date || DEFAULT_TARGET_DATE;
                 
-                // Gunakan Replace '-' dengan '/' untuk kompatibilitas parsing Date di Safari / Browser Mobile
                 const targetTime = new Date(targetDateStr.replace(/-/g, '/')).getTime() || new Date(targetDateStr).getTime();
                 const now = new Date().getTime();
                 const difference = targetTime - now;
@@ -548,7 +558,11 @@
             if (saved.time) document.getElementById('view-time-box').innerText = saved.time;
             if (saved.location) document.getElementById('view-location-box').innerText = saved.location;
             if (saved.address) document.getElementById('view-address-box').innerText = saved.address;
-            if (saved.rek) document.getElementById('view-rek').innerText = saved.rek;
+            
+            // Pengaturan Rekening Bank
+            if (saved.bankName) document.getElementById('view-bank-name').innerText = saved.bankName;
+            if (saved.bankOwner) document.getElementById('view-bank-owner').innerText = saved.bankOwner;
+            if (saved.bankNumber) document.getElementById('view-bank-number').innerText = saved.bankNumber;
             
             if (saved.audio) {
                 document.getElementById('bg-audio').src = saved.audio;
@@ -718,8 +732,9 @@
             existing.time = document.getElementById('cfg-time').value;
             existing.location = document.getElementById('cfg-location').value;
             existing.address = document.getElementById('cfg-address').value;
-            existing.maps = document.getElementById('cfg-maps').value;
-            existing.rek = document.getElementById('cfg-rek').value;
+            existing.bankName = document.getElementById('cfg-bank-name').value;
+            existing.bankOwner = document.getElementById('cfg-bank-owner').value;
+            existing.bankNumber = document.getElementById('cfg-bank-number').value;
 
             localStorage.setItem('wedding_config', JSON.stringify(existing));
             startCountdown();
@@ -740,8 +755,9 @@
             if (saved.time) document.getElementById('cfg-time').value = saved.time;
             if (saved.location) document.getElementById('cfg-location').value = saved.location;
             if (saved.address) document.getElementById('cfg-address').value = saved.address;
-            if (saved.maps) document.getElementById('cfg-maps').value = saved.maps;
-            if (saved.rek) document.getElementById('cfg-rek').value = saved.rek;
+            if (saved.bankName) document.getElementById('cfg-bank-name').value = saved.bankName;
+            if (saved.bankOwner) document.getElementById('cfg-bank-owner').value = saved.bankOwner;
+            if (saved.bankNumber) document.getElementById('cfg-bank-number').value = saved.bankNumber;
         }
 
         function generateShortLinks() {
@@ -817,7 +833,8 @@
         }
 
         function copyRek(btn) {
-            navigator.clipboard.writeText(document.getElementById('view-rek').innerText);
+            const accountNumber = document.getElementById('view-bank-number').innerText.trim();
+            navigator.clipboard.writeText(accountNumber);
             const orig = btn.innerText;
             btn.innerText = "Tersalin!";
             setTimeout(() => { btn.innerText = orig; }, 2000);
