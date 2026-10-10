@@ -22,33 +22,41 @@
             animation: spinSlow 8s linear infinite;
         }
 
-        /* STYLING BACKGROUND MURNI LOKAL PER SEKSI */
+        /* STYLING BACKGROUND MURNI LOKAL */
         .bg-cover-permanent {
-            background-image: var(--cover-bg);
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        .bg-section-1 {
             background-image: url('img/1.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
         }
 
-        .bg-section-quran {
-            background-image: url('img/isi1.jpeg');
+        .bg-top-section {
+            background-image: url('img/1.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
         }
 
-        .bg-section-full {
-            background-image: url('img/isi.jpeg');
+        .bg-quran-section {
+            background-image: url('img/isi1.jpeg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+        }
+        
+        .bg-bunga-permanent {
+            background-image: url('img/bunga.jpeg');
+            background-size: contain;
+            background-position: top center;
+            background-repeat: repeat-y;
+            background-attachment: scroll;
+        }
+
+        @media (min-width: 1024px) {
+            .bg-bunga-permanent {
+                background-size: cover;
+                background-attachment: fixed;
+            }
         }
     </style>
 </head>
@@ -80,8 +88,12 @@
                     <input type="text" id="cfg-bride" value="Puja Shalehah" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
-                    <label class="block text-[11px] text-slate-400 mb-1">Tanggal Acara</label>
-                    <input type="text" id="cfg-date" value="Minggu, 20 Oktober 2026" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
+                    <label class="block text-[11px] text-slate-400 mb-1">Tanggal Acara (Format: YYYY-MM-DDTHH:mm:ss untuk Countdown)</label>
+                    <input type="text" id="cfg-date" value="2026-10-20T08:00:00" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] text-slate-400 mb-1">Teks Hari & Tanggal (Tampil di Undangan)</label>
+                    <input type="text" id="cfg-date-text" value="Minggu, 20 Oktober 2026" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Waktu / Pukul</label>
@@ -166,11 +178,11 @@
             <svg id="music-icon" class="w-5 h-5 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
         </button>
 
-        <!-- Cover Section -->
+        <!-- Cover Section (Menggunakan img/1.png, Posisi Leher ke Bawah, Warna Teks Putih) -->
         <section id="cover-section" class="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-6 py-10 bg-cover-permanent">
             <div class="max-w-md w-full space-y-3 z-10 mx-auto mt-[28vh]">
                 <p class="text-[11px] uppercase tracking-[0.3em] font-extrabold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">The Wedding Of</p>
-                <h1 id="view-couple-names" class="text-2xl md:text-4xl font-serif font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">M. Raihan Aly & Puja Shalehah</h1>
+                <h1 id="view-couple-names-cover" class="text-2xl md:text-4xl font-serif font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">M. Raihan Aly & Puja Shalehah</h1>
                 
                 <div class="py-1 px-4 inline-block">
                     <p class="text-[10px] text-slate-200 uppercase tracking-wider font-bold drop-shadow">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
@@ -188,46 +200,49 @@
         <!-- Main Content Section -->
         <div id="main-content" class="hidden min-h-screen w-full">
             
-            <!-- 1. SEKSI PALING ATAS (Background 1.png - Nama Mempelai, Tanggal, & Countdown Waktu Mundur) -->
-            <section class="bg-section-1 min-h-screen w-full flex flex-col justify-end items-center text-center px-4 pb-16 pt-64">
-                <div class="max-w-md w-full space-y-4">
-                    <h2 id="section1-couple-names" class="text-3xl md:text-4xl font-serif font-bold text-slate-900">M. Raihan Aly & Puja Shalehah</h2>
-                    <p id="section1-date" class="text-xs md:text-sm font-bold text-slate-700">Minggu, 20 Oktober 2026</p>
+            <!-- 1. BAGIAN ATAS (Background: 1.png, Nama, Tanggal, & Countdown Timer) -->
+            <section class="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-6 py-16 bg-top-section">
+                <div class="max-w-md w-full space-y-6 z-10 mx-auto">
+                    <!-- Nama Pengantin -->
+                    <h2 id="view-couple-names" class="text-3xl md:text-4xl font-serif font-bold text-slate-900">M. Raihan Aly & Puja Shalehah</h2>
                     
-                    <!-- KOTAK WAKTU MUNDUR (COUNTDOWN) -->
+                    <!-- Hari & Tanggal -->
+                    <p id="view-date-text" class="text-sm md:text-base font-medium text-slate-800">Minggu, 20 Oktober 2026</p>
+                    
+                    <!-- Countdown Timer ala Contoh (Kotak Biru Tua / Navy) -->
                     <div class="grid grid-cols-4 gap-2 pt-2 max-w-xs mx-auto">
-                        <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md">
-                            <span id="cd-days" class="block text-base font-extrabold">00</span>
-                            <span class="text-[10px] font-medium text-slate-300">Hari</span>
+                        <div class="bg-slate-900 text-slate-100 p-3 rounded-2xl shadow-lg flex flex-col items-center justify-center">
+                            <span id="days" class="text-lg md:text-xl font-bold font-mono">00</span>
+                            <span class="text-[10px] text-slate-300 font-medium">Hari</span>
                         </div>
-                        <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md">
-                            <span id="cd-hours" class="block text-base font-extrabold">00</span>
-                            <span class="text-[10px] font-medium text-slate-300">Jam</span>
+                        <div class="bg-slate-900 text-slate-100 p-3 rounded-2xl shadow-lg flex flex-col items-center justify-center">
+                            <span id="hours" class="text-lg md:text-xl font-bold font-mono">00</span>
+                            <span class="text-[10px] text-slate-300 font-medium">Jam</span>
                         </div>
-                        <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md">
-                            <span id="cd-minutes" class="block text-base font-extrabold">00</span>
-                            <span class="text-[10px] font-medium text-slate-300">Menit</span>
+                        <div class="bg-slate-900 text-slate-100 p-3 rounded-2xl shadow-lg flex flex-col items-center justify-center">
+                            <span id="minutes" class="text-lg md:text-xl font-bold font-mono">00</span>
+                            <span class="text-[10px] text-slate-300 font-medium">Menit</span>
                         </div>
-                        <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md">
-                            <span id="cd-seconds" class="block text-base font-extrabold">00</span>
-                            <span class="text-[10px] font-medium text-slate-300">Detik</span>
+                        <div class="bg-slate-900 text-slate-100 p-3 rounded-2xl shadow-lg flex flex-col items-center justify-center">
+                            <span id="seconds" class="text-lg md:text-xl font-bold font-mono">00</span>
+                            <span class="text-[10px] text-slate-300 font-medium">Detik</span>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- 2. SEKSI KUTIPAN AYAT AL-QUR'AN (Background isi1.jpeg) -->
-            <section class="bg-section-quran min-h-[60vh] w-full flex flex-col items-center justify-center text-center px-6 py-16">
-                <div class="max-w-md mx-auto space-y-4">
-                    <h3 class="text-xs font-bold uppercase tracking-widest text-slate-700">QS. Ar-Rum: 21</h3>
-                    <p class="text-xs md:text-sm italic font-medium leading-relaxed text-slate-800">
-                        "Dan di antara tanda-tanda (kebesaran-Nya) ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang."
+            <!-- 2. BAGIAN TENGAH (Background: isi1.jpeg untuk Ayat Suci Al-Qur'an) -->
+            <section class="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-6 py-20 bg-quran-section">
+                <div class="max-w-lg w-full space-y-6 z-10 mx-auto p-4">
+                    <h3 class="text-xl md:text-2xl font-serif font-bold text-slate-900">Ar-Rum: 21</h3>
+                    <p class="text-xs md:text-sm text-slate-800 font-medium leading-relaxed italic px-2">
+                        "Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepada-Nya, dan Dia menjadikan di antaramu rasa kasih dan sayang."
                     </p>
                 </div>
             </section>
 
-            <!-- 3. SEKSI DIBAWAHNYA LENGKAP (Background isi.jpeg FULL) -->
-            <div class="bg-section-full min-h-screen w-full">
+            <!-- 3. BAGIAN SELANJUTNYA (Background: bunga.jpeg untuk Waktu & Tempat, Ucapan, Galeri, Kado) -->
+            <div class="bg-bunga-permanent w-full">
                 <!-- Waktu & Tempat -->
                 <section id="section-date-loc" class="py-16 md:py-24 px-4 md:px-6 text-center">
                     <div class="max-w-xl mx-auto space-y-8">
@@ -259,6 +274,7 @@
                         <p class="text-xs text-slate-800 font-semibold">Berikan ucapan, doa, dan konfirmasi kehadiran untuk kedua mempelai.</p>
                     </div>
 
+                    <!-- Form Ucapan -->
                     <div class="space-y-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-900 mb-1">Nama Tamu</label>
@@ -318,17 +334,14 @@
 
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
-        const DEFAULT_COVER_BG = 'img/depan1.jpeg';
         const DEFAULT_AUDIO_SRC = 'audio/backsound.mp3';
-
         let showAllComments = false;
-        let countdownInterval = null;
 
         window.addEventListener('DOMContentLoaded', () => {
-            initBackgrounds();
             loadSavedSettingsToForm();
             parseUrlParameters();
             renderComments();
+            startCountdown();
 
             window.addEventListener('storage', (e) => {
                 if (e.key === 'wedding_config') {
@@ -337,8 +350,33 @@
             });
         });
 
-        function initBackgrounds() {
-            document.documentElement.style.setProperty('--cover-bg', `url('${DEFAULT_COVER_BG}')`);
+        // Hitung Mundur (Countdown Timer)
+        function startCountdown() {
+            const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
+            const targetDateStr = saved.date || '2026-10-20T08:00:00';
+            const targetDate = new Date(targetDateStr).getTime();
+
+            setInterval(() => {
+                const now = new Date().getTime();
+                const difference = targetDate - now;
+
+                if (difference > 0) {
+                    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                    document.getElementById('days').innerText = String(days).padStart(2, '0');
+                    document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+                    document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+                    document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+                } else {
+                    document.getElementById('days').innerText = "00";
+                    document.getElementById('hours').innerText = "00";
+                    document.getElementById('minutes').innerText = "00";
+                    document.getElementById('seconds').innerText = "00";
+                }
+            }, 1000);
         }
 
         function handleMediaUpload(event, type) {
@@ -349,7 +387,6 @@
             reader.onload = function(e) {
                 const base64String = e.target.result;
                 const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
-                
                 if (type === 'audio') saved.audio = base64String;
 
                 localStorage.setItem('wedding_config', JSON.stringify(saved));
@@ -398,49 +435,15 @@
             }
         }
 
-        function startCountdown(dateString) {
-            if (countdownInterval) clearInterval(countdownInterval);
-
-            // Set default ke 20 Oktober 2026 jika string tidak terurai
-            let targetDate = new Date("2026-10-20T08:00:00").getTime();
-
-            countdownInterval = setInterval(() => {
-                const now = new Date().getTime();
-                const distance = targetDate - now;
-
-                if (distance < 0) {
-                    clearInterval(countdownInterval);
-                    document.getElementById('cd-days').innerText = "00";
-                    document.getElementById('cd-hours').innerText = "00";
-                    document.getElementById('cd-minutes').innerText = "00";
-                    document.getElementById('cd-seconds').innerText = "00";
-                    return;
-                }
-
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                document.getElementById('cd-days').innerText = days < 10 ? '0' + days : days;
-                document.getElementById('cd-hours').innerText = hours < 10 ? '0' + hours : hours;
-                document.getElementById('cd-minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
-                document.getElementById('cd-seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
-            }, 1000);
-        }
-
         function applyConfigToView(saved) {
             const groom = saved.groom || "M. Raihan Aly";
             const bride = saved.bride || "Puja Shalehah";
             const coupleText = `${groom} & ${bride}`;
 
+            document.getElementById('view-couple-names-cover').innerText = coupleText;
             document.getElementById('view-couple-names').innerText = coupleText;
-            document.getElementById('section1-couple-names').innerText = coupleText;
-            
-            if (saved.date) {
-                document.getElementById('view-date').innerText = saved.date;
-                document.getElementById('section1-date').innerText = saved.date;
-            }
+            if (saved.dateText) document.getElementById('view-date-text').innerText = saved.dateText;
+            if (saved.date) document.getElementById('view-date').innerText = saved.dateText || "Minggu, 20 Oktober 2026";
             if (saved.time) document.getElementById('view-time-box').innerText = saved.time;
             if (saved.location) {
                 document.getElementById('view-location-box').innerText = saved.location;
@@ -455,7 +458,6 @@
                 document.getElementById('bg-audio').src = DEFAULT_AUDIO_SRC;
             }
 
-            startCountdown(saved.date);
             renderGallery();
             renderComments();
         }
@@ -608,8 +610,9 @@
             const existing = JSON.parse(localStorage.getItem('wedding_config')) || {};
             existing.groom = document.getElementById('cfg-groom').value;
             existing.bride = document.getElementById('cfg-bride').value;
-            existing.time = document.getElementById('cfg-time').value;
             existing.date = document.getElementById('cfg-date').value;
+            existing.dateText = document.getElementById('cfg-date-text').value;
+            existing.time = document.getElementById('cfg-time').value;
             existing.location = document.getElementById('cfg-location').value;
             existing.maps = document.getElementById('cfg-maps').value;
             existing.rek = document.getElementById('cfg-rek').value;
@@ -623,8 +626,9 @@
             if (!saved) return;
             if (saved.groom) document.getElementById('cfg-groom').value = saved.groom;
             if (saved.bride) document.getElementById('cfg-bride').value = saved.bride;
-            if (saved.time) document.getElementById('cfg-time').value = saved.time;
             if (saved.date) document.getElementById('cfg-date').value = saved.date;
+            if (saved.dateText) document.getElementById('cfg-date-text').value = saved.dateText;
+            if (saved.time) document.getElementById('cfg-time').value = saved.time;
             if (saved.location) document.getElementById('cfg-location').value = saved.location;
             if (saved.maps) document.getElementById('cfg-maps').value = saved.maps;
             if (saved.rek) document.getElementById('cfg-rek').value = saved.rek;
