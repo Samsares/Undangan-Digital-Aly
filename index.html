@@ -22,7 +22,7 @@
             animation: spinSlow 8s linear infinite;
         }
 
-        /* STYLING BACKGROUND PERMANEN LINTAS BROWSER & LINK */
+        /* STYLING BACKGROUND PERMANEN LINTAS BROWSER & LINK MENGGUNAKAN FOLDER LOKAL img/ */
         .bg-cover-permanent {
             background-image: linear-gradient(to bottom, rgba(2,6,23,0.7), rgba(2,6,23,0.95)), var(--cover-bg);
             background-size: cover;
@@ -36,7 +36,7 @@
         }
     </style>
 </head>
-<body id="body-theme" class="bg-slate-950 text-slate-100 antialiased selection:bg-amber-500 selection:text-slate-950">
+<body class="bg-slate-950 text-slate-100 antialiased selection:bg-amber-500 selection:text-slate-950">
 
     <!-- ================= ADMIN DASHBOARD PAGE ================= -->
     <div id="admin-page" class="min-h-screen p-4 md:p-8 max-w-5xl mx-auto">
@@ -82,14 +82,6 @@
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Rekening / Kado Digital</label>
                     <input type="text" id="cfg-rek" value="BCA 1234567890 a.n. M. Raihan Aly" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
-                </div>
-                <div>
-                    <label class="block text-[11px] text-slate-400 mb-1">Tema Warna</label>
-                    <select id="cfg-theme" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
-                        <option value="amber">Amber Gold (Dark)</option>
-                        <option value="emerald">Emerald Green</option>
-                        <option value="rose">Rose Luxury</option>
-                    </select>
                 </div>
 
                 <!-- UPLOAD GALERI & BACKSOUND -->
@@ -213,7 +205,8 @@
                         <label class="block text-[11px] text-slate-400 mb-1">Konfirmasi Kehadiran</label>
                         <select id="comment-attendance" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
                             <option value="Hadir">Hadir</option>
-                            <option value="Masih Ragu">Tidak Hadir</option>
+                            <option value="Tidak Hadir">Tidak Hadir</option>
+                            <option value="Masih Ragu">Masih Ragu</option>
                         </select>
                     </div>
                     <div>
@@ -259,49 +252,15 @@
     </div>
 
 
-    <!-- ================= CAMERA MODAL ================= -->
-    <div id="camera-modal" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur flex flex-col items-center justify-center p-4">
-        <div class="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden p-4 space-y-4 shadow-2xl">
-            <div class="flex justify-between items-center">
-                <h3 class="text-sm font-semibold text-amber-400">Kamera Lokasi Pernikahan</h3>
-                <button onclick="closeCameraModal()" class="text-slate-400 hover:text-white text-sm">✕</button>
-            </div>
-            <div class="relative aspect-[3/4] bg-slate-950 rounded-2xl overflow-hidden border border-slate-800">
-                <video id="live-camera" autoplay playsinline class="w-full h-full object-cover"></video>
-                <canvas id="snapshot-canvas" class="hidden"></canvas>
-            </div>
-            <button onclick="capturePhoto()" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold rounded-xl transition-all">
-                Ambil & Simpan Foto
-            </button>
-        </div>
-    </div>
-
-    <!-- ================= REVIEW MODAL ================= -->
-    <div id="review-modal" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur flex flex-col items-center justify-center p-4">
-        <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4 shadow-2xl">
-            <h3 class="text-sm font-semibold text-amber-400 text-center">Kurasi Foto Anda di Venue</h3>
-            <p class="text-xs text-slate-400 text-center">Anda terdeteksi berada di lokasi acara. Berikut foto yang telah Anda ambil secara lokal:</p>
-            <div id="review-photos-container" class="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto"></div>
-            <div class="flex gap-2 pt-2">
-                <button onclick="document.getElementById('review-modal').classList.add('hidden')" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-xl text-slate-300">Tutup</button>
-                <button onclick="submitCuratedPhotos()" class="flex-1 py-2.5 bg-amber-500 hover:bg-amber-400 text-xs font-bold rounded-xl text-slate-950">Kirim ke Galeri</button>
-            </div>
-        </div>
-    </div>
-
-
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
         /* =========================================================================
-           TEMPAT MEMASUKKAN FOTO BACKGROUND PERMANEN LINTAS LINK & DEVICE
-           Ganti URL di bawah dengan URL gambar/Base64 milik Anda secara manual.
+           PENGATURAN FOTO BACKGROUND DARI FOLDER LOKAL (img/)
+           Sesuaikan nama file jika berbeda (misal: 'img/depan1.jpeg', 'img/isi.jpeg')
            ========================================================================= */
-        const DEFAULT_COVER_BG = 'file:///C:/Users/Lenovo/Downloads/web%20chat%20bot/Undangan%20Digital%20Aly/img/depan1.jpeg';
-        const DEFAULT_CONTENT_BG = 'file:///C:/Users/Lenovo/Downloads/web%20chat%20bot/Undangan%20Digital%20Aly/img/isi.jpeg';
+        const DEFAULT_COVER_BG = 'img/depan1.jpeg';
+        const DEFAULT_CONTENT_BG = 'img/isi.jpeg';
 
-        let venueCoordinates = { lat: -6.9175, lng: 107.6191 };
-        let currentStream = null;
-        let geofenceInterval = null;
         let showAllComments = false;
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -369,7 +328,6 @@
         function parseUrlParameters() {
             const urlParams = new URLSearchParams(window.location.search);
             const toName = urlParams.get('to');
-            const mapsParam = urlParams.get('maps');
 
             const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
             applyConfigToView(saved);
@@ -380,15 +338,6 @@
                 document.getElementById('invitation-page').classList.remove('hidden');
                 document.getElementById('view-guest-name').innerText = decodedName;
                 document.getElementById('comment-name').value = decodedName;
-            }
-
-            if (mapsParam) {
-                const regex = /(-?\d+\.\d+),\s*(-?\d+\.\d+)/;
-                const match = decodeURIComponent(mapsParam).match(regex);
-                if (match && match.length >= 3) {
-                    venueCoordinates.lat = parseFloat(match[1]);
-                    venueCoordinates.lng = parseFloat(match[2]);
-                }
             }
         }
 
@@ -406,7 +355,6 @@
             }
             if (saved.maps) document.getElementById('view-maps-btn').href = saved.maps;
             if (saved.rek) document.getElementById('view-rek').innerText = saved.rek;
-            if (saved.theme) applyTheme(saved.theme);
             if (saved.audio) document.getElementById('bg-audio').src = saved.audio;
 
             renderGallery();
@@ -461,7 +409,7 @@
 
             container.innerHTML = displayedComments.map(c => {
                 let badgeColor = "bg-amber-500/20 text-amber-400";
-                if (c.attendance === "Berhalangan Hadir") badgeColor = "bg-red-500/20 text-red-400";
+                if (c.attendance === "Tidak Hadir") badgeColor = "bg-red-500/20 text-red-400";
                 if (c.attendance === "Masih Ragu") badgeColor = "bg-yellow-500/20 text-yellow-400";
 
                 return `
@@ -493,137 +441,6 @@
 
         function escapeHtml(string) {
             return String(string).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-        }
-
-        function calculateDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371;
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        }
-
-        function initGeofenceTracker(guestKey) {
-            if (!navigator.geolocation) return;
-            geofenceInterval = setInterval(() => {
-                navigator.geolocation.getCurrentPosition((position) => {
-                    const dist = calculateDistance(position.coords.latitude, position.coords.longitude, venueCoordinates.lat, venueCoordinates.lng);
-                    const guestPhotosKey = `temp_photos_${guestKey}`;
-                    const existingTemp = JSON.parse(localStorage.getItem(guestPhotosKey)) || [];
-
-                    if (dist <= 0.2 && existingTemp.length > 0) {
-                        clearInterval(geofenceInterval);
-                        triggerReviewModal(existingTemp, guestKey);
-                    }
-                }, () => {}, { enableHighAccuracy: true, maximumAge: 10000, timeout: 5000 });
-            }, 10000);
-        }
-
-        function checkGeofenceAndOpen() {
-            if (!navigator.geolocation) {
-                alert('Geolocation tidak didukung browser ini.');
-                return;
-            }
-            navigator.geolocation.getCurrentPosition((position) => {
-                const dist = calculateDistance(position.coords.latitude, position.coords.longitude, venueCoordinates.lat, venueCoordinates.lng);
-                if (dist > 0.2) {
-                    alert(`Fitur kamera aktif dalam radius 200 meter dari lokasi acara. Jarak Anda saat ini: ${(dist * 1000).toFixed(0)} meter.`);
-                    return;
-                }
-                openCameraModal();
-            }, () => {
-                alert('Gagal mendeteksi lokasi GPS Anda. Aktifkan izin lokasi.');
-            }, { enableHighAccuracy: true });
-        }
-
-        function openCameraModal() {
-            const modal = document.getElementById('camera-modal');
-            const video = document.getElementById('live-camera');
-            modal.classList.remove('hidden');
-
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false })
-                .then((stream) => {
-                    currentStream = stream;
-                    video.srcObject = stream;
-                })
-                .catch(() => {
-                    alert('Tidak dapat mengakses kamera perangkat.');
-                    modal.classList.add('hidden');
-                });
-        }
-
-        function closeCameraModal() {
-            document.getElementById('camera-modal').classList.add('hidden');
-            if (currentStream) {
-                currentStream.getTracks().forEach(track => track.stop());
-                currentStream = null;
-            }
-        }
-
-        function capturePhoto() {
-            const video = document.getElementById('live-camera');
-            const canvas = document.getElementById('snapshot-canvas');
-            canvas.width = video.videoWidth || 640;
-            canvas.height = video.videoHeight || 480;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const dataURL = canvas.toDataURL('image/jpeg');
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const guestKey = urlParams.get('to') || 'tamu';
-            const guestPhotosKey = `temp_photos_${guestKey}`;
-
-            let existing = JSON.parse(localStorage.getItem(guestPhotosKey)) || [];
-            existing.push(dataURL);
-            localStorage.setItem(guestPhotosKey, JSON.stringify(existing));
-
-            alert('Foto berhasil disimpan sementara!');
-            closeCameraModal();
-        }
-
-        function triggerReviewModal(photosArray, guestKey) {
-            const reviewModal = document.getElementById('review-modal');
-            const container = document.getElementById('review-photos-container');
-            reviewModal.classList.remove('hidden');
-
-            container.innerHTML = photosArray.map((photo, index) => `
-                <div class="relative aspect-square bg-slate-950 rounded-xl overflow-hidden border border-slate-800">
-                    <img src="${photo}" class="w-full h-full object-cover">
-                    <button onclick="removeTempPhoto('${guestKey}', ${index})" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-[10px]">✕</button>
-                </div>
-            `).join('');
-        }
-
-        function removeTempPhoto(guestKey, index) {
-            const guestPhotosKey = `temp_photos_${guestKey}`;
-            let existing = JSON.parse(localStorage.getItem(guestPhotosKey)) || [];
-            existing.splice(index, 1);
-            localStorage.setItem(guestPhotosKey, JSON.stringify(existing));
-            triggerReviewModal(existing, guestKey);
-        }
-
-        function submitCuratedPhotos() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const guestKey = urlParams.get('to') || 'tamu';
-            const guestPhotosKey = `temp_photos_${guestKey}`;
-            const curatedPhotos = JSON.parse(localStorage.getItem(guestPhotosKey)) || [];
-
-            if (curatedPhotos.length === 0) {
-                document.getElementById('review-modal').classList.add('hidden');
-                return;
-            }
-
-            const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
-            if (!savedData.photos) savedData.photos = [];
-            savedData.photos.push(...curatedPhotos);
-            localStorage.setItem('wedding_config', JSON.stringify(savedData));
-
-            localStorage.removeItem(guestPhotosKey);
-            document.getElementById('review-modal').classList.add('hidden');
-            alert('Foto berhasil dikirim ke galeri utama!');
-            renderGallery();
         }
 
         function renderGallery() {
@@ -697,7 +514,6 @@
             existing.location = document.getElementById('cfg-location').value;
             existing.maps = document.getElementById('cfg-maps').value;
             existing.rek = document.getElementById('cfg-rek').value;
-            existing.theme = document.getElementById('cfg-theme').value;
 
             localStorage.setItem('wedding_config', JSON.stringify(existing));
             if (showAlert) alert('Pengaturan berhasil disimpan!');
@@ -713,7 +529,6 @@
             if (saved.location) document.getElementById('cfg-location').value = saved.location;
             if (saved.maps) document.getElementById('cfg-maps').value = saved.maps;
             if (saved.rek) document.getElementById('cfg-rek').value = saved.rek;
-            if (saved.theme) document.getElementById('cfg-theme').value = saved.theme;
         }
 
         function generateShortLinks() {
@@ -748,13 +563,6 @@
             document.getElementById('result-box').classList.remove('hidden');
         }
 
-        function applyTheme(theme) {
-            const body = document.getElementById('body-theme');
-            if (theme === 'emerald') body.className = "bg-emerald-950 text-emerald-100 antialiased";
-            else if (theme === 'rose') body.className = "bg-stone-950 text-rose-100 antialiased";
-            else body.className = "bg-slate-950 text-slate-100 antialiased";
-        }
-
         function switchToPreview() {
             saveSettings(false);
             document.getElementById('admin-page').classList.add('hidden');
@@ -778,8 +586,6 @@
                 cover.style.display = 'none';
                 main.classList.remove('hidden');
                 window.scrollTo(0, 0);
-                const urlParams = new URLSearchParams(window.location.search);
-                initGeofenceTracker(urlParams.get('to') || 'tamu');
             }, 700);
         }
 
