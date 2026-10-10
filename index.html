@@ -81,7 +81,7 @@
 
                 <!-- UPLOAD FILE LOKAL (Background JPG/PNG & Audio MP3) -->
                 <div class="space-y-3 pt-2 border-t border-slate-800">
-                    <label class="block text-xs font-semibold text-amber-300">Upload Media Lokal (File)</label>
+                    <label class="block text-xs font-semibold text-amber-300">Upload Media Permanen (File)</label>
                     
                     <div>
                         <span class="block text-[11px] text-slate-400 mb-1">Background Cover (JPG, JPEG, PNG)</span>
@@ -144,7 +144,7 @@
     <div id="invitation-page" class="hidden min-h-screen relative overflow-x-hidden">
         <audio id="bg-audio" loop></audio>
 
-        <button id="floating-music-btn" onclick="toggleAudio()" class="hidden fixed bottom-5 right-5 z-50 w-12 h-12 bg-slate-900/80 backdrop-blur border border-slate-700 text-amber-400 rounded-full flex items-center justify-center shadow-xl hover:scale-105 transition-transform">
+        <button id="floating-music-btn" onclick="toggleAudio()" class="hidden fixed bottom-5 right-5 z-50 w-12 h-12 bg-slate-900/85 backdrop-blur border border-slate-700 text-amber-400 rounded-full flex items-center justify-center shadow-xl hover:scale-105 transition-transform">
             <svg id="music-icon" class="w-5 h-5 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
         </button>
 
@@ -252,17 +252,11 @@
         let geofenceInterval = null;
 
         window.addEventListener('DOMContentLoaded', () => {
-            // PAKSA HAPUS CACHE LAMA JIKA MASIH MEMUAT NAMA SALAH
-            const checkSaved = JSON.parse(localStorage.getItem('wedding_config'));
-            if (checkSaved && checkSaved.groom && checkSaved.groom.includes('Nadia')) {
-                localStorage.removeItem('wedding_config');
-            }
-
             loadSavedSettingsToForm();
             parseUrlParameters();
         });
 
-        // Handle File Local (Convert ke Base64 agar tersimpan di localStorage)
+        // Handle File Local (Convert ke Base64 agar tersimpan permanen di localStorage lintas sesi & link tamu)
         function handleMediaUpload(event, type) {
             const file = event.target.files[0];
             if (!file) return;
@@ -277,7 +271,10 @@
                 if (type === 'audio') saved.audio = base64String;
 
                 localStorage.setItem('wedding_config', JSON.stringify(saved));
-                alert(`File ${file.name} berhasil dimuat dan disimpan!`);
+                alert(`File ${file.name} berhasil dimuat dan disimpan secara permanen!`);
+                
+                // Terapkan langsung secara live di halaman aktif
+                applyConfigToView(saved);
             };
             reader.readAsDataURL(file);
         }
@@ -288,32 +285,12 @@
             const mapsParam = urlParams.get('maps');
 
             const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
-            const groom = saved.groom || "M. Raihan Aly";
-            const bride = saved.bride || "Puja Shalehah";
-            const coupleText = `${groom} & ${bride}`;
-
-            document.getElementById('view-couple-names').innerText = coupleText;
+            applyConfigToView(saved);
 
             if (toName) {
                 document.getElementById('admin-page').classList.add('hidden');
                 document.getElementById('invitation-page').classList.remove('hidden');
                 document.getElementById('view-guest-name').innerText = decodeURIComponent(toName.replace(/_/g, ' '));
-
-                if (saved.date) document.getElementById('view-date').innerText = saved.date;
-                if (saved.time) document.getElementById('view-time-box').innerText = saved.time;
-                if (saved.location) {
-                    document.getElementById('view-location-box').innerText = saved.location;
-                    document.getElementById('view-location').innerText = saved.location;
-                }
-                if (saved.maps) document.getElementById('view-maps-btn').href = saved.maps;
-                if (saved.rek) document.getElementById('view-rek').innerText = saved.rek;
-                if (saved.theme) applyTheme(saved.theme);
-                if (saved.audio) document.getElementById('bg-audio').src = saved.audio;
-                
-                if (saved.bg1) document.getElementById('cover-section').style.backgroundImage = `linear-gradient(to bottom, rgba(2,6,23,0.7), rgba(2,6,23,0.95)), url('${saved.bg1}')`;
-                if (saved.bg2) document.getElementById('section-date-loc').style.backgroundImage = `linear-gradient(to bottom, rgba(2,6,23,0.7), rgba(2,6,23,0.95)), url('${saved.bg2}')`;
-
-                renderGallery();
             }
 
             if (mapsParam) {
@@ -324,6 +301,33 @@
                     venueCoordinates.lng = parseFloat(match[2]);
                 }
             }
+        }
+
+        function applyConfigToView(saved) {
+            const groom = saved.groom || "M. Raihan Aly";
+            const bride = saved.bride || "Puja Shalehah";
+            const coupleText = `${groom} & ${bride}`;
+
+            document.getElementById('view-couple-names').innerText = coupleText;
+            if (saved.date) document.getElementById('view-date').innerText = saved.date;
+            if (saved.time) document.getElementById('view-time-box').innerText = saved.time;
+            if (saved.location) {
+                document.getElementById('view-location-box').innerText = saved.location;
+                document.getElementById('view-location').innerText = saved.location;
+            }
+            if (saved.maps) document.getElementById('view-maps-btn').href = saved.maps;
+            if (saved.rek) document.getElementById('view-rek').innerText = saved.rek;
+            if (saved.theme) applyTheme(saved.theme);
+            if (saved.audio) document.getElementById('bg-audio').src = saved.audio;
+            
+            if (saved.bg1) {
+                document.getElementById('cover-section').style.backgroundImage = `linear-gradient(to bottom, rgba(2,6,23,0.7), rgba(2,6,23,0.95)), url('${saved.bg1}')`;
+            }
+            if (saved.bg2) {
+                document.getElementById('section-date-loc').style.backgroundImage = `linear-gradient(to bottom, rgba(2,6,23,0.7), rgba(2,6,23,0.95)), url('${saved.bg2}')`;
+            }
+
+            renderGallery();
         }
 
         function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -592,11 +596,7 @@
             document.getElementById('invitation-page').classList.remove('hidden');
             
             const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
-            document.getElementById('view-couple-names').innerText = `${saved.groom || "M. Raihan Aly"} & ${saved.bride || "Puja Shalehah"}`;
-            if (saved.audio) document.getElementById('bg-audio').src = saved.audio;
-            if (saved.bg1) document.getElementById('cover-section').style.backgroundImage = `linear-gradient(to bottom, rgba(2,6,23,0.7), rgba(2,6,23,0.95)), url('${saved.bg1}')`;
-            
-            renderGallery();
+            applyConfigToView(saved);
         }
 
         function openInvitation() {
