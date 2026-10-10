@@ -105,11 +105,11 @@
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Tanggal & Waktu Acara Target (Format ISO: YYYY-MM-DDTHH:mm:ss)</label>
-                    <input type="text" id="cfg-date" value="2026-10-20T09:00:00" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
+                    <input type="text" id="cfg-date" value="2026-11-15T09:00:00" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Teks Hari & Tanggal (Tampil di Undangan)</label>
-                    <input type="text" id="cfg-date-text" value="Minggu, 20 Oktober 2026" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
+                    <input type="text" id="cfg-date-text" value="Minggu, 15 November 2026" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Waktu / Pukul</label>
@@ -227,7 +227,7 @@
                     <h2 id="view-couple-names" class="text-2xl md:text-3xl font-serif font-bold text-slate-900">M. Raihan Aly & Puja Shalehah</h2>
                     
                     <!-- Hari & Tanggal -->
-                    <p id="view-date-text" class="text-xs md:text-sm font-medium text-slate-800">Minggu, 20 Oktober 2026</p>
+                    <p id="view-date-text" class="text-xs md:text-sm font-medium text-slate-800">Minggu, 15 November 2026</p>
                     
                     <!-- Countdown Timer (Kotak Biru Tua / Navy) -->
                     <div class="grid grid-cols-4 gap-2 pt-2 max-w-xs mx-auto">
@@ -317,7 +317,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                             <div class="p-2 space-y-1">
                                 <p class="text-xs text-slate-700 font-bold uppercase tracking-wider">Tanggal & Waktu</p>
-                                <p id="view-date" class="text-base font-extrabold text-slate-900">Minggu, 20 Oktober 2026</p>
+                                <p id="view-date" class="text-base font-extrabold text-slate-900">Minggu, 15 November 2026</p>
                                 <p id="view-time-box" class="text-xs text-slate-800 font-semibold">Pukul 09.00 WIB - Selesai</p>
                             </div>
                             <div class="p-2 space-y-1">
@@ -327,7 +327,7 @@
                             </div>
                         </div>
 
-                        <!-- PREVIEW PETA INTERAKTIF GOOGLE MAPS LOKASI PRESISI (Tombol di bawahnya telah dihapus) -->
+                        <!-- PREVIEW PETA INTERAKTIF GOOGLE MAPS LOKASI PRESISI -->
                         <div class="max-w-md mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-300 bg-slate-200 aspect-video relative">
                             <iframe 
                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.672583853112!2d107.55106517587428!3d-6.929688467828065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e5ff41b4a081%3A0x6bbf7cb3a3f5a2b1!2sGedung%20Serbaguna%20Dirgantara!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
@@ -408,10 +408,20 @@
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
         const DEFAULT_AUDIO_SRC = 'audio/backsound.mp3';
+        const DEFAULT_TARGET_DATE = '2026-11-15T09:00:00';
+        const DEFAULT_DATE_TEXT = 'Minggu, 15 November 2026';
         let showAllComments = false;
         let countdownTimerInterval = null;
 
         window.addEventListener('DOMContentLoaded', () => {
+            // Bersihkan data lama jika target tanggal masih menggunakan tanggal lama Oktober
+            const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
+            if (!saved.date || saved.date.includes('2026-10-20')) {
+                saved.date = DEFAULT_TARGET_DATE;
+                saved.dateText = DEFAULT_DATE_TEXT;
+                localStorage.setItem('wedding_config', JSON.stringify(saved));
+            }
+
             loadSavedSettingsToForm();
             parseUrlParameters();
             renderComments();
@@ -425,16 +435,18 @@
             });
         });
 
-        // FUNGSI HITUNG MUNDUR (COUNTDOWN TIMER REALTIME AUTOMATIS)
+        // FUNGSI HITUNG MUNDUR REALTIME OTOMATIS
         function startCountdown() {
             if (countdownTimerInterval) clearInterval(countdownTimerInterval);
 
             const updateTimer = () => {
                 const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
-                const targetDateStr = saved.date || '2026-10-20T09:00:00';
-                const targetDate = new Date(targetDateStr).getTime();
+                const targetDateStr = saved.date || DEFAULT_TARGET_DATE;
+                
+                // Gunakan Replace '-' dengan '/' untuk kompatibilitas parsing Date di Safari / Browser Mobile
+                const targetTime = new Date(targetDateStr.replace(/-/g, '/')).getTime() || new Date(targetDateStr).getTime();
                 const now = new Date().getTime();
-                const difference = targetDate - now;
+                const difference = targetTime - now;
 
                 if (difference > 0) {
                     const days = Math.floor(difference / (1000 * 60 * 60 * 24));
@@ -529,8 +541,10 @@
             if (saved.groomIg) document.getElementById('view-groom-ig-btn').href = saved.groomIg;
             if (saved.brideIg) document.getElementById('view-bride-ig-btn').href = saved.brideIg;
 
-            if (saved.dateText) document.getElementById('view-date-text').innerText = saved.dateText;
-            if (saved.dateText) document.getElementById('view-date').innerText = saved.dateText;
+            const dateText = saved.dateText || DEFAULT_DATE_TEXT;
+            document.getElementById('view-date-text').innerText = dateText;
+            document.getElementById('view-date').innerText = dateText;
+
             if (saved.time) document.getElementById('view-time-box').innerText = saved.time;
             if (saved.location) document.getElementById('view-location-box').innerText = saved.location;
             if (saved.address) document.getElementById('view-address-box').innerText = saved.address;
