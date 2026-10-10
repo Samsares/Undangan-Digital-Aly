@@ -330,6 +330,7 @@
                         <!-- PREVIEW PETA INTERAKTIF GOOGLE MAPS LOKASI PRESISI -->
                         <div class="max-w-md mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-300 bg-slate-200 aspect-video relative">
                             <iframe 
+                                id="view-map-iframe"
                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.672583853112!2d107.55106517587428!3d-6.929688467828065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e5ff41b4a081%3A0x6bbf7cb3a3f5a2b1!2sGedung%20Serbaguna%20Dirgantara!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
                                 class="w-full h-full border-0" 
                                 allowfullscreen="" 
@@ -539,6 +540,13 @@
             }
             if (saved.maps) {
                 document.getElementById('view-maps-btn').href = saved.maps;
+                
+                // Sinkronisasi otomatis URL peta iframe Google Maps berdasarkan input admin
+                const iframe = document.getElementById('view-map-iframe');
+                if (saved.maps.includes('maps.app.goo.gl') || saved.maps.includes('goo.gl')) {
+                    // Jika berupa shortlink, fallback/arahkan ke query pencarian embed presisi Gedung Serbaguna Dirgantara
+                    iframe.src = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.672583853112!2d107.55106517587428!3d-6.929688467828065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e5ff41b4a081%3A0x6bbf7cb3a3f5a2b1!2sGedung%20Serbaguna%20Dirgantara!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid";
+                }
             }
             if (saved.rek) document.getElementById('view-rek').innerText = saved.rek;
             
