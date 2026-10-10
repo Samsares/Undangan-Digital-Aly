@@ -137,15 +137,9 @@
                     <input type="text" id="cfg-bank-number" value="1234567890" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
 
-                <!-- UPLOAD GALERI & BACKSOUND -->
+                <!-- BACKSOUND -->
                 <div class="space-y-3 pt-2 border-t border-slate-800">
-                    <label class="block text-xs font-semibold text-slate-100">Pengaturan Media & Galeri</label>
-                    
-                    <div>
-                        <span class="block text-[11px] text-slate-400 mb-1">Upload Foto Galeri Utama (Multiple JPG/PNG)</span>
-                        <input type="file" id="file-gallery" accept=".jpg, .jpeg, .png" multiple onchange="handleGalleryUpload(event)" class="w-full text-[11px] text-slate-400 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[11px] file:font-semibold file:bg-slate-800 file:text-slate-100 hover:file:bg-slate-700 cursor-pointer">
-                    </div>
-
+                    <label class="block text-xs font-semibold text-slate-100">Pengaturan Musik</label>
                     <div>
                         <span class="block text-[11px] text-slate-400 mb-1">Backsound Musik (MP3)</span>
                         <input type="file" id="file-audio" accept=".mp3, audio/mpeg" onchange="handleMediaUpload(event, 'audio')" class="w-full text-[11px] text-slate-400 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[11px] file:font-semibold file:bg-slate-800 file:text-slate-100 hover:file:bg-slate-700 cursor-pointer">
@@ -203,7 +197,7 @@
             <svg id="music-icon" class="w-5 h-5 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
         </button>
 
-        <!-- Cover Section (Menggunakan Background depan1.jpeg) -->
+        <!-- Cover Section -->
         <section id="cover-section" class="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-6 py-10 bg-cover-permanent">
             <div class="max-w-md w-full space-y-3 z-10 mx-auto mt-[28vh]">
                 <p class="text-[11px] uppercase tracking-[0.3em] font-extrabold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">The Wedding Of</p>
@@ -225,17 +219,23 @@
         <!-- Main Content Section -->
         <div id="main-content" class="hidden min-h-screen w-full">
             
-            <!-- 1. BAGIAN ATAS (Background: 1.png, Informasi diatur di bawah area foto bingkai) -->
-            <section class="relative min-h-screen w-full flex flex-col items-center justify-end text-center px-6 pb-20 pt-32 bg-top-section">
-                <div class="max-w-md w-full space-y-5 z-10 mx-auto">
+            <!-- 1. BAGIAN ATAS (Bingkai Disesuaikan ke Proporsi 716x536 px) -->
+            <section class="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-6 py-16 bg-top-section">
+                <div class="max-w-md w-full space-y-6 z-10 mx-auto flex flex-col items-center">
+                    
+                    <!-- BINGKAI FOTO BERUKURAN PROPORSI 716x536 PX -->
+                    <div class="w-full max-w-[420px] aspect-[716/536] overflow-hidden rounded-t-[140px] border-4 border-slate-300/80 shadow-2xl bg-slate-200 relative">
+                        <img src="img/couple.jpg" alt="Foto Pasangan" class="w-full h-full object-cover">
+                    </div>
+
                     <!-- Nama Pengantin -->
                     <h2 id="view-couple-names" class="text-2xl md:text-3xl font-serif font-bold text-slate-900">M. Raihan Aly & Puja Shalehah</h2>
                     
                     <!-- Hari & Tanggal -->
                     <p id="view-date-text" class="text-xs md:text-sm font-medium text-slate-800">Minggu, 15 November 2026</p>
                     
-                    <!-- Countdown Timer (Kotak Biru Tua / Navy) -->
-                    <div class="grid grid-cols-4 gap-2 pt-2 max-w-xs mx-auto">
+                    <!-- Countdown Timer -->
+                    <div class="grid grid-cols-4 gap-2 pt-2 max-w-xs w-full mx-auto">
                         <div class="bg-slate-900 text-slate-100 p-2.5 rounded-xl shadow-lg flex flex-col items-center justify-center">
                             <span id="days" class="text-base md:text-lg font-bold font-mono">00</span>
                             <span class="text-[9px] text-slate-300 font-medium">Hari</span>
@@ -256,9 +256,8 @@
                 </div>
             </section>
 
-            <!-- 2. BAGIAN TENGAH (Background: isi1.jpeg untuk Surah Al-Qur'an, Foto Profil & Link IG Mempelai) -->
+            <!-- 2. BAGIAN TENGAH (Qur'an & Profil) -->
             <section class="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-6 py-20 bg-quran-section space-y-12">
-                <!-- Ayat Al-Qur'an -->
                 <div class="max-w-lg w-full space-y-4 z-10 mx-auto p-4">
                     <h3 class="text-xl md:text-2xl font-serif font-bold text-slate-900">Ar-Rum: 21</h3>
                     <p class="text-xs md:text-sm text-slate-800 font-medium leading-relaxed italic px-2">
@@ -266,22 +265,17 @@
                     </p>
                 </div>
 
-                <!-- Profil Pengantin (Foto, Nama, Orang Tua, & Tombol IG) -->
                 <div class="max-w-md w-full space-y-10 z-10 mx-auto">
-                    
                     <!-- Mempelai Pria -->
                     <div class="flex flex-col items-center space-y-3">
                         <div class="w-32 h-44 overflow-hidden rounded-t-full border-4 border-slate-900/10 shadow-lg bg-slate-200">
-                            <img src="img/depan.jpeg" alt="Foto M. Raihan Aly" class="w-full h-full object-cover">
+                            <img src="img/pria.jpg" alt="Foto M. Raihan Aly" class="w-full h-full object-cover">
                         </div>
-
                         <div class="space-y-1">
                             <h4 id="view-groom-name" class="text-lg md:text-xl font-serif font-bold text-slate-900">M. Raihan Aly</h4>
                             <p class="text-[11px] text-slate-700 font-semibold uppercase tracking-wider">Putra Dari :</p>
-                            <p id="view-groom-parents" class="text-xs text-slate-800 font-bold">Bapak ... & Ibu ...</p>
+                            <p id="view-groom-parents" class="text-xs text-slate-800 font-bold">Bapak Suharyanto & Ibu Lely Ike Handayani</p>
                         </div>
-
-                        <!-- Tombol Instagram Pria -->
                         <a id="view-groom-ig-btn" href="https://www.instagram.com/raihnalyy_?dlrf=MWU2c2trbjJlZHcyOQ==" target="_blank" class="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl shadow-md transition-all mt-1">
                             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                             <span>@raihnalyy_</span>
@@ -293,28 +287,24 @@
                     <!-- Mempelai Wanita -->
                     <div class="flex flex-col items-center space-y-3">
                         <div class="w-32 h-44 overflow-hidden rounded-t-full border-4 border-slate-900/10 shadow-lg bg-slate-200">
-                            <img src="img/depan.jpeg" alt="Foto Puja Shalehah" class="w-full h-full object-cover">
+                            <img src="img/wanita.jpg" alt="Foto Puja Shalehah" class="w-full h-full object-cover">
                         </div>
-
                         <div class="space-y-1">
                             <h4 id="view-bride-name" class="text-lg md:text-xl font-serif font-bold text-slate-900">Puja Shalehah</h4>
                             <p class="text-[11px] text-slate-700 font-semibold uppercase tracking-wider">Putri Dari :</p>
-                            <p id="view-bride-parents" class="text-xs text-slate-800 font-bold">Bapak ... & Ibu ...</p>
+                            <p id="view-bride-parents" class="text-xs text-slate-800 font-bold">Bapak & Ibu (Alm)</p>
                         </div>
-
-                        <!-- Tombol Instagram Wanita -->
                         <a id="view-bride-ig-btn" href="https://www.instagram.com/jaass5_?obrf=MXRqMWN1OHZyejYxcg==" target="_blank" class="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl shadow-md transition-all mt-1">
                             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                             <span>@jaass5_</span>
                         </a>
                     </div>
-
                 </div>
             </section>
 
-            <!-- 3. BAGIAN SELANJUTNYA (Background: bunga.jpeg untuk Waktu & Tempat, Ucapan, Galeri, Kado) -->
+            <!-- 3. BAGIAN SELANJUTNYA (Waktu & Tempat, Our Love Story, Ucapan, Kado Digital) -->
             <div class="bg-bunga-permanent w-full">
-                <!-- Waktu & Tempat (Sejajar & Rapi di Laptop) -->
+                <!-- Waktu & Tempat -->
                 <section id="section-date-loc" class="py-16 md:py-24 px-4 md:px-6 text-center">
                     <div class="max-w-2xl mx-auto space-y-8">
                         <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900">Waktu & Tempat</h2>
@@ -323,16 +313,16 @@
                             <div class="p-2 space-y-1">
                                 <p class="text-xs text-slate-700 font-bold uppercase tracking-wider">Tanggal & Waktu</p>
                                 <p id="view-date" class="text-base font-extrabold text-slate-900">Minggu, 15 November 2026</p>
-                                <p id="view-time-box" class="text-xs text-slate-800 font-semibold">Pukul 8.00 WIB - Selesai</p>
+                                <p id="view-time-box" class="text-xs text-slate-800 font-semibold">Pukul 10.00 WIB - Selesai</p>
                             </div>
                             <div class="p-2 space-y-1">
                                 <p class="text-xs text-slate-700 font-bold uppercase tracking-wider">Lokasi Acara</p>
                                 <p id="view-location-box" class="text-base font-extrabold text-slate-900">Gedung Serbaguna Dirgantara</p>
-                                <p id="view-address-box" class="text-[11px] text-slate-700 font-medium max-w-xs mx-auto leading-snug">Jl. Dirgantara Raya, Gempolsari, Kec. Bandung Kulon, Kota Bandung, Jawa Barat 40215</p>
+                                <p id="view-address-box" class="text-[11px] text-slate-700 font-medium max-w-xs mx-auto leading-snug">3H92+VF7, Jl. Dirgantara Raya, Gempolsari, Kec. Bandung Kulon, Kota Bandung, Jawa Barat 40215</p>
                             </div>
                         </div>
 
-                        <!-- PREVIEW PETA INTERAKTIF GOOGLE MAPS LOKASI PRESISI (Tombol bawah telah dihapus) -->
+                        <!-- Peta Interaktif -->
                         <div class="max-w-md mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-300 bg-slate-200 aspect-video relative">
                             <iframe 
                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.672583853112!2d107.55106517587428!3d-6.929688467828065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e5ff41b4a081%3A0x6bbf7cb3a3f5a2b1!2sGedung%20Serbaguna%20Dirgantara!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
@@ -345,6 +335,48 @@
                     </div>
                 </section>
 
+                <!-- OUR LOVE STORY -->
+                <section class="py-16 md:py-24 px-4 md:px-6 max-w-xl mx-auto space-y-10">
+                    <div class="text-center space-y-2">
+                        <h2 class="text-3xl md:text-4xl font-serif text-amber-900 font-normal italic">Our Love Story</h2>
+                    </div>
+
+                    <div class="relative border-l-2 border-amber-900/60 ml-4 md:ml-8 space-y-12 pl-6 md:pl-8">
+                        <!-- 1. Awal Kisah -->
+                        <div class="relative space-y-2">
+                            <div class="absolute -left-[31px] md:-left-[39px] top-1 w-4 h-4 rounded-full bg-amber-900 border-2 border-white shadow"></div>
+                            <h3 class="text-base font-serif font-bold text-slate-900">Awal Kisah</h3>
+                            <p class="text-xs text-slate-800 font-medium leading-relaxed">
+                                Pada awalnya, kami adalah dua orang asing yang berjalan di jalannya masing-masing. Tak saling kenal, tak saling sapa. Hingga semesta dengan caranya yang indah, mempertemukan kami di satu titik yang sama.
+                            </p>
+                        </div>
+
+                        <!-- 2. Tumbuh Bersama -->
+                        <div class="relative space-y-2">
+                            <div class="absolute -left-[31px] md:-left-[39px] top-1 w-4 h-4 rounded-full bg-amber-900 border-2 border-white shadow"></div>
+                            <h3 class="text-base font-serif font-bold text-slate-900">Tumbuh Bersama</h3>
+                            <p class="text-xs text-slate-800 font-medium leading-relaxed">
+                                Percakapan sederhana menjadi tawa yang panjang. Tawa yang panjang menjadi nyaman yang menetap. Dan nyaman itu pelan-pelan berubah menjadi cinta yang tak kami rencanakan.
+                            </p>
+                            <p class="text-xs text-slate-800 font-medium leading-relaxed pt-1">
+                                Kami belajar bahwa cinta bukan tentang seberapa cepat ia datang, tapi tentang seberapa yakin ia tinggal.
+                            </p>
+                        </div>
+
+                        <!-- 3. Janji Setia -->
+                        <div class="relative space-y-2">
+                            <div class="absolute -left-[31px] md:-left-[39px] top-1 w-4 h-4 rounded-full bg-amber-900 border-2 border-white shadow"></div>
+                            <h3 class="text-base font-serif font-bold text-slate-900">Janji Setia</h3>
+                            <p class="text-xs text-slate-800 font-medium leading-relaxed">
+                                Dan kini, setelah melalui waktu, doa, dan restu, kami yakin bahwa pertemuan ini bukan kebetulan. Ini adalah jawaban dari doa-doa yang kami langitkan diam-diam.
+                            </p>
+                            <p class="text-xs text-slate-800 font-medium leading-relaxed pt-1">
+                                Dengan memohon ridho Allah SWT, kami memutuskan untuk menyempurnakan separuh agama, dan melangkah bersama dalam satu tujuan: ibadah terpanjang.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- Ucapan & Doa -->
                 <section class="py-16 md:py-24 px-4 md:px-6 max-w-2xl mx-auto space-y-8">
                     <div class="text-center space-y-2">
@@ -352,7 +384,6 @@
                         <p class="text-xs text-slate-800 font-semibold">Berikan ucapan, doa, dan konfirmasi kehadiran untuk kedua mempelai.</p>
                     </div>
 
-                    <!-- Form Ucapan -->
                     <div class="space-y-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-900 mb-1">Nama Tamu</label>
@@ -363,6 +394,7 @@
                             <select id="comment-attendance" class="w-full bg-slate-100/60 border border-slate-400/80 rounded-xl px-3 py-2 text-xs text-slate-900 font-semibold focus:outline-none focus:border-slate-900">
                                 <option value="Hadir">Hadir</option>
                                 <option value="Tidak Hadir">Tidak Hadir</option>
+                                <option value="Masih Ragu">Masih Ragu</option>
                             </select>
                         </div>
                         <div>
@@ -385,15 +417,8 @@
                     </div>
                 </section>
 
-                <!-- Galeri & Kado Digital -->
-                <section id="section-gallery-envelope" class="py-16 md:py-24 px-4 md:px-6 max-w-4xl mx-auto space-y-12">
-                    <div class="text-center space-y-3">
-                        <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900">Galeri Spesial</h2>
-                    </div>
-
-                    <div id="view-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4"></div>
-
-                    <!-- KADO DIGITAL (Format Vertikal) -->
+                <!-- Kado Digital -->
+                <section class="py-16 md:py-24 px-4 md:px-6 max-w-4xl mx-auto space-y-12">
                     <div class="p-6 text-center max-w-md mx-auto space-y-4">
                         <h3 class="text-lg font-serif font-bold text-slate-900">Kado Digital</h3>
                         <p class="text-xs text-slate-800 font-semibold leading-relaxed">
@@ -403,7 +428,7 @@
                         <div class="p-4 bg-slate-100/70 border border-slate-300 rounded-2xl shadow-sm space-y-1.5 text-center">
                             <p id="view-bank-name" class="text-base font-extrabold text-slate-900 tracking-wider">BCA</p>
                             <p id="view-bank-owner" class="text-xs font-bold text-slate-700">a.n M. Raihan Aly</p>
-                            <p id="view-bank-number" class="text-lg font-mono font-extrabold text-slate-900 tracking-widest pt-1">6765293239</p>
+                            <p id="view-bank-number" class="text-lg font-mono font-extrabold text-slate-900 tracking-widest pt-1">1234567890</p>
                         </div>
 
                         <button onclick="copyRek(this)" class="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-xs rounded-xl font-bold text-slate-100 transition-colors shadow-md">
@@ -445,7 +470,7 @@
             });
         });
 
-        // FUNGSI HITUNG MUNDUR REALTIME OTOMATIS BERJALAN KETIKA LINK DIBUKA
+        // HITUNG MUNDUR REALTIME OTOMATIS
         function startCountdown() {
             if (countdownTimerInterval) clearInterval(countdownTimerInterval);
 
@@ -494,29 +519,6 @@
                 applyConfigToView(saved);
             };
             reader.readAsDataURL(file);
-        }
-
-        function handleGalleryUpload(event) {
-            const files = event.target.files;
-            if (!files || files.length === 0) return;
-
-            const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
-            if (!saved.photos) saved.photos = [];
-
-            let loadedCount = 0;
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    saved.photos.push(e.target.result);
-                    loadedCount++;
-                    if (loadedCount === files.length) {
-                        localStorage.setItem('wedding_config', JSON.stringify(saved));
-                        alert(`${files.length} foto berhasil ditambahkan ke galeri!`);
-                        renderGallery();
-                    }
-                };
-                reader.readAsDataURL(file);
-            });
         }
 
         function parseUrlParameters() {
@@ -568,7 +570,6 @@
                 document.getElementById('bg-audio').src = DEFAULT_AUDIO_SRC;
             }
 
-            renderGallery();
             renderComments();
             startCountdown();
         }
@@ -653,24 +654,6 @@
 
         function escapeHtml(string) {
             return String(string).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-        }
-
-        function renderGallery() {
-            const savedData = JSON.parse(localStorage.getItem('wedding_config')) || {};
-            const galleryGrid = document.getElementById('view-gallery-grid');
-            
-            let photosList = [];
-            if (savedData.photos) photosList.push(...savedData.photos);
-
-            if (photosList.length > 0) {
-                galleryGrid.innerHTML = photosList.map(url => `
-                    <div class="overflow-hidden rounded-2xl bg-slate-200/50 border border-slate-300 aspect-square shadow-sm">
-                        <img src="${url}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-                    </div>
-                `).join('');
-            } else {
-                galleryGrid.innerHTML = `<p class="col-span-full text-center text-xs text-slate-800 font-semibold">Belum ada foto galeri.</p>`;
-            }
         }
 
         function downloadExcelTemplate() {
