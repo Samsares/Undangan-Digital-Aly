@@ -160,26 +160,26 @@
             <svg id="music-icon" class="w-5 h-5 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
         </button>
 
-        <!-- Cover Section (Tanpa Kotak, Semua Teks Hitam) -->
-        <section id="cover-section" class="relative min-h-screen w-full flex flex-col items-center justify-center text-center p-6 bg-cover-permanent">
-            <div class="max-w-md w-full space-y-6 z-10 mx-auto">
+        <!-- Cover Section (Posisi Tulisan Digeser ke Bawah Agar Tidak Menutupi Wajah) -->
+        <section id="cover-section" class="relative min-h-screen w-full flex flex-col items-center justify-end text-center px-6 pb-12 md:pb-16 bg-cover-permanent">
+            <div class="max-w-md w-full space-y-4 z-10 mx-auto">
                 <p class="text-xs uppercase tracking-[0.3em] font-bold text-slate-900">The Wedding Of</p>
-                <h1 id="view-couple-names" class="text-3xl md:text-5xl font-serif font-bold text-slate-900">M. Raihan Aly & Puja Shalehah</h1>
+                <h1 id="view-couple-names" class="text-2xl md:text-4xl font-serif font-bold text-slate-900">M. Raihan Aly & Puja Shalehah</h1>
                 
-                <div class="py-2 px-4 inline-block">
+                <div class="py-1 px-4 inline-block">
                     <p class="text-[11px] text-slate-700 uppercase tracking-wider font-semibold">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
-                    <p id="view-guest-name" class="text-lg font-extrabold text-slate-900 mt-1">Tamu Kehormatan</p>
+                    <p id="view-guest-name" class="text-base font-extrabold text-slate-900 mt-0.5">Tamu Kehormatan</p>
                 </div>
                 
-                <p class="text-xs text-slate-800 font-semibold max-w-xs mx-auto">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.</p>
+                <p class="text-[11px] text-slate-800 font-semibold max-w-xs mx-auto leading-relaxed">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.</p>
                 
-                <button onclick="openInvitation()" class="px-8 py-3 bg-slate-900 hover:bg-slate-800 text-slate-100 text-xs font-bold rounded-2xl shadow-xl transition-all">
+                <button onclick="openInvitation()" class="px-8 py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-100 text-xs font-bold rounded-2xl shadow-xl transition-all mt-2">
                     Buka Undangan
                 </button>
             </div>
         </section>
 
-        <!-- Main Content Section (Tanpa Kotak, Semua Teks Hitam) -->
+        <!-- Main Content Section -->
         <div id="main-content" class="hidden bg-content-permanent min-h-screen w-full">
             <section id="section-date-loc" class="py-16 md:py-24 px-4 md:px-6 text-center">
                 <div class="max-w-xl mx-auto space-y-8">
@@ -204,14 +204,14 @@
                 </div>
             </section>
 
-            <!-- Ucapan & Doa (Form Clean & Tanpa Kotak Hitam) -->
+            <!-- Ucapan & Doa -->
             <section class="py-16 md:py-24 px-4 md:px-6 max-w-2xl mx-auto space-y-8">
                 <div class="text-center space-y-2">
                     <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900">Ucapan & Doa Restu</h2>
                     <p class="text-xs text-slate-800 font-semibold">Berikan ucapan, doa, dan konfirmasi kehadiran untuk kedua mempelai.</p>
                 </div>
 
-                <!-- Form Tanpa Kotak Hitam -->
+                <!-- Form Ucapan -->
                 <div class="space-y-4">
                     <div>
                         <label class="block text-xs font-bold text-slate-900 mb-1">Nama Tamu</label>
@@ -253,7 +253,6 @@
 
                 <div id="view-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4"></div>
 
-                <!-- Kado Digital Tanpa Kotak Latar Belakang Gelap -->
                 <div class="p-4 text-center max-w-md mx-auto space-y-3">
                     <h3 class="text-base font-serif font-bold text-slate-900">Kado Digital</h3>
                     <p class="text-xs text-slate-800 font-semibold">Doa restu Anda merupakan karunia terindah bagi kami. Namun jika ingin mengirimkan tanda kasih:</p>
@@ -271,9 +270,6 @@
 
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
-        /* =========================================================================
-           PATH FILE FOTO BACKGROUND & AUDIO LOKAL
-           ========================================================================= */
         const DEFAULT_COVER_BG = 'img/depan1.jpeg';
         const DEFAULT_CONTENT_BG = 'img/isi.jpeg';
         const DEFAULT_AUDIO_SRC = 'audio/backsound.mp3';
@@ -370,7 +366,6 @@
             if (saved.maps) document.getElementById('view-maps-btn').href = saved.maps;
             if (saved.rek) document.getElementById('view-rek').innerText = saved.rek;
             
-            // Pengaturan pemutaran musik (Lokal vs LocalStorage)
             if (saved.audio) {
                 document.getElementById('bg-audio').src = saved.audio;
             } else {
@@ -427,7 +422,6 @@
             const limit = showAllComments ? comments.length : 5;
             const displayedComments = comments.slice(0, limit);
 
-            // Komentar Tampil Clean Tanpa Kotak Hitam
             container.innerHTML = displayedComments.map(c => {
                 let badgeColor = "bg-emerald-100 text-emerald-800 border border-emerald-300";
                 if (c.attendance === "Tidak Hadir") badgeColor = "bg-rose-100 text-rose-800 border border-rose-300";
