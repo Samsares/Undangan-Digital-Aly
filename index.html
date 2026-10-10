@@ -313,12 +313,12 @@
 
             <!-- 3. BAGIAN SELANJUTNYA (Background: bunga.jpeg untuk Waktu & Tempat, Ucapan, Galeri, Kado) -->
             <div class="bg-bunga-permanent w-full">
-                <!-- Waktu & Tempat -->
+                <!-- Waktu & Tempat (Diatur Sejajar / items-start pada Laptop) -->
                 <section id="section-date-loc" class="py-16 md:py-24 px-4 md:px-6 text-center">
-                    <div class="max-w-xl mx-auto space-y-8">
+                    <div class="max-w-2xl mx-auto space-y-8">
                         <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900">Waktu & Tempat</h2>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
                             <div class="p-2 space-y-1">
                                 <p class="text-xs text-slate-700 font-bold uppercase tracking-wider">Tanggal & Waktu</p>
                                 <p id="view-date" class="text-base font-extrabold text-slate-900">Minggu, 15 November 2026</p>
@@ -400,7 +400,6 @@
                             Doa restu Anda merupakan karunia terindah bagi kami. Namun jika ingin mengirimkan tanda kasih:
                         </p>
                         
-                        <!-- KOTAK REKENING TAMPILAN VERTIKAL -->
                         <div class="p-4 bg-slate-100/70 border border-slate-300 rounded-2xl shadow-sm space-y-1.5 text-center">
                             <p id="view-bank-name" class="text-base font-extrabold text-slate-900 tracking-wider">BCA</p>
                             <p id="view-bank-owner" class="text-xs font-bold text-slate-700">a.n M. Raihan Aly</p>
@@ -427,7 +426,6 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
-            // Otomatis update ke target 15 November 2026 jam 10:00 jika belum terset
             if (!saved.date || !saved.date.includes('2026-11-15')) {
                 saved.date = DEFAULT_TARGET_DATE;
                 saved.dateText = DEFAULT_DATE_TEXT;
@@ -447,7 +445,7 @@
             });
         });
 
-        // FUNGSI HITUNG MUNDUR REALTIME OTOMATIS BERJALAN KETIKA LINK DIBUKA
+        // FUNGSI HITUNG MUNDUR REALTIME OTOMATIS
         function startCountdown() {
             if (countdownTimerInterval) clearInterval(countdownTimerInterval);
 
