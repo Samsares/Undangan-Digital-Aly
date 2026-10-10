@@ -22,14 +22,15 @@
             animation: spinSlow 8s linear infinite;
         }
 
-        /* STYLING BACKGROUND MURNI LOKAL */
+        /* STYLING BACKGROUND COVER DEPAN (depan1.jpeg) */
         .bg-cover-permanent {
-            background-image: url('img/depan1.png');
+            background-image: url('img/depan1.jpeg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
         }
 
+        /* STYLING BACKGROUND BAGIAN ATAS */
         .bg-top-section {
             background-image: url('img/1.png');
             background-size: cover;
@@ -202,7 +203,7 @@
             <svg id="music-icon" class="w-5 h-5 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
         </button>
 
-        <!-- Cover Section -->
+        <!-- Cover Section (Menggunakan Background depan1.jpeg) -->
         <section id="cover-section" class="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-6 py-10 bg-cover-permanent">
             <div class="max-w-md w-full space-y-3 z-10 mx-auto mt-[28vh]">
                 <p class="text-[11px] uppercase tracking-[0.3em] font-extrabold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">The Wedding Of</p>
@@ -313,7 +314,7 @@
 
             <!-- 3. BAGIAN SELANJUTNYA (Background: bunga.jpeg untuk Waktu & Tempat, Ucapan, Galeri, Kado) -->
             <div class="bg-bunga-permanent w-full">
-                <!-- Waktu & Tempat (Diatur Sejajar / items-start pada Laptop) -->
+                <!-- Waktu & Tempat (Sejajar & Rapi di Laptop) -->
                 <section id="section-date-loc" class="py-16 md:py-24 px-4 md:px-6 text-center">
                     <div class="max-w-2xl mx-auto space-y-8">
                         <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900">Waktu & Tempat</h2>
@@ -331,7 +332,7 @@
                             </div>
                         </div>
 
-                        <!-- PREVIEW PETA INTERAKTIF GOOGLE MAPS LOKASI PRESISI -->
+                        <!-- PREVIEW PETA INTERAKTIF GOOGLE MAPS LOKASI PRESISI (Tombol bawah telah dihapus) -->
                         <div class="max-w-md mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-300 bg-slate-200 aspect-video relative">
                             <iframe 
                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.672583853112!2d107.55106517587428!3d-6.929688467828065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e5ff41b4a081%3A0x6bbf7cb3a3f5a2b1!2sGedung%20Serbaguna%20Dirgantara!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
@@ -393,7 +394,7 @@
 
                     <div id="view-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4"></div>
 
-                    <!-- KADO DIGITAL -->
+                    <!-- KADO DIGITAL (Format Vertikal) -->
                     <div class="p-6 text-center max-w-md mx-auto space-y-4">
                         <h3 class="text-lg font-serif font-bold text-slate-900">Kado Digital</h3>
                         <p class="text-xs text-slate-800 font-semibold leading-relaxed">
@@ -445,7 +446,7 @@
             });
         });
 
-        // FUNGSI HITUNG MUNDUR REALTIME OTOMATIS
+        // FUNGSI HITUNG MUNDUR REALTIME OTOMATIS BERJALAN KETIKA LINK DIBUKA
         function startCountdown() {
             if (countdownTimerInterval) clearInterval(countdownTimerInterval);
 
