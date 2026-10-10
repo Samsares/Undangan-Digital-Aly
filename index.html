@@ -22,7 +22,7 @@
             animation: spinSlow 8s linear infinite;
         }
 
-        /* STYLING BACKGROUND SESUAI URUTAN SECTION */
+        /* STYLING BACKGROUND MURNI LOKAL PER SEKSI */
         .bg-cover-permanent {
             background-image: var(--cover-bg);
             background-size: cover;
@@ -30,25 +30,22 @@
             background-repeat: no-repeat;
         }
 
-        /* Background Top Section (1.png) */
-        .bg-section-top {
-            background-image: var(--top-bg);
+        .bg-section-1 {
+            background-image: url('img/1.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
         }
 
-        /* Background Ayat Al-Qur'an (isi1.jpeg) */
-        .bg-section-ayat {
-            background-image: var(--ayat-bg);
+        .bg-section-quran {
+            background-image: url('img/isi1.jpeg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
         }
 
-        /* Background Seterusnya (isi.jpeg) */
-        .bg-section-isi {
-            background-image: var(--content-bg);
+        .bg-section-full {
+            background-image: url('img/isi.jpeg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -173,7 +170,7 @@
         <section id="cover-section" class="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-6 py-10 bg-cover-permanent">
             <div class="max-w-md w-full space-y-3 z-10 mx-auto mt-[28vh]">
                 <p class="text-[11px] uppercase tracking-[0.3em] font-extrabold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">The Wedding Of</p>
-                <h1 id="view-couple-names-cover" class="text-2xl md:text-4xl font-serif font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">M. Raihan Aly & Puja Shalehah</h1>
+                <h1 id="view-couple-names" class="text-2xl md:text-4xl font-serif font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">M. Raihan Aly & Puja Shalehah</h1>
                 
                 <div class="py-1 px-4 inline-block">
                     <p class="text-[10px] text-slate-200 uppercase tracking-wider font-bold drop-shadow">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
@@ -191,56 +188,46 @@
         <!-- Main Content Section -->
         <div id="main-content" class="hidden min-h-screen w-full">
             
-            <!-- SECTION 1: BACKGROUND 1.png (Header, Nama Pengantin, Tanggal, & Countdown Timer) -->
-            <section class="bg-section-top min-h-screen flex flex-col items-center justify-end pb-12 pt-40 px-6 text-center">
-                <div class="max-w-md w-full space-y-4 mx-auto">
-                    <!-- Nama Mempelai -->
-                    <h2 id="view-couple-names-main" class="text-3xl md:text-5xl font-serif font-bold text-slate-900 tracking-wide">
-                        M. Raihan Aly & Puja Shalehah
-                    </h2>
+            <!-- 1. SEKSI PALING ATAS (Background 1.png - Nama Mempelai, Tanggal, & Countdown Waktu Mundur) -->
+            <section class="bg-section-1 min-h-screen w-full flex flex-col justify-end items-center text-center px-4 pb-16 pt-64">
+                <div class="max-w-md w-full space-y-4">
+                    <h2 id="section1-couple-names" class="text-3xl md:text-4xl font-serif font-bold text-slate-900">M. Raihan Aly & Puja Shalehah</h2>
+                    <p id="section1-date" class="text-xs md:text-sm font-bold text-slate-700">Minggu, 20 Oktober 2026</p>
                     
-                    <!-- Hari & Tanggal -->
-                    <p id="view-date-top" class="text-sm md:text-base font-semibold text-slate-800 font-serif">
-                        Minggu, 20 Oktober 2026
-                    </p>
-
-                    <!-- Countdown Timer Waktu Mundur (4 Kotak Biru Persis Seperti Gambar) -->
-                    <div class="grid grid-cols-4 gap-2 md:gap-3 pt-3 max-w-xs mx-auto">
-                        <div class="bg-[#1e295d] text-white p-2.5 md:p-3 rounded-2xl shadow-md flex flex-col justify-center items-center">
-                            <span id="cd-days" class="text-lg md:text-2xl font-bold font-serif leading-tight">00</span>
-                            <span class="text-[9px] md:text-[10px] font-medium opacity-80">Hari</span>
+                    <!-- KOTAK WAKTU MUNDUR (COUNTDOWN) -->
+                    <div class="grid grid-cols-4 gap-2 pt-2 max-w-xs mx-auto">
+                        <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md">
+                            <span id="cd-days" class="block text-base font-extrabold">00</span>
+                            <span class="text-[10px] font-medium text-slate-300">Hari</span>
                         </div>
-                        <div class="bg-[#1e295d] text-white p-2.5 md:p-3 rounded-2xl shadow-md flex flex-col justify-center items-center">
-                            <span id="cd-hours" class="text-lg md:text-2xl font-bold font-serif leading-tight">00</span>
-                            <span class="text-[9px] md:text-[10px] font-medium opacity-80">Jam</span>
+                        <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md">
+                            <span id="cd-hours" class="block text-base font-extrabold">00</span>
+                            <span class="text-[10px] font-medium text-slate-300">Jam</span>
                         </div>
-                        <div class="bg-[#1e295d] text-white p-2.5 md:p-3 rounded-2xl shadow-md flex flex-col justify-center items-center">
-                            <span id="cd-minutes" class="text-lg md:text-2xl font-bold font-serif leading-tight">00</span>
-                            <span class="text-[9px] md:text-[10px] font-medium opacity-80">Menit</span>
+                        <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md">
+                            <span id="cd-minutes" class="block text-base font-extrabold">00</span>
+                            <span class="text-[10px] font-medium text-slate-300">Menit</span>
                         </div>
-                        <div class="bg-[#1e295d] text-white p-2.5 md:p-3 rounded-2xl shadow-md flex flex-col justify-center items-center">
-                            <span id="cd-seconds" class="text-lg md:text-2xl font-bold font-serif leading-tight">00</span>
-                            <span class="text-[9px] md:text-[10px] font-medium opacity-80">Detik</span>
+                        <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md">
+                            <span id="cd-seconds" class="block text-base font-extrabold">00</span>
+                            <span class="text-[10px] font-medium text-slate-300">Detik</span>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- SECTION 2: BACKGROUND isi1.jpeg (Cuitan / Kutipan Ayat Al-Qur'an tentang Pernikahan) -->
-            <section class="bg-section-ayat py-20 px-6 text-center flex flex-col items-center justify-center">
-                <div class="max-w-lg mx-auto space-y-4">
-                    <span class="text-2xl font-serif text-slate-800">﷽</span>
-                    <p class="text-xs md:text-sm font-serif italic text-slate-800 leading-relaxed max-w-md mx-auto">
+            <!-- 2. SEKSI KUTIPAN AYAT AL-QUR'AN (Background isi1.jpeg) -->
+            <section class="bg-section-quran min-h-[60vh] w-full flex flex-col items-center justify-center text-center px-6 py-16">
+                <div class="max-w-md mx-auto space-y-4">
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-slate-700">QS. Ar-Rum: 21</h3>
+                    <p class="text-xs md:text-sm italic font-medium leading-relaxed text-slate-800">
                         "Dan di antara tanda-tanda (kebesaran-Nya) ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang."
-                    </p>
-                    <p class="text-[11px] font-bold text-slate-900 uppercase tracking-widest">
-                        (QS. Ar-Rum: 21)
                     </p>
                 </div>
             </section>
 
-            <!-- SECTION 3 & SETERUSNYA: BACKGROUND isi.jpeg (Waktu & Tempat, Ucapan, Galeri, Kado Digital) -->
-            <div class="bg-section-isi">
+            <!-- 3. SEKSI DIBAWAHNYA LENGKAP (Background isi.jpeg FULL) -->
+            <div class="bg-section-full min-h-screen w-full">
                 <!-- Waktu & Tempat -->
                 <section id="section-date-loc" class="py-16 md:py-24 px-4 md:px-6 text-center">
                     <div class="max-w-xl mx-auto space-y-8">
@@ -272,7 +259,6 @@
                         <p class="text-xs text-slate-800 font-semibold">Berikan ucapan, doa, dan konfirmasi kehadiran untuk kedua mempelai.</p>
                     </div>
 
-                    <!-- Form Ucapan -->
                     <div class="space-y-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-900 mb-1">Nama Tamu</label>
@@ -332,13 +318,7 @@
 
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
-        /* =========================================================================
-           PATH FILE FOTO BACKGROUND & AUDIO LOKAL
-           ========================================================================= */
         const DEFAULT_COVER_BG = 'img/depan1.jpeg';
-        const DEFAULT_TOP_BG = 'img/1.png';
-        const DEFAULT_AYAT_BG = 'img/isi1.jpeg';
-        const DEFAULT_CONTENT_BG = 'img/isi.jpeg';
         const DEFAULT_AUDIO_SRC = 'audio/backsound.mp3';
 
         let showAllComments = false;
@@ -349,7 +329,6 @@
             loadSavedSettingsToForm();
             parseUrlParameters();
             renderComments();
-            startCountdown("2026-10-20T08:00:00");
 
             window.addEventListener('storage', (e) => {
                 if (e.key === 'wedding_config') {
@@ -360,41 +339,6 @@
 
         function initBackgrounds() {
             document.documentElement.style.setProperty('--cover-bg', `url('${DEFAULT_COVER_BG}')`);
-            document.documentElement.style.setProperty('--top-bg', `url('${DEFAULT_TOP_BG}')`);
-            document.documentElement.style.setProperty('--ayat-bg', `url('${DEFAULT_AYAT_BG}')`);
-            document.documentElement.style.setProperty('--content-bg', `url('${DEFAULT_CONTENT_BG}')`);
-        }
-
-        // Fungsi Waktu Mundur (Countdown Timer)
-        function startCountdown(targetDateStr) {
-            if (countdownInterval) clearInterval(countdownInterval);
-            const targetTime = new Date(targetDateStr).getTime();
-
-            function update() {
-                const now = new Date().getTime();
-                const diff = targetTime - now;
-
-                if (diff <= 0) {
-                    document.getElementById('cd-days').innerText = "00";
-                    document.getElementById('cd-hours').innerText = "00";
-                    document.getElementById('cd-minutes').innerText = "00";
-                    document.getElementById('cd-seconds').innerText = "00";
-                    return;
-                }
-
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-                document.getElementById('cd-days').innerText = days < 10 ? '0' + days : days;
-                document.getElementById('cd-hours').innerText = hours < 10 ? '0' + hours : hours;
-                document.getElementById('cd-minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
-                document.getElementById('cd-seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
-            }
-
-            update();
-            countdownInterval = setInterval(update, 1000);
         }
 
         function handleMediaUpload(event, type) {
@@ -454,17 +398,48 @@
             }
         }
 
+        function startCountdown(dateString) {
+            if (countdownInterval) clearInterval(countdownInterval);
+
+            // Set default ke 20 Oktober 2026 jika string tidak terurai
+            let targetDate = new Date("2026-10-20T08:00:00").getTime();
+
+            countdownInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                if (distance < 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById('cd-days').innerText = "00";
+                    document.getElementById('cd-hours').innerText = "00";
+                    document.getElementById('cd-minutes').innerText = "00";
+                    document.getElementById('cd-seconds').innerText = "00";
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById('cd-days').innerText = days < 10 ? '0' + days : days;
+                document.getElementById('cd-hours').innerText = hours < 10 ? '0' + hours : hours;
+                document.getElementById('cd-minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
+                document.getElementById('cd-seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
+            }, 1000);
+        }
+
         function applyConfigToView(saved) {
             const groom = saved.groom || "M. Raihan Aly";
             const bride = saved.bride || "Puja Shalehah";
             const coupleText = `${groom} & ${bride}`;
 
-            document.getElementById('view-couple-names-cover').innerText = coupleText;
-            document.getElementById('view-couple-names-main').innerText = coupleText;
+            document.getElementById('view-couple-names').innerText = coupleText;
+            document.getElementById('section1-couple-names').innerText = coupleText;
             
             if (saved.date) {
-                document.getElementById('view-date-top').innerText = saved.date;
                 document.getElementById('view-date').innerText = saved.date;
+                document.getElementById('section1-date').innerText = saved.date;
             }
             if (saved.time) document.getElementById('view-time-box').innerText = saved.time;
             if (saved.location) {
@@ -480,6 +455,7 @@
                 document.getElementById('bg-audio').src = DEFAULT_AUDIO_SRC;
             }
 
+            startCountdown(saved.date);
             renderGallery();
             renderComments();
         }
