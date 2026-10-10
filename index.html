@@ -22,27 +22,36 @@
             animation: spinSlow 8s linear infinite;
         }
 
-        /* STYLING BACKGROUND MURNI LOKAL */
+        /* STYLING BACKGROUND SESUAI URUTAN SECTION */
         .bg-cover-permanent {
             background-image: var(--cover-bg);
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
         }
-        
-        .bg-content-permanent {
-            background-image: var(--content-bg);
-            background-size: contain;
-            background-position: top center;
-            background-repeat: repeat-y;
-            background-attachment: scroll;
+
+        /* Background Top Section (1.png) */
+        .bg-section-top {
+            background-image: var(--top-bg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
-        @media (min-width: 1024px) {
-            .bg-content-permanent {
-                background-size: cover;
-                background-attachment: fixed;
-            }
+        /* Background Ayat Al-Qur'an (isi1.jpeg) */
+        .bg-section-ayat {
+            background-image: var(--ayat-bg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Background Seterusnya (isi.jpeg) */
+        .bg-section-isi {
+            background-image: var(--content-bg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
     </style>
 </head>
@@ -160,11 +169,11 @@
             <svg id="music-icon" class="w-5 h-5 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
         </button>
 
-        <!-- Cover Section (Posisi digeser ke atas mulai dari leher ke bawah, Teks Warna Putih) -->
+        <!-- Cover Section -->
         <section id="cover-section" class="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-6 py-10 bg-cover-permanent">
             <div class="max-w-md w-full space-y-3 z-10 mx-auto mt-[28vh]">
                 <p class="text-[11px] uppercase tracking-[0.3em] font-extrabold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">The Wedding Of</p>
-                <h1 id="view-couple-names" class="text-2xl md:text-4xl font-serif font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">M. Raihan Aly & Puja Shalehah</h1>
+                <h1 id="view-couple-names-cover" class="text-2xl md:text-4xl font-serif font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">M. Raihan Aly & Puja Shalehah</h1>
                 
                 <div class="py-1 px-4 inline-block">
                     <p class="text-[10px] text-slate-200 uppercase tracking-wider font-bold drop-shadow">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
@@ -180,107 +189,167 @@
         </section>
 
         <!-- Main Content Section -->
-        <div id="main-content" class="hidden bg-content-permanent min-h-screen w-full">
-            <section id="section-date-loc" class="py-16 md:py-24 px-4 md:px-6 text-center">
-                <div class="max-w-xl mx-auto space-y-8">
-                    <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900">Waktu & Tempat</h2>
+        <div id="main-content" class="hidden min-h-screen w-full">
+            
+            <!-- SECTION 1: BACKGROUND 1.png (Header, Nama Pengantin, Tanggal, & Countdown Timer) -->
+            <section class="bg-section-top min-h-screen flex flex-col items-center justify-end pb-12 pt-40 px-6 text-center">
+                <div class="max-w-md w-full space-y-4 mx-auto">
+                    <!-- Nama Mempelai -->
+                    <h2 id="view-couple-names-main" class="text-3xl md:text-5xl font-serif font-bold text-slate-900 tracking-wide">
+                        M. Raihan Aly & Puja Shalehah
+                    </h2>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="p-2 space-y-1">
-                            <p class="text-xs text-slate-700 font-bold uppercase tracking-wider">Tanggal & Waktu</p>
-                            <p id="view-date" class="text-base font-extrabold text-slate-900">Minggu, 20 Oktober 2026</p>
-                            <p id="view-time-box" class="text-xs text-slate-800 font-semibold">08.00 WIB - Selesai</p>
+                    <!-- Hari & Tanggal -->
+                    <p id="view-date-top" class="text-sm md:text-base font-semibold text-slate-800 font-serif">
+                        Minggu, 20 Oktober 2026
+                    </p>
+
+                    <!-- Countdown Timer Waktu Mundur (4 Kotak Biru Persis Seperti Gambar) -->
+                    <div class="grid grid-cols-4 gap-2 md:gap-3 pt-3 max-w-xs mx-auto">
+                        <div class="bg-[#1e295d] text-white p-2.5 md:p-3 rounded-2xl shadow-md flex flex-col justify-center items-center">
+                            <span id="cd-days" class="text-lg md:text-2xl font-bold font-serif leading-tight">00</span>
+                            <span class="text-[9px] md:text-[10px] font-medium opacity-80">Hari</span>
                         </div>
-                        <div class="p-2 space-y-1">
-                            <p class="text-xs text-slate-700 font-bold uppercase tracking-wider">Lokasi Acara</p>
-                            <p id="view-location-box" class="text-base font-extrabold text-slate-900">Grand Ballroom Hotel Savoy Homann</p>
-                            <p id="view-location" class="text-xs text-slate-800 font-semibold">Bandung</p>
+                        <div class="bg-[#1e295d] text-white p-2.5 md:p-3 rounded-2xl shadow-md flex flex-col justify-center items-center">
+                            <span id="cd-hours" class="text-lg md:text-2xl font-bold font-serif leading-tight">00</span>
+                            <span class="text-[9px] md:text-[10px] font-medium opacity-80">Jam</span>
+                        </div>
+                        <div class="bg-[#1e295d] text-white p-2.5 md:p-3 rounded-2xl shadow-md flex flex-col justify-center items-center">
+                            <span id="cd-minutes" class="text-lg md:text-2xl font-bold font-serif leading-tight">00</span>
+                            <span class="text-[9px] md:text-[10px] font-medium opacity-80">Menit</span>
+                        </div>
+                        <div class="bg-[#1e295d] text-white p-2.5 md:p-3 rounded-2xl shadow-md flex flex-col justify-center items-center">
+                            <span id="cd-seconds" class="text-lg md:text-2xl font-bold font-serif leading-tight">00</span>
+                            <span class="text-[9px] md:text-[10px] font-medium opacity-80">Detik</span>
                         </div>
                     </div>
-                    
-                    <a id="view-maps-btn" href="#" target="_blank" class="inline-block px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-xs font-bold rounded-xl text-slate-100 shadow-md transition-colors">
-                        📍 Buka Petunjuk Google Maps
-                    </a>
                 </div>
             </section>
 
-            <!-- Ucapan & Doa -->
-            <section class="py-16 md:py-24 px-4 md:px-6 max-w-2xl mx-auto space-y-8">
-                <div class="text-center space-y-2">
-                    <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900">Ucapan & Doa Restu</h2>
-                    <p class="text-xs text-slate-800 font-semibold">Berikan ucapan, doa, dan konfirmasi kehadiran untuk kedua mempelai.</p>
+            <!-- SECTION 2: BACKGROUND isi1.jpeg (Cuitan / Kutipan Ayat Al-Qur'an tentang Pernikahan) -->
+            <section class="bg-section-ayat py-20 px-6 text-center flex flex-col items-center justify-center">
+                <div class="max-w-lg mx-auto space-y-4">
+                    <span class="text-2xl font-serif text-slate-800">﷽</span>
+                    <p class="text-xs md:text-sm font-serif italic text-slate-800 leading-relaxed max-w-md mx-auto">
+                        "Dan di antara tanda-tanda (kebesaran-Nya) ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang."
+                    </p>
+                    <p class="text-[11px] font-bold text-slate-900 uppercase tracking-widest">
+                        (QS. Ar-Rum: 21)
+                    </p>
                 </div>
+            </section>
 
-                <!-- Form Ucapan -->
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-900 mb-1">Nama Tamu</label>
-                        <input type="text" id="comment-name" placeholder="Nama Anda" class="w-full bg-slate-100/60 border border-slate-400/80 rounded-xl px-3 py-2 text-xs text-slate-900 font-semibold placeholder:text-slate-500 focus:outline-none focus:border-slate-900">
+            <!-- SECTION 3 & SETERUSNYA: BACKGROUND isi.jpeg (Waktu & Tempat, Ucapan, Galeri, Kado Digital) -->
+            <div class="bg-section-isi">
+                <!-- Waktu & Tempat -->
+                <section id="section-date-loc" class="py-16 md:py-24 px-4 md:px-6 text-center">
+                    <div class="max-w-xl mx-auto space-y-8">
+                        <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900">Waktu & Tempat</h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="p-2 space-y-1">
+                                <p class="text-xs text-slate-700 font-bold uppercase tracking-wider">Tanggal & Waktu</p>
+                                <p id="view-date" class="text-base font-extrabold text-slate-900">Minggu, 20 Oktober 2026</p>
+                                <p id="view-time-box" class="text-xs text-slate-800 font-semibold">08.00 WIB - Selesai</p>
+                            </div>
+                            <div class="p-2 space-y-1">
+                                <p class="text-xs text-slate-700 font-bold uppercase tracking-wider">Lokasi Acara</p>
+                                <p id="view-location-box" class="text-base font-extrabold text-slate-900">Grand Ballroom Hotel Savoy Homann</p>
+                                <p id="view-location" class="text-xs text-slate-800 font-semibold">Bandung</p>
+                            </div>
+                        </div>
+                        
+                        <a id="view-maps-btn" href="#" target="_blank" class="inline-block px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-xs font-bold rounded-xl text-slate-100 shadow-md transition-colors">
+                            📍 Buka Petunjuk Google Maps
+                        </a>
                     </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-900 mb-1">Konfirmasi Kehadiran</label>
-                        <select id="comment-attendance" class="w-full bg-slate-100/60 border border-slate-400/80 rounded-xl px-3 py-2 text-xs text-slate-900 font-semibold focus:outline-none focus:border-slate-900">
-                            <option value="Hadir">Hadir</option>
-                            <option value="Tidak Hadir">Tidak Hadir</option>
-                            <option value="Masih Ragu">Masih Ragu</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-900 mb-1">Ucapan & Doa</label>
-                        <textarea id="comment-text" rows="3" placeholder="Tulis ucapan dan doa restu di sini..." class="w-full bg-slate-100/60 border border-slate-400/80 rounded-xl p-3 text-xs text-slate-900 font-semibold placeholder:text-slate-500 focus:outline-none focus:border-slate-900"></textarea>
-                    </div>
-                    <button onclick="submitComment()" class="w-full py-3 bg-slate-900 hover:bg-slate-800 text-slate-100 font-bold text-xs rounded-xl transition-all shadow-md">
-                        Kirim Ucapan
-                    </button>
-                </div>
+                </section>
 
-                <div class="space-y-4 pt-6">
-                    <h3 class="text-sm font-bold text-slate-900">Daftar Ucapan Tamu (<span id="comment-count">0</span>)</h3>
-                    <div id="comments-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-1"></div>
-                    <div id="see-more-container" class="text-center pt-2 hidden">
-                        <button onclick="toggleSeeMoreComments()" id="see-more-btn" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-xs font-bold text-slate-100 rounded-xl transition-colors">
-                            See More (Lihat Semua)
+                <!-- Ucapan & Doa -->
+                <section class="py-16 md:py-24 px-4 md:px-6 max-w-2xl mx-auto space-y-8">
+                    <div class="text-center space-y-2">
+                        <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900">Ucapan & Doa Restu</h2>
+                        <p class="text-xs text-slate-800 font-semibold">Berikan ucapan, doa, dan konfirmasi kehadiran untuk kedua mempelai.</p>
+                    </div>
+
+                    <!-- Form Ucapan -->
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-900 mb-1">Nama Tamu</label>
+                            <input type="text" id="comment-name" placeholder="Nama Anda" class="w-full bg-slate-100/60 border border-slate-400/80 rounded-xl px-3 py-2 text-xs text-slate-900 font-semibold placeholder:text-slate-500 focus:outline-none focus:border-slate-900">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-900 mb-1">Konfirmasi Kehadiran</label>
+                            <select id="comment-attendance" class="w-full bg-slate-100/60 border border-slate-400/80 rounded-xl px-3 py-2 text-xs text-slate-900 font-semibold focus:outline-none focus:border-slate-900">
+                                <option value="Hadir">Hadir</option>
+                                <option value="Tidak Hadir">Tidak Hadir</option>
+                                <option value="Masih Ragu">Masih Ragu</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-900 mb-1">Ucapan & Doa</label>
+                            <textarea id="comment-text" rows="3" placeholder="Tulis ucapan dan doa restu di sini..." class="w-full bg-slate-100/60 border border-slate-400/80 rounded-xl p-3 text-xs text-slate-900 font-semibold placeholder:text-slate-500 focus:outline-none focus:border-slate-900"></textarea>
+                        </div>
+                        <button onclick="submitComment()" class="w-full py-3 bg-slate-900 hover:bg-slate-800 text-slate-100 font-bold text-xs rounded-xl transition-all shadow-md">
+                            Kirim Ucapan
                         </button>
                     </div>
-                </div>
-            </section>
 
-            <!-- Galeri & Kado -->
-            <section id="section-gallery-envelope" class="py-16 md:py-24 px-4 md:px-6 max-w-4xl mx-auto space-y-12">
-                <div class="text-center space-y-3">
-                    <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900">Galeri Spesial</h2>
-                </div>
-
-                <div id="view-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4"></div>
-
-                <div class="p-4 text-center max-w-md mx-auto space-y-3">
-                    <h3 class="text-base font-serif font-bold text-slate-900">Kado Digital</h3>
-                    <p class="text-xs text-slate-800 font-semibold">Doa restu Anda merupakan karunia terindah bagi kami. Namun jika ingin mengirimkan tanda kasih:</p>
-                    <div class="p-3 bg-slate-100/60 border border-slate-400/80 rounded-2xl font-mono text-xs text-slate-900 font-extrabold select-all" id="view-rek">
-                        BCA 1234567890 a.n. M. Raihan Aly
+                    <div class="space-y-4 pt-6">
+                        <h3 class="text-sm font-bold text-slate-900">Daftar Ucapan Tamu (<span id="comment-count">0</span>)</h3>
+                        <div id="comments-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-1"></div>
+                        <div id="see-more-container" class="text-center pt-2 hidden">
+                            <button onclick="toggleSeeMoreComments()" id="see-more-btn" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-xs font-bold text-slate-100 rounded-xl transition-colors">
+                                See More (Lihat Semua)
+                            </button>
+                        </div>
                     </div>
-                    <button onclick="copyRek(this)" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-xs rounded-xl font-bold text-slate-100 transition-colors">
-                        Salin Rekening
-                    </button>
-                </div>
-            </section>
+                </section>
+
+                <!-- Galeri & Kado -->
+                <section id="section-gallery-envelope" class="py-16 md:py-24 px-4 md:px-6 max-w-4xl mx-auto space-y-12">
+                    <div class="text-center space-y-3">
+                        <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900">Galeri Spesial</h2>
+                    </div>
+
+                    <div id="view-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4"></div>
+
+                    <div class="p-4 text-center max-w-md mx-auto space-y-3">
+                        <h3 class="text-base font-serif font-bold text-slate-900">Kado Digital</h3>
+                        <p class="text-xs text-slate-800 font-semibold">Doa restu Anda merupakan karunia terindah bagi kami. Namun jika ingin mengirimkan tanda kasih:</p>
+                        <div class="p-3 bg-slate-100/60 border border-slate-400/80 rounded-2xl font-mono text-xs text-slate-900 font-extrabold select-all" id="view-rek">
+                            BCA 1234567890 a.n. M. Raihan Aly
+                        </div>
+                        <button onclick="copyRek(this)" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-xs rounded-xl font-bold text-slate-100 transition-colors">
+                            Salin Rekening
+                        </button>
+                    </div>
+                </section>
+            </div>
         </div>
     </div>
 
 
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
+        /* =========================================================================
+           PATH FILE FOTO BACKGROUND & AUDIO LOKAL
+           ========================================================================= */
         const DEFAULT_COVER_BG = 'img/depan1.jpeg';
+        const DEFAULT_TOP_BG = 'img/1.png';
+        const DEFAULT_AYAT_BG = 'img/isi1.jpeg';
         const DEFAULT_CONTENT_BG = 'img/isi.jpeg';
         const DEFAULT_AUDIO_SRC = 'audio/backsound.mp3';
 
         let showAllComments = false;
+        let countdownInterval = null;
 
         window.addEventListener('DOMContentLoaded', () => {
             initBackgrounds();
             loadSavedSettingsToForm();
             parseUrlParameters();
             renderComments();
+            startCountdown("2026-10-20T08:00:00");
 
             window.addEventListener('storage', (e) => {
                 if (e.key === 'wedding_config') {
@@ -291,7 +360,41 @@
 
         function initBackgrounds() {
             document.documentElement.style.setProperty('--cover-bg', `url('${DEFAULT_COVER_BG}')`);
+            document.documentElement.style.setProperty('--top-bg', `url('${DEFAULT_TOP_BG}')`);
+            document.documentElement.style.setProperty('--ayat-bg', `url('${DEFAULT_AYAT_BG}')`);
             document.documentElement.style.setProperty('--content-bg', `url('${DEFAULT_CONTENT_BG}')`);
+        }
+
+        // Fungsi Waktu Mundur (Countdown Timer)
+        function startCountdown(targetDateStr) {
+            if (countdownInterval) clearInterval(countdownInterval);
+            const targetTime = new Date(targetDateStr).getTime();
+
+            function update() {
+                const now = new Date().getTime();
+                const diff = targetTime - now;
+
+                if (diff <= 0) {
+                    document.getElementById('cd-days').innerText = "00";
+                    document.getElementById('cd-hours').innerText = "00";
+                    document.getElementById('cd-minutes').innerText = "00";
+                    document.getElementById('cd-seconds').innerText = "00";
+                    return;
+                }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('cd-days').innerText = days < 10 ? '0' + days : days;
+                document.getElementById('cd-hours').innerText = hours < 10 ? '0' + hours : hours;
+                document.getElementById('cd-minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
+                document.getElementById('cd-seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
+            }
+
+            update();
+            countdownInterval = setInterval(update, 1000);
         }
 
         function handleMediaUpload(event, type) {
@@ -356,8 +459,13 @@
             const bride = saved.bride || "Puja Shalehah";
             const coupleText = `${groom} & ${bride}`;
 
-            document.getElementById('view-couple-names').innerText = coupleText;
-            if (saved.date) document.getElementById('view-date').innerText = saved.date;
+            document.getElementById('view-couple-names-cover').innerText = coupleText;
+            document.getElementById('view-couple-names-main').innerText = coupleText;
+            
+            if (saved.date) {
+                document.getElementById('view-date-top').innerText = saved.date;
+                document.getElementById('view-date').innerText = saved.date;
+            }
             if (saved.time) document.getElementById('view-time-box').innerText = saved.time;
             if (saved.location) {
                 document.getElementById('view-location-box').innerText = saved.location;
