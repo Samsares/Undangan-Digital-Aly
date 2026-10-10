@@ -129,12 +129,12 @@
                     <input type="text" id="cfg-bank-number" value="1234567890" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
 
-                <!-- STRUKTUR INPUT BACKSOUND MANUAL (.MP3) -->
+                <!-- STRUKTUR INPUT BACKSOUND MANUAL -->
                 <div class="space-y-3 pt-2 border-t border-slate-800">
-                    <label class="block text-xs font-semibold text-slate-100">Pengaturan Musik Manual</label>
+                    <label class="block text-xs font-semibold text-slate-100">Pengaturan Musik Utama</label>
                     <div>
-                        <label class="block text-[11px] text-slate-400 mb-1">Path / URL File Musik (.mp3)</label>
-                        <input type="text" id="cfg-audio-url" value="Sound/anugrah.mp3" placeholder="Sound/anugrah.mp3" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono">
+                        <label class="block text-[11px] text-slate-400 mb-1">Path File Musik (.mp3)</label>
+                        <input type="text" id="cfg-audio-url" value="Sound/anugrah.mp3" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono">
                     </div>
                 </div>
 
@@ -288,7 +288,7 @@
                 </div>
             </section>
 
-            <!-- 3. BAGIAN SELANJUTNYA (Waktu & Tempat, Our Love Story, Ucapan, Kado Digital) -->
+            <!-- 3. BAGIAN SELANJUTNYA -->
             <div class="bg-bunga-permanent w-full">
                 <!-- Waktu & Tempat -->
                 <section id="section-date-loc" class="py-16 md:py-24 px-4 md:px-6 text-center">
@@ -328,7 +328,6 @@
                     </div>
 
                     <div class="relative border-l-2 border-amber-900/60 ml-4 md:ml-8 space-y-12 pl-6 md:pl-8">
-                        <!-- 1. Awal Kisah -->
                         <div class="relative space-y-2">
                             <div class="absolute -left-[31px] md:-left-[39px] top-1 w-4 h-4 rounded-full bg-amber-900 border-2 border-white shadow"></div>
                             <h3 class="text-base font-serif font-bold text-slate-900">Awal Kisah</h3>
@@ -336,28 +335,18 @@
                                 Pada awalnya, kami adalah dua orang asing yang berjalan di jalannya masing-masing. Tak saling kenal, tak saling sapa. Hingga semesta dengan caranya yang indah, mempertemukan kami di satu titik yang sama.
                             </p>
                         </div>
-
-                        <!-- 2. Tumbuh Bersama -->
                         <div class="relative space-y-2">
                             <div class="absolute -left-[31px] md:-left-[39px] top-1 w-4 h-4 rounded-full bg-amber-900 border-2 border-white shadow"></div>
                             <h3 class="text-base font-serif font-bold text-slate-900">Tumbuh Bersama</h3>
                             <p class="text-xs text-slate-800 font-medium leading-relaxed">
                                 Percakapan sederhana menjadi tawa yang panjang. Tawa yang panjang menjadi nyaman yang menetap. Dan nyaman itu pelan-pelan berubah menjadi cinta yang tak kami rencanakan.
                             </p>
-                            <p class="text-xs text-slate-800 font-medium leading-relaxed pt-1">
-                                Kami belajar bahwa cinta bukan tentang seberapa cepat ia datang, tapi tentang seberapa yakin ia tinggal.
-                            </p>
                         </div>
-
-                        <!-- 3. Janji Setia -->
                         <div class="relative space-y-2">
                             <div class="absolute -left-[31px] md:-left-[39px] top-1 w-4 h-4 rounded-full bg-amber-900 border-2 border-white shadow"></div>
                             <h3 class="text-base font-serif font-bold text-slate-900">Janji Setia</h3>
                             <p class="text-xs text-slate-800 font-medium leading-relaxed">
                                 Dan kini, setelah melalui waktu, doa, dan restu, kami yakin bahwa pertemuan ini bukan kebetulan. Ini adalah jawaban dari doa-doa yang kami langitkan diam-diam.
-                            </p>
-                            <p class="text-xs text-slate-800 font-medium leading-relaxed pt-1">
-                                Dengan memohon ridho Allah SWT, kami memutuskan untuk menyempurnakan separuh agama, dan melangkah bersama dalam satu tujuan: ibadah terpanjang.
                             </p>
                         </div>
                     </div>
@@ -442,9 +431,7 @@
                 saved.date = DEFAULT_TARGET_DATE;
                 saved.dateText = DEFAULT_DATE_TEXT;
             }
-            if (!saved.audioUrl) {
-                saved.audioUrl = DEFAULT_AUDIO_SRC;
-            }
+            saved.audioUrl = DEFAULT_AUDIO_SRC;
             localStorage.setItem('wedding_config', JSON.stringify(saved));
 
             loadSavedSettingsToForm();
@@ -460,7 +447,6 @@
             });
         });
 
-        // HITUNG MUNDUR REALTIME OTOMATIS
         function startCountdown() {
             if (countdownTimerInterval) clearInterval(countdownTimerInterval);
 
@@ -494,7 +480,6 @@
             countdownTimerInterval = setInterval(updateTimer, 1000);
         }
 
-        // BACA PARAMETER DARI URL (TERMASUK LAGU BACKSOUND DARI LINK GENERATE)
         function parseUrlParameters() {
             const urlParams = new URLSearchParams(window.location.search);
             const toName = urlParams.get('to');
@@ -503,9 +488,13 @@
             const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
             applyConfigToView(saved);
 
+            const audioEl = document.getElementById('bg-audio');
             if (urlAudio) {
-                document.getElementById('bg-audio').src = decodeURIComponent(urlAudio);
+                audioEl.src = decodeURIComponent(urlAudio);
+            } else {
+                audioEl.src = DEFAULT_AUDIO_SRC;
             }
+            audioEl.load();
 
             if (toName) {
                 const decodedName = decodeURIComponent(toName.replace(/_/g, ' '));
@@ -540,10 +529,6 @@
             if (saved.bankName) document.getElementById('view-bank-name').innerText = saved.bankName;
             if (saved.bankOwner) document.getElementById('view-bank-owner').innerText = saved.bankOwner;
             if (saved.bankNumber) document.getElementById('view-bank-number').innerText = saved.bankNumber;
-            
-            // ATUR SUMBER AUDIO DARI CONFIG ATAU DEFAULT
-            const audioSrc = saved.audioUrl || DEFAULT_AUDIO_SRC;
-            document.getElementById('bg-audio').src = audioSrc;
 
             renderComments();
             startCountdown();
@@ -557,17 +542,16 @@
             const floatingBtn = document.getElementById('floating-music-btn');
             const icon = document.getElementById('music-icon');
 
-            if (audio.src) {
-                audio.play().then(() => {
-                    isPlaying = true;
-                    icon.classList.add('animate-spin-slow');
-                }).catch((err) => {
-                    console.log("Autoplay terhalang oleh browser:", err);
-                    isPlaying = false;
-                    icon.classList.remove('animate-spin-slow');
-                });
-                floatingBtn.classList.remove('hidden');
-            }
+            audio.play().then(() => {
+                isPlaying = true;
+                icon.classList.add('animate-spin-slow');
+            }).catch((err) => {
+                console.log("Autoplay diblokir browser:", err);
+                isPlaying = false;
+                icon.classList.remove('animate-spin-slow');
+            });
+            
+            floatingBtn.classList.remove('hidden');
 
             cover.classList.add('opacity-0', 'transition-opacity', 'duration-700');
             setTimeout(() => {
@@ -590,15 +574,13 @@
             isPlaying = !isPlaying;
         }
 
-        // GENERATE LINK DENGAN MEMBAWA PARAMETER AUDIO OTOMATIS
+        // GENERATE LINK DENGAN MEMBAWA PARAMETER AUDIO & NAMA TAMU
         function generateShortLinks() {
             saveSettings(false);
             const input = document.getElementById('guest-input').value.trim();
             if (!input) return alert('Masukkan minimal satu nama tamu!');
 
-            const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
-            const audioPath = saved.audioUrl || DEFAULT_AUDIO_SRC;
-
+            const audioPath = DEFAULT_AUDIO_SRC;
             const guests = input.split('\n');
             const baseUrl = window.location.origin + window.location.pathname;
             const container = document.getElementById('link-list-container');
@@ -610,7 +592,6 @@
                 if (!clean) return;
                 count++;
                 
-                // SKEMA LINK DENGAN PARAMETER TAMU DAN PARAMETER AUDIO
                 const link = `${baseUrl}?to=${encodeURIComponent(clean.replace(/ /g, '_'))}&audio=${encodeURIComponent(audioPath)}`;
 
                 container.innerHTML += `
@@ -628,7 +609,6 @@
             document.getElementById('result-box').classList.remove('hidden');
         }
 
-        // ================= SISTEM KOMENTAR & UCAPAN =================
         function submitComment() {
             const name = document.getElementById('comment-name').value.trim();
             const attendance = document.getElementById('comment-attendance').value;
