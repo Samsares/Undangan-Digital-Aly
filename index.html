@@ -213,8 +213,7 @@
                         <label class="block text-[11px] text-slate-400 mb-1">Konfirmasi Kehadiran</label>
                         <select id="comment-attendance" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
                             <option value="Hadir">Hadir</option>
-                            <option value="Berhalangan Hadir">Berhalangan Hadir</option>
-                            <option value="Masih Ragu">Masih Ragu</option>
+                            <option value="Masih Ragu">Tidak Hadir</option>
                         </select>
                     </div>
                     <div>
@@ -240,12 +239,7 @@
             <!-- Galeri & Kado -->
             <section id="section-gallery-envelope" class="py-20 px-6 max-w-4xl mx-auto space-y-12">
                 <div class="text-center space-y-3">
-                    <h2 class="text-2xl font-serif font-bold text-amber-400">Galeri & Momen Spesial</h2>
-                    <p class="text-xs text-slate-400 max-w-md mx-auto">Abadikan momen kehadiran Anda langsung di lokasi acara (Fitur kamera aktif otomatis dalam radius 200 meter).</p>
-                    
-                    <button onclick="checkGeofenceAndOpen()" class="mt-4 px-6 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold rounded-2xl shadow-lg transition-all">
-                        📸 Ambil Foto di Lokasi Acara
-                    </button>
+                    <h2 class="text-2xl font-serif font-bold text-amber-400">Galeri Spesial</h2>
                 </div>
 
                 <div id="view-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
@@ -302,8 +296,8 @@
            TEMPAT MEMASUKKAN FOTO BACKGROUND PERMANEN LINTAS LINK & DEVICE
            Ganti URL di bawah dengan URL gambar/Base64 milik Anda secara manual.
            ========================================================================= */
-        const DEFAULT_COVER_BG = 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1920&q=80';
-        const DEFAULT_CONTENT_BG = 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1920&q=80';
+        const DEFAULT_COVER_BG = 'file:///C:/Users/Lenovo/Downloads/web%20chat%20bot/Undangan%20Digital%20Aly/img/depan1.jpeg';
+        const DEFAULT_CONTENT_BG = 'file:///C:/Users/Lenovo/Downloads/web%20chat%20bot/Undangan%20Digital%20Aly/img/isi.jpeg';
 
         let venueCoordinates = { lat: -6.9175, lng: 107.6191 };
         let currentStream = null;
