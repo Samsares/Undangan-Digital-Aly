@@ -327,17 +327,15 @@
                             </div>
                         </div>
 
-                        <!-- PREVIEW PETA INTERAKTIF GOOGLE MAPS LOKASI PRESISI (DIBUNGKUS LINK AGAR SINKRON) -->
-                        <div class="max-w-md mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-300 bg-slate-200 aspect-video relative group">
+                        <!-- PREVIEW PETA INTERAKTIF GOOGLE MAPS LOKASI PRESISI -->
+                        <div class="max-w-md mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-300 bg-slate-200 aspect-video relative">
                             <iframe 
                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.672583853112!2d107.55106517587428!3d-6.929688467828065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e5ff41b4a081%3A0x6bbf7cb3a3f5a2b1!2sGedung%20Serbaguna%20Dirgantara!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
-                                class="w-full h-full border-0 pointer-events-none" 
+                                class="w-full h-full border-0" 
                                 allowfullscreen="" 
                                 loading="lazy" 
                                 referrerpolicy="no-referrer-when-downgrade">
                             </iframe>
-                            <!-- Overlay Link agar area peta ikut mengarahkan ke link yang sama -->
-                            <a id="view-map-overlay" href="https://maps.app.goo.gl/cYtW1kHVZTv44hLPA" target="_blank" class="absolute inset-0 bg-transparent cursor-pointer" title="Buka Gedung Serbaguna Dirgantara di Google Maps"></a>
                         </div>
                         
                         <div>
@@ -541,7 +539,6 @@
             }
             if (saved.maps) {
                 document.getElementById('view-maps-btn').href = saved.maps;
-                document.getElementById('view-map-overlay').href = saved.maps;
             }
             if (saved.rek) document.getElementById('view-rek').innerText = saved.rek;
             
