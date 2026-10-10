@@ -85,20 +85,12 @@
                     <input type="text" id="cfg-groom" value="M. Raihan Aly" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
-                    <label class="block text-[11px] text-slate-400 mb-1">Orang Tua Pria (Putra dari...)</label>
-                    <input type="text" id="cfg-groom-parents" value="Bapak Suharyanto & Ibu Lely Ike Handayani" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
-                </div>
-                <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Link IG Pria</label>
                     <input type="text" id="cfg-groom-ig" value="https://www.instagram.com/raihnalyy_?dlrf=MWU2c2trbjJlZHcyOQ==" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Nama Mempelai Wanita</label>
                     <input type="text" id="cfg-bride" value="Puja Shalehah" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
-                </div>
-                <div>
-                    <label class="block text-[11px] text-slate-400 mb-1">Orang Tua Wanita (Putri dari...)</label>
-                    <input type="text" id="cfg-bride-parents" value="Bapak & Ibu (Alm)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Link IG Wanita</label>
@@ -137,12 +129,12 @@
                     <input type="text" id="cfg-bank-number" value="1234567890" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
 
-                <!-- BACKSOUND -->
+                <!-- STRUKTUR INPUT BACKSOUND MANUAL (.MP3) -->
                 <div class="space-y-3 pt-2 border-t border-slate-800">
-                    <label class="block text-xs font-semibold text-slate-100">Pengaturan Musik</label>
+                    <label class="block text-xs font-semibold text-slate-100">Pengaturan Musik Manual</label>
                     <div>
-                        <span class="block text-[11px] text-slate-400 mb-1">Backsound Musik (MP3)</span>
-                        <input type="file" id="file-audio" accept=".mp3, audio/mpeg" onchange="handleMediaUpload(event, 'audio')" class="w-full text-[11px] text-slate-400 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[11px] file:font-semibold file:bg-slate-800 file:text-slate-100 hover:file:bg-slate-700 cursor-pointer">
+                        <label class="block text-[11px] text-slate-400 mb-1">Path / URL File Musik (.mp3)</label>
+                        <input type="text" id="cfg-audio-url" value="audio/backsound.mp3" placeholder="audio/nama_lagu.mp3" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono">
                     </div>
                 </div>
 
@@ -219,20 +211,15 @@
         <!-- Main Content Section -->
         <div id="main-content" class="hidden min-h-screen w-full">
             
-            <!-- 1. BAGIAN ATAS (Bingkai Disesuaikan ke Proporsi 716x536 px) -->
-            <section class="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-6 py-16 bg-top-section">
-                <div class="max-w-md w-full space-y-6 z-10 mx-auto flex flex-col items-center">
+            <!-- 1. BAGIAN ATAS (Bingkai Dihapus Agar Foto Asli Background Terlihat Lengkap) -->
+            <section class="relative min-h-screen w-full flex flex-col items-center justify-end text-center px-6 pb-16 pt-64 bg-top-section">
+                <div class="max-w-md w-full space-y-4 z-10 mx-auto flex flex-col items-center">
                     
-                    <!-- BINGKAI FOTO BERUKURAN PROPORSI 716x536 PX -->
-                    <div class="w-full max-w-[420px] aspect-[716/536] overflow-hidden rounded-t-[140px] border-4 border-slate-300/80 shadow-2xl bg-slate-200 relative">
-                        <img src="img/couple.jpg" alt="Foto Pasangan" class="w-full h-full object-cover">
-                    </div>
-
                     <!-- Nama Pengantin -->
-                    <h2 id="view-couple-names" class="text-2xl md:text-3xl font-serif font-bold text-slate-900">M. Raihan Aly & Puja Shalehah</h2>
+                    <h2 id="view-couple-names" class="text-2xl md:text-3xl font-serif font-bold text-slate-900 drop-shadow-sm">M. Raihan Aly & Puja Shalehah</h2>
                     
                     <!-- Hari & Tanggal -->
-                    <p id="view-date-text" class="text-xs md:text-sm font-medium text-slate-800">Minggu, 15 November 2026</p>
+                    <p id="view-date-text" class="text-xs md:text-sm font-semibold text-slate-800">Minggu, 15 November 2026</p>
                     
                     <!-- Countdown Timer -->
                     <div class="grid grid-cols-4 gap-2 pt-2 max-w-xs w-full mx-auto">
@@ -256,7 +243,7 @@
                 </div>
             </section>
 
-            <!-- 2. BAGIAN TENGAH (Qur'an & Profil) -->
+            <!-- 2. BAGIAN TENGAH (Qur'an & Profil Sejajar Kanan-Kiri) -->
             <section class="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-6 py-20 bg-quran-section space-y-12">
                 <div class="max-w-lg w-full space-y-4 z-10 mx-auto p-4">
                     <h3 class="text-xl md:text-2xl font-serif font-bold text-slate-900">Ar-Rum: 21</h3>
@@ -265,40 +252,39 @@
                     </p>
                 </div>
 
-                <div class="max-w-md w-full space-y-10 z-10 mx-auto">
+                <!-- PROFIL SEJAJAR KANAN KIRI -->
+                <div class="max-w-2xl w-full flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12 z-10 mx-auto">
+                    
                     <!-- Mempelai Pria -->
-                    <div class="flex flex-col items-center space-y-3">
-                        <div class="w-32 h-44 overflow-hidden rounded-t-full border-4 border-slate-900/10 shadow-lg bg-slate-200">
+                    <div class="flex flex-col items-center space-y-3 flex-1">
+                        <div class="w-full max-w-[200px] aspect-[716/536] overflow-hidden rounded-t-[80px] border-4 border-slate-900/10 shadow-lg bg-slate-200">
                             <img src="img/pria.jpg" alt="Foto M. Raihan Aly" class="w-full h-full object-cover">
                         </div>
                         <div class="space-y-1">
-                            <h4 id="view-groom-name" class="text-lg md:text-xl font-serif font-bold text-slate-900">M. Raihan Aly</h4>
-                            <p class="text-[11px] text-slate-700 font-semibold uppercase tracking-wider">Putra Dari :</p>
-                            <p id="view-groom-parents" class="text-xs text-slate-800 font-bold">Bapak Suharyanto & Ibu Lely Ike Handayani</p>
+                            <h4 id="view-groom-name" class="text-base md:text-lg font-serif font-bold text-slate-900">M. Raihan Aly</h4>
                         </div>
-                        <a id="view-groom-ig-btn" href="https://www.instagram.com/raihnalyy_?dlrf=MWU2c2trbjJlZHcyOQ==" target="_blank" class="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl shadow-md transition-all mt-1">
-                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        <a id="view-groom-ig-btn" href="https://www.instagram.com/raihnalyy_?dlrf=MWU2c2trbjJlZHcyOQ==" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold rounded-xl shadow-md transition-all mt-1">
+                            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                             <span>@raihnalyy_</span>
                         </a>
                     </div>
 
-                    <div class="text-xl font-serif font-bold text-slate-700">&</div>
+                    <div class="text-xl font-serif font-bold text-slate-700 sm:self-center">&</div>
 
                     <!-- Mempelai Wanita -->
-                    <div class="flex flex-col items-center space-y-3">
-                        <div class="w-32 h-44 overflow-hidden rounded-t-full border-4 border-slate-900/10 shadow-lg bg-slate-200">
+                    <div class="flex flex-col items-center space-y-3 flex-1">
+                        <div class="w-full max-w-[200px] aspect-[716/536] overflow-hidden rounded-t-[80px] border-4 border-slate-900/10 shadow-lg bg-slate-200">
                             <img src="img/wanita.jpg" alt="Foto Puja Shalehah" class="w-full h-full object-cover">
                         </div>
                         <div class="space-y-1">
-                            <h4 id="view-bride-name" class="text-lg md:text-xl font-serif font-bold text-slate-900">Puja Shalehah</h4>
-                            <p class="text-[11px] text-slate-700 font-semibold uppercase tracking-wider">Putri Dari :</p>
-                            <p id="view-bride-parents" class="text-xs text-slate-800 font-bold">Bapak & Ibu (Alm)</p>
+                            <h4 id="view-bride-name" class="text-base md:text-lg font-serif font-bold text-slate-900">Puja Shalehah</h4>
                         </div>
-                        <a id="view-bride-ig-btn" href="https://www.instagram.com/jaass5_?obrf=MXRqMWN1OHZyejYxcg==" target="_blank" class="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl shadow-md transition-all mt-1">
-                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        <a id="view-bride-ig-btn" href="https://www.instagram.com/jaass5_?obrf=MXRqMWN1OHZyejYxcg==" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold rounded-xl shadow-md transition-all mt-1">
+                            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                             <span>@jaass5_</span>
                         </a>
                     </div>
+
                 </div>
             </section>
 
@@ -504,23 +490,6 @@
             countdownTimerInterval = setInterval(updateTimer, 1000);
         }
 
-        function handleMediaUpload(event, type) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const base64String = e.target.result;
-                const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
-                if (type === 'audio') saved.audio = base64String;
-
-                localStorage.setItem('wedding_config', JSON.stringify(saved));
-                alert(`File ${file.name} berhasil disimpan!`);
-                applyConfigToView(saved);
-            };
-            reader.readAsDataURL(file);
-        }
-
         function parseUrlParameters() {
             const urlParams = new URLSearchParams(window.location.search);
             const toName = urlParams.get('to');
@@ -547,8 +516,6 @@
             document.getElementById('view-groom-name').innerText = groom;
             document.getElementById('view-bride-name').innerText = bride;
             
-            if (saved.groomParents) document.getElementById('view-groom-parents').innerText = saved.groomParents;
-            if (saved.brideParents) document.getElementById('view-bride-parents').innerText = saved.brideParents;
             if (saved.groomIg) document.getElementById('view-groom-ig-btn').href = saved.groomIg;
             if (saved.brideIg) document.getElementById('view-bride-ig-btn').href = saved.brideIg;
 
@@ -564,11 +531,9 @@
             if (saved.bankOwner) document.getElementById('view-bank-owner').innerText = saved.bankOwner;
             if (saved.bankNumber) document.getElementById('view-bank-number').innerText = saved.bankNumber;
             
-            if (saved.audio) {
-                document.getElementById('bg-audio').src = saved.audio;
-            } else {
-                document.getElementById('bg-audio').src = DEFAULT_AUDIO_SRC;
-            }
+            // Atur sumber audio manual (.mp3)
+            const audioSrc = saved.audioUrl || DEFAULT_AUDIO_SRC;
+            document.getElementById('bg-audio').src = audioSrc;
 
             renderComments();
             startCountdown();
@@ -703,10 +668,8 @@
         function saveSettings(showAlert = true) {
             const existing = JSON.parse(localStorage.getItem('wedding_config')) || {};
             existing.groom = document.getElementById('cfg-groom').value;
-            existing.groomParents = document.getElementById('cfg-groom-parents').value;
             existing.groomIg = document.getElementById('cfg-groom-ig').value;
             existing.bride = document.getElementById('cfg-bride').value;
-            existing.brideParents = document.getElementById('cfg-bride-parents').value;
             existing.brideIg = document.getElementById('cfg-bride-ig').value;
             existing.date = document.getElementById('cfg-date').value;
             existing.dateText = document.getElementById('cfg-date-text').value;
@@ -716,6 +679,7 @@
             existing.bankName = document.getElementById('cfg-bank-name').value;
             existing.bankOwner = document.getElementById('cfg-bank-owner').value;
             existing.bankNumber = document.getElementById('cfg-bank-number').value;
+            existing.audioUrl = document.getElementById('cfg-audio-url').value;
 
             localStorage.setItem('wedding_config', JSON.stringify(existing));
             startCountdown();
@@ -726,10 +690,8 @@
             const saved = JSON.parse(localStorage.getItem('wedding_config'));
             if (!saved) return;
             if (saved.groom) document.getElementById('cfg-groom').value = saved.groom;
-            if (saved.groomParents) document.getElementById('cfg-groom-parents').value = saved.groomParents;
             if (saved.groomIg) document.getElementById('cfg-groom-ig').value = saved.groomIg;
             if (saved.bride) document.getElementById('cfg-bride').value = saved.bride;
-            if (saved.brideParents) document.getElementById('cfg-bride-parents').value = saved.brideParents;
             if (saved.brideIg) document.getElementById('cfg-bride-ig').value = saved.brideIg;
             if (saved.date) document.getElementById('cfg-date').value = saved.date;
             if (saved.dateText) document.getElementById('cfg-date-text').value = saved.dateText;
@@ -739,6 +701,7 @@
             if (saved.bankName) document.getElementById('cfg-bank-name').value = saved.bankName;
             if (saved.bankOwner) document.getElementById('cfg-bank-owner').value = saved.bankOwner;
             if (saved.bankNumber) document.getElementById('cfg-bank-number').value = saved.bankNumber;
+            if (saved.audioUrl) document.getElementById('cfg-audio-url').value = saved.audioUrl;
         }
 
         function generateShortLinks() {
