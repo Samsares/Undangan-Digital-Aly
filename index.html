@@ -117,11 +117,11 @@
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Nama Lokasi / Gedung</label>
-                    <input type="text" id="cfg-location" value="Grand Ballroom Hotel Savoy Homann, Bandung" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
+                    <input type="text" id="cfg-location" value="Gedung Serbaguna Dirgantara, Bandung" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Link Google Maps</label>
-                    <input type="text" id="cfg-maps" value="https://maps.google.com/?q=-6.9175,107.6191" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
+                    <input type="text" id="cfg-maps" value="https://maps.app.goo.gl/Xk9c2BdBFHMaP15q9" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Rekening / Kado Digital</label>
@@ -262,7 +262,6 @@
                     
                     <!-- Mempelai Pria -->
                     <div class="flex flex-col items-center space-y-3">
-                        <!-- KODE FOTO PRIA MANUAL (Ganti 'img/pria.jpg' dengan jalur foto Anda) -->
                         <div class="w-32 h-44 overflow-hidden rounded-t-full border-4 border-slate-900/10 shadow-lg bg-slate-200">
                             <img src="img/pria.jpg" alt="Foto M. Raihan Aly" class="w-full h-full object-cover">
                         </div>
@@ -284,7 +283,6 @@
 
                     <!-- Mempelai Wanita -->
                     <div class="flex flex-col items-center space-y-3">
-                        <!-- KODE FOTO WANITA MANUAL (Ganti 'img/wanita.jpg' dengan jalur foto Anda) -->
                         <div class="w-32 h-44 overflow-hidden rounded-t-full border-4 border-slate-900/10 shadow-lg bg-slate-200">
                             <img src="img/wanita.jpg" alt="Foto Puja Shalehah" class="w-full h-full object-cover">
                         </div>
@@ -312,22 +310,29 @@
                     <div class="max-w-xl mx-auto space-y-8">
                         <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900">Waktu & Tempat</h2>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                             <div class="p-2 space-y-1">
                                 <p class="text-xs text-slate-700 font-bold uppercase tracking-wider">Tanggal & Waktu</p>
                                 <p id="view-date" class="text-base font-extrabold text-slate-900">Minggu, 20 Oktober 2026</p>
-                                <p id="view-time-box" class="text-xs text-slate-800 font-semibold">08.00 WIB - Selesai</p>
+                                <p id="view-time-box" class="text-xs text-slate-800 font-semibold">Pukul 09.00 WIB - Selesai</p>
                             </div>
                             <div class="p-2 space-y-1">
                                 <p class="text-xs text-slate-700 font-bold uppercase tracking-wider">Lokasi Acara</p>
-                                <p id="view-location-box" class="text-base font-extrabold text-slate-900">Grand Ballroom Hotel Savoy Homann</p>
+                                <p id="view-location-box" class="text-base font-extrabold text-slate-900">Gedung Serbaguna Dirgantara</p>
                                 <p id="view-location" class="text-xs text-slate-800 font-semibold">Bandung</p>
                             </div>
                         </div>
+
+                        <!-- GAMBAR PETA LOKASI (Preview Peta) -->
+                        <div class="max-w-md mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-300 bg-slate-200 aspect-video">
+                            <img src="img/map.jpg" alt="Peta Lokasi Gedung Serbaguna Dirgantara" class="w-full h-full object-cover">
+                        </div>
                         
-                        <a id="view-maps-btn" href="#" target="_blank" class="inline-block px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-xs font-bold rounded-xl text-slate-100 shadow-md transition-colors">
-                            📍 Buka Petunjuk Google Maps
-                        </a>
+                        <div>
+                            <a id="view-maps-btn" href="https://maps.app.goo.gl/Xk9c2BdBFHMaP15q9" target="_blank" class="inline-flex items-center gap-2 px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-xs font-bold rounded-xl text-slate-100 shadow-md transition-colors">
+                                <span>📍 Buka Petunjuk Google Maps</span>
+                            </a>
+                        </div>
                     </div>
                 </section>
 
