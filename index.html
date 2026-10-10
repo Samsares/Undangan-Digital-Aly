@@ -104,8 +104,8 @@
                     <input type="text" id="cfg-bride-ig" value="https://www.instagram.com/jaass5_?obrf=MXRqMWN1OHZyejYxcg==" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
-                    <label class="block text-[11px] text-slate-400 mb-1">Tanggal & Waktu Acara Target (Format ISO: YYYY-MM-DDTHH:mm:ss)</label>
-                    <input type="text" id="cfg-date" value="2026-11-15T09:00:00" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
+                    <label class="block text-[11px] text-slate-400 mb-1">Tanggal & Waktu Target (Format ISO: YYYY-MM-DDTHH:mm:ss)</label>
+                    <input type="text" id="cfg-date" value="2026-11-15T10:00:00" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Teks Hari & Tanggal (Tampil di Undangan)</label>
@@ -113,7 +113,7 @@
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Waktu / Pukul</label>
-                    <input type="text" id="cfg-time" value="Pukul 09.00 WIB - Selesai" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
+                    <input type="text" id="cfg-time" value="Pukul 10.00 WIB - Selesai" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Nama Lokasi / Gedung</label>
@@ -322,7 +322,7 @@
                             <div class="p-2 space-y-1">
                                 <p class="text-xs text-slate-700 font-bold uppercase tracking-wider">Tanggal & Waktu</p>
                                 <p id="view-date" class="text-base font-extrabold text-slate-900">Minggu, 15 November 2026</p>
-                                <p id="view-time-box" class="text-xs text-slate-800 font-semibold">Pukul 09.00 WIB - Selesai</p>
+                                <p id="view-time-box" class="text-xs text-slate-800 font-semibold">Pukul 10.00 WIB - Selesai</p>
                             </div>
                             <div class="p-2 space-y-1">
                                 <p class="text-xs text-slate-700 font-bold uppercase tracking-wider">Lokasi Acara</p>
@@ -393,14 +393,14 @@
 
                     <div id="view-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4"></div>
 
-                    <!-- BAGIAN KADO DIGITAL BARU -->
+                    <!-- KADO DIGITAL -->
                     <div class="p-6 text-center max-w-md mx-auto space-y-4">
                         <h3 class="text-lg font-serif font-bold text-slate-900">Kado Digital</h3>
                         <p class="text-xs text-slate-800 font-semibold leading-relaxed">
                             Doa restu Anda merupakan karunia terindah bagi kami. Namun jika ingin mengirimkan tanda kasih:
                         </p>
                         
-                        <!-- KOTAK INFORMASI REKENING (SUSUNAN BERSIH & TERPISAH) -->
+                        <!-- KOTAK REKENING TAMPILAN VERTIKAL -->
                         <div class="p-4 bg-slate-100/70 border border-slate-300 rounded-2xl shadow-sm space-y-1.5 text-center">
                             <p id="view-bank-name" class="text-base font-extrabold text-slate-900 tracking-wider">BCA</p>
                             <p id="view-bank-owner" class="text-xs font-bold text-slate-700">a.n M. Raihan Aly</p>
@@ -420,14 +420,15 @@
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
         const DEFAULT_AUDIO_SRC = 'audio/backsound.mp3';
-        const DEFAULT_TARGET_DATE = '2026-11-15T09:00:00';
+        const DEFAULT_TARGET_DATE = '2026-11-15T10:00:00';
         const DEFAULT_DATE_TEXT = 'Minggu, 15 November 2026';
         let showAllComments = false;
         let countdownTimerInterval = null;
 
         window.addEventListener('DOMContentLoaded', () => {
             const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
-            if (!saved.date || saved.date.includes('2026-10-20')) {
+            // Otomatis update ke target 15 November 2026 jam 10:00 jika belum terset
+            if (!saved.date || !saved.date.includes('2026-11-15')) {
                 saved.date = DEFAULT_TARGET_DATE;
                 saved.dateText = DEFAULT_DATE_TEXT;
                 localStorage.setItem('wedding_config', JSON.stringify(saved));
@@ -446,7 +447,7 @@
             });
         });
 
-        // FUNGSI HITUNG MUNDUR REALTIME OTOMATIS
+        // FUNGSI HITUNG MUNDUR REALTIME OTOMATIS BERJALAN KETIKA LINK DIBUKA
         function startCountdown() {
             if (countdownTimerInterval) clearInterval(countdownTimerInterval);
 
@@ -559,7 +560,6 @@
             if (saved.location) document.getElementById('view-location-box').innerText = saved.location;
             if (saved.address) document.getElementById('view-address-box').innerText = saved.address;
             
-            // Pengaturan Rekening Bank
             if (saved.bankName) document.getElementById('view-bank-name').innerText = saved.bankName;
             if (saved.bankOwner) document.getElementById('view-bank-owner').innerText = saved.bankOwner;
             if (saved.bankNumber) document.getElementById('view-bank-number').innerText = saved.bankNumber;
