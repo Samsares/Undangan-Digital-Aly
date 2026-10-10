@@ -113,15 +113,19 @@
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Waktu / Pukul</label>
-                    <input type="text" id="cfg-time" value="08.00 WIB - Selesai" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
+                    <input type="text" id="cfg-time" value="Pukul 09.00 WIB - Selesai" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Nama Lokasi / Gedung</label>
-                    <input type="text" id="cfg-location" value="Gedung Serbaguna Dirgantara, Bandung" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
+                    <input type="text" id="cfg-location" value="Gedung Serbaguna Dirgantara" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] text-slate-400 mb-1">Alamat Lengkap Gedung</label>
+                    <input type="text" id="cfg-address" value="3H92+VF7, Jl. Dirgantara Raya, Gempolsari, Kec. Bandung Kulon, Kota Bandung, Jawa Barat 40215" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Link Google Maps</label>
-                    <input type="text" id="cfg-maps" value="https://maps.app.goo.gl/Xk9c2BdBFHMaP15q9" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
+                    <input type="text" id="cfg-maps" value="https://maps.app.goo.gl/cYtW1kHVZTv44hLPA" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Rekening / Kado Digital</label>
@@ -310,7 +314,7 @@
                     <div class="max-w-xl mx-auto space-y-8">
                         <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900">Waktu & Tempat</h2>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                             <div class="p-2 space-y-1">
                                 <p class="text-xs text-slate-700 font-bold uppercase tracking-wider">Tanggal & Waktu</p>
                                 <p id="view-date" class="text-base font-extrabold text-slate-900">Minggu, 20 Oktober 2026</p>
@@ -319,17 +323,23 @@
                             <div class="p-2 space-y-1">
                                 <p class="text-xs text-slate-700 font-bold uppercase tracking-wider">Lokasi Acara</p>
                                 <p id="view-location-box" class="text-base font-extrabold text-slate-900">Gedung Serbaguna Dirgantara</p>
-                                <p id="view-location" class="text-xs text-slate-800 font-semibold">Bandung</p>
+                                <p id="view-address-box" class="text-[11px] text-slate-700 font-medium max-w-xs mx-auto leading-snug">3H92+VF7, Jl. Dirgantara Raya, Gempolsari, Kec. Bandung Kulon, Kota Bandung, Jawa Barat 40215</p>
                             </div>
                         </div>
 
-                        <!-- GAMBAR PETA LOKASI (Preview Peta) -->
-                        <div class="max-w-md mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-300 bg-slate-200 aspect-video">
-                            <img src="img/map.jpg" alt="Peta Lokasi Gedung Serbaguna Dirgantara" class="w-full h-full object-cover">
+                        <!-- PREVIEW PETA INTERAKTIF GOOGLE MAPS LOKASI PRESISI -->
+                        <div class="max-w-md mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-300 bg-slate-200 aspect-video relative">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.672583853112!2d107.55106517587428!3d-6.929688467828065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e5ff41b4a081%3A0x6bbf7cb3a3f5a2b1!2sGedung%20Serbaguna%20Dirgantara!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
+                                class="w-full h-full border-0" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
                         </div>
                         
                         <div>
-                            <a id="view-maps-btn" href="https://maps.app.goo.gl/Xk9c2BdBFHMaP15q9" target="_blank" class="inline-flex items-center gap-2 px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-xs font-bold rounded-xl text-slate-100 shadow-md transition-colors">
+                            <a id="view-maps-btn" href="https://maps.app.goo.gl/cYtW1kHVZTv44hLPA" target="_blank" class="inline-flex items-center gap-2 px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-xs font-bold rounded-xl text-slate-100 shadow-md transition-colors">
                                 <span>📍 Buka Petunjuk Google Maps</span>
                             </a>
                         </div>
@@ -523,9 +533,13 @@
             if (saved.time) document.getElementById('view-time-box').innerText = saved.time;
             if (saved.location) {
                 document.getElementById('view-location-box').innerText = saved.location;
-                document.getElementById('view-location').innerText = saved.location;
             }
-            if (saved.maps) document.getElementById('view-maps-btn').href = saved.maps;
+            if (saved.address) {
+                document.getElementById('view-address-box').innerText = saved.address;
+            }
+            if (saved.maps) {
+                document.getElementById('view-maps-btn').href = saved.maps;
+            }
             if (saved.rek) document.getElementById('view-rek').innerText = saved.rek;
             
             if (saved.audio) {
@@ -694,6 +708,7 @@
             existing.dateText = document.getElementById('cfg-date-text').value;
             existing.time = document.getElementById('cfg-time').value;
             existing.location = document.getElementById('cfg-location').value;
+            existing.address = document.getElementById('cfg-address').value;
             existing.maps = document.getElementById('cfg-maps').value;
             existing.rek = document.getElementById('cfg-rek').value;
 
@@ -714,6 +729,7 @@
             if (saved.dateText) document.getElementById('cfg-date-text').value = saved.dateText;
             if (saved.time) document.getElementById('cfg-time').value = saved.time;
             if (saved.location) document.getElementById('cfg-location').value = saved.location;
+            if (saved.address) document.getElementById('cfg-address').value = saved.address;
             if (saved.maps) document.getElementById('cfg-maps').value = saved.maps;
             if (saved.rek) document.getElementById('cfg-rek').value = saved.rek;
         }
