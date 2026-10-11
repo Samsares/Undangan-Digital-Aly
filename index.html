@@ -86,7 +86,7 @@
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Foto Mempelai Pria (Path/URL)</label>
-                    <input type="text" id="cfg-groom-img" value="img/pria.jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono">
+                    <input type="text" id="cfg-groom-img" value="img/depan.jpeg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Link IG Pria</label>
@@ -98,7 +98,7 @@
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Foto Mempelai Wanita (Path/URL)</label>
-                    <input type="text" id="cfg-bride-img" value="img/wanita.jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono">
+                    <input type="text" id="cfg-bride-img" value="img/depan.jpeg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Link IG Wanita</label>
@@ -716,7 +716,7 @@
         }
 
         function downloadExcelTemplate() {
-            const templateData = [{ "Nama Tamu": "Budi Santoso" }, { "Nama Tamu": "Siti Aminah" }];
+            const templateData = [{ "Nama Tamu": "Rendy & Nadia" }, { "Nama Tamu": " isi" }];
             const worksheet = XLSX.utils.json_to_sheet(templateData);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "Daftar Tamu");
