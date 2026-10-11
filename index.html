@@ -59,6 +59,19 @@
                 background-attachment: fixed;
             }
         }
+
+        /* STYLING EFEK MUNCUL SAAT SCROLL (ANIMASI FADE-UP) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px) scale(0.96);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 antialiased selection:bg-slate-300 selection:text-slate-900">
@@ -86,7 +99,7 @@
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Foto Mempelai Pria (Path/URL)</label>
-                    <input type="text" id="cfg-groom-img" value="img/depan.jpeg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono">
+                    <input type="text" id="cfg-groom-img" value="img/pria.jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Link IG Pria</label>
@@ -98,7 +111,7 @@
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Foto Mempelai Wanita (Path/URL)</label>
-                    <input type="text" id="cfg-bride-img" value="img/depan.jpeg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono">
+                    <input type="text" id="cfg-bride-img" value="img/wanita.jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Link IG Wanita</label>
@@ -168,7 +181,7 @@
 
                     <div>
                         <label class="block text-[11px] text-slate-400 mb-1">Atau Ketik / Tempel Nama Tamu (Satu nama per baris)</label>
-                        <textarea id="guest-input" rows="5" placeholder="Rendy & Nadia&#10;Keluarga&#10;Keluarga Besar" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono"></textarea>
+                        <textarea id="guest-input" rows="5" placeholder="Budi Santoso&#10;Siti Aminah&#10;Keluarga Besar" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono"></textarea>
                     </div>
 
                     <button onclick="generateShortLinks()" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-950 font-bold text-xs rounded-xl transition-all shadow-lg">
@@ -221,7 +234,7 @@
             
             <!-- 1. BAGIAN ATAS (Foto Asli Background Terlihat Lengkap) -->
             <section class="relative min-h-screen w-full flex flex-col items-center justify-end text-center px-6 pb-16 pt-64 bg-top-section">
-                <div class="max-w-md w-full space-y-4 z-10 mx-auto flex flex-col items-center">
+                <div class="max-w-md w-full space-y-4 z-10 mx-auto flex flex-col items-center reveal">
                     
                     <!-- Nama Pengantin -->
                     <h2 id="view-couple-names" class="text-2xl md:text-3xl font-serif font-bold text-slate-900 drop-shadow-sm">M. Raihan Aly & Puja Shalehah</h2>
@@ -253,7 +266,7 @@
 
             <!-- 2. BAGIAN TENGAH (Qur'an & Profil Sejajar Kanan-Kiri) -->
             <section class="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-6 py-20 bg-quran-section space-y-12">
-                <div class="max-w-lg w-full space-y-4 z-10 mx-auto p-4">
+                <div class="max-w-lg w-full space-y-4 z-10 mx-auto p-4 reveal">
                     <h3 class="text-xl md:text-2xl font-serif font-bold text-slate-900">Ar-Rum: 21</h3>
                     <p class="text-xs md:text-sm text-slate-800 font-medium leading-relaxed italic px-2">
                         "Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepada-Nya, dan Dia menjadikan di antaramu rasa kasih dan sayang."
@@ -264,9 +277,9 @@
                 <div class="max-w-2xl w-full flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12 z-10 mx-auto">
                     
                     <!-- Mempelai Pria -->
-                    <div class="flex flex-col items-center space-y-3 flex-1">
+                    <div class="flex flex-col items-center space-y-3 flex-1 reveal">
                         <div class="w-full max-w-[200px] aspect-[716/536] overflow-hidden rounded-t-[80px] border-4 border-slate-900/10 shadow-lg bg-slate-200">
-                            <img id="view-groom-img" src="img/depan.jpeg" alt="Foto M. Raihan Aly" class="w-full h-full object-cover">
+                            <img id="view-groom-img" src="img/pria.jpg" alt="Foto M. Raihan Aly" class="w-full h-full object-cover">
                         </div>
                         <div class="space-y-1">
                             <h4 id="view-groom-name" class="text-base md:text-lg font-serif font-bold text-slate-900">M. Raihan Aly</h4>
@@ -277,12 +290,12 @@
                         </a>
                     </div>
 
-                    <div class="text-xl font-serif font-bold text-slate-700 sm:self-center">&</div>
+                    <div class="text-xl font-serif font-bold text-slate-700 sm:self-center reveal">&</div>
 
                     <!-- Mempelai Wanita -->
-                    <div class="flex flex-col items-center space-y-3 flex-1">
+                    <div class="flex flex-col items-center space-y-3 flex-1 reveal">
                         <div class="w-full max-w-[200px] aspect-[716/536] overflow-hidden rounded-t-[80px] border-4 border-slate-900/10 shadow-lg bg-slate-200">
-                            <img id="view-bride-img" src="img/depan.jpeg" alt="Foto Puja Shalehah" class="w-full h-full object-cover">
+                            <img id="view-bride-img" src="img/wanita.jpg" alt="Foto Puja Shalehah" class="w-full h-full object-cover">
                         </div>
                         <div class="space-y-1">
                             <h4 id="view-bride-name" class="text-base md:text-lg font-serif font-bold text-slate-900">Puja Shalehah</h4>
@@ -300,7 +313,7 @@
             <div class="bg-bunga-permanent w-full">
                 <!-- Waktu & Tempat -->
                 <section id="section-date-loc" class="py-16 md:py-24 px-4 md:px-6 text-center">
-                    <div class="max-w-2xl mx-auto space-y-8">
+                    <div class="max-w-2xl mx-auto space-y-8 reveal">
                         <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900">Waktu & Tempat</h2>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
@@ -317,7 +330,7 @@
                         </div>
 
                         <!-- Peta Interaktif -->
-                        <div class="max-w-md mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-300 bg-slate-200 aspect-video relative">
+                        <div class="max-w-md mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-300 bg-slate-200 aspect-video relative reveal">
                             <iframe 
                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.672583853112!2d107.55106517587428!3d-6.929688467828065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e5ff41b4a081%3A0x6bbf7cb3a3f5a2b1!2sGedung%20Serbaguna%20Dirgantara!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
                                 class="w-full h-full border-0" 
@@ -331,26 +344,26 @@
 
                 <!-- OUR LOVE STORY -->
                 <section class="py-16 md:py-24 px-4 md:px-6 max-w-xl mx-auto space-y-10">
-                    <div class="text-center space-y-2">
+                    <div class="text-center space-y-2 reveal">
                         <h2 class="text-3xl md:text-4xl font-serif text-amber-900 font-normal italic">Our Love Story</h2>
                     </div>
 
                     <div class="relative border-l-2 border-amber-900/60 ml-4 md:ml-8 space-y-12 pl-6 md:pl-8">
-                        <div class="relative space-y-2">
+                        <div class="relative space-y-2 reveal">
                             <div class="absolute -left-[31px] md:-left-[39px] top-1 w-4 h-4 rounded-full bg-amber-900 border-2 border-white shadow"></div>
                             <h3 class="text-base font-serif font-bold text-slate-900">Awal Kisah</h3>
                             <p class="text-xs text-slate-800 font-medium leading-relaxed">
                                 Pada awalnya, kami adalah dua orang asing yang berjalan di jalannya masing-masing. Tak saling kenal, tak saling sapa. Hingga semesta dengan caranya yang indah, mempertemukan kami di satu titik yang sama.
                             </p>
                         </div>
-                        <div class="relative space-y-2">
+                        <div class="relative space-y-2 reveal">
                             <div class="absolute -left-[31px] md:-left-[39px] top-1 w-4 h-4 rounded-full bg-amber-900 border-2 border-white shadow"></div>
                             <h3 class="text-base font-serif font-bold text-slate-900">Tumbuh Bersama</h3>
                             <p class="text-xs text-slate-800 font-medium leading-relaxed">
                                 Percakapan sederhana menjadi tawa yang panjang. Tawa yang panjang menjadi nyaman yang menetap. Dan nyaman itu pelan-pelan berubah menjadi cinta yang tak kami rencanakan.
                             </p>
                         </div>
-                        <div class="relative space-y-2">
+                        <div class="relative space-y-2 reveal">
                             <div class="absolute -left-[31px] md:-left-[39px] top-1 w-4 h-4 rounded-full bg-amber-900 border-2 border-white shadow"></div>
                             <h3 class="text-base font-serif font-bold text-slate-900">Janji Setia</h3>
                             <p class="text-xs text-slate-800 font-medium leading-relaxed">
@@ -362,12 +375,12 @@
 
                 <!-- Ucapan & Doa -->
                 <section class="py-16 md:py-24 px-4 md:px-6 max-w-2xl mx-auto space-y-8">
-                    <div class="text-center space-y-2">
+                    <div class="text-center space-y-2 reveal">
                         <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900">Ucapan & Doa Restu</h2>
                         <p class="text-xs text-slate-800 font-semibold">Berikan ucapan, doa, dan konfirmasi kehadiran untuk kedua mempelai.</p>
                     </div>
 
-                    <div class="space-y-4">
+                    <div class="space-y-4 reveal">
                         <div>
                             <label class="block text-xs font-bold text-slate-900 mb-1">Nama Tamu</label>
                             <input type="text" id="comment-name" placeholder="Nama Anda" class="w-full bg-slate-100/60 border border-slate-400/80 rounded-xl px-3 py-2 text-xs text-slate-900 font-semibold placeholder:text-slate-500 focus:outline-none focus:border-slate-900">
@@ -389,7 +402,7 @@
                         </button>
                     </div>
 
-                    <div class="space-y-4 pt-6">
+                    <div class="space-y-4 pt-6 reveal">
                         <h3 class="text-sm font-bold text-slate-900">Daftar Ucapan Tamu (<span id="comment-count">0</span>)</h3>
                         <div id="comments-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-1"></div>
                         <div id="see-more-container" class="text-center pt-2 hidden">
@@ -402,7 +415,7 @@
 
                 <!-- Kado Digital -->
                 <section class="py-16 md:py-24 px-4 md:px-6 max-w-4xl mx-auto space-y-12">
-                    <div class="p-6 text-center max-w-md mx-auto space-y-4">
+                    <div class="p-6 text-center max-w-md mx-auto space-y-4 reveal">
                         <h3 class="text-lg font-serif font-bold text-slate-900">Kado Digital</h3>
                         <p class="text-xs text-slate-800 font-semibold leading-relaxed">
                             Doa restu Anda merupakan karunia terindah bagi kami. Namun jika ingin mengirimkan tanda kasih:
@@ -434,6 +447,23 @@
         let showAllComments = false;
         let countdownTimerInterval = null;
         let isPlaying = false;
+
+        // ANIMASI SCROLL REVEAL OBSERVATION
+        function initScrollReveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, {
+                threshold: 0.15,
+                rootMargin: "0px 0px -40px 0px"
+            });
+
+            reveals.forEach(el => observer.observe(el));
+        }
 
         window.addEventListener('DOMContentLoaded', () => {
             const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
@@ -522,6 +552,7 @@
                 document.getElementById('invitation-page').classList.remove('hidden');
                 document.getElementById('view-guest-name').innerText = decodedName;
                 document.getElementById('comment-name').value = decodedName;
+                initScrollReveal();
             }
         }
 
@@ -580,6 +611,7 @@
                 cover.style.display = 'none';
                 main.classList.remove('hidden');
                 window.scrollTo(0, 0);
+                initScrollReveal();
             }, 700);
         }
 
@@ -716,7 +748,7 @@
         }
 
         function downloadExcelTemplate() {
-            const templateData = [{ "Nama Tamu": "Rendy & Nadia" }, { "Nama Tamu": " isi" }];
+            const templateData = [{ "Nama Tamu": "Budi Santoso" }, { "Nama Tamu": "Siti Aminah" }];
             const worksheet = XLSX.utils.json_to_sheet(templateData);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "Daftar Tamu");
@@ -809,6 +841,7 @@
             
             const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
             applyConfigToView(saved);
+            initScrollReveal();
         }
 
         function copyRek(btn) {
