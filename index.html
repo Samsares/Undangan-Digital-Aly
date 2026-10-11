@@ -99,7 +99,7 @@
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Foto Mempelai Pria (Path/URL)</label>
-                    <input type="text" id="cfg-groom-img" value="img/pria.jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono">
+                    <input type="text" id="cfg-groom-img" value="img/depan.jpeg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Link IG Pria</label>
@@ -138,6 +138,10 @@
                     <input type="text" id="cfg-address" value="3H92+VF7, Jl. Dirgantara Raya, Gempolsari, Kec. Bandung Kulon, Kota Bandung, Jawa Barat 40215" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
+                    <label class="block text-[11px] text-slate-400 mb-1">Tautan Navigasi Google Maps</label>
+                    <input type="text" id="cfg-maps-url" value="https://maps.app.goo.gl/3H92+VF7" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
+                </div>
+                <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Nama Bank</label>
                     <input type="text" id="cfg-bank-name" value="BCA" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
@@ -168,7 +172,7 @@
             <div class="md:col-span-2 space-y-6">
                 <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4">
                     <div class="flex justify-between items-center">
-                        <h2 class="text-sm font-semibold text-slate-100">Daftar Tamu & Generator Link</h2>
+                        <h2 class="text-sm font-semibold text-slate-100">Daftar Tamu & Generator Link Singkat</h2>
                         <button onclick="downloadExcelTemplate()" class="text-[11px] text-slate-300 hover:underline">Unduh Template Excel</button>
                     </div>
 
@@ -185,7 +189,7 @@
                     </div>
 
                     <button onclick="generateShortLinks()" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-950 font-bold text-xs rounded-xl transition-all shadow-lg">
-                        Buat Tautan Undangan Unik
+                        Buat Tautan Undangan Singkat (&lt;?to=nama&gt;)
                     </button>
                 </div>
 
@@ -276,10 +280,10 @@
                 <!-- PROFIL SEJAJAR KANAN KIRI -->
                 <div class="max-w-2xl w-full flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12 z-10 mx-auto">
                     
-                    <!-- Mempelai Pria -->
+                    <!-- Mempelai Pria (Foto depan.jpeg) -->
                     <div class="flex flex-col items-center space-y-3 flex-1 reveal">
                         <div class="w-full max-w-[200px] aspect-[716/536] overflow-hidden rounded-t-[80px] border-4 border-slate-900/10 shadow-lg bg-slate-200">
-                            <img id="view-groom-img" src="img/pria.jpg" alt="Foto M. Raihan Aly" class="w-full h-full object-cover">
+                            <img id="view-groom-img" src="img/depan.jpeg" alt="Foto M. Raihan Aly" class="w-full h-full object-cover">
                         </div>
                         <div class="space-y-1">
                             <h4 id="view-groom-name" class="text-base md:text-lg font-serif font-bold text-slate-900">M. Raihan Aly</h4>
@@ -292,7 +296,7 @@
 
                     <div class="text-xl font-serif font-bold text-slate-700 sm:self-center reveal">&</div>
 
-                    <!-- Mempelai Wanita -->
+                    <!-- Mempelai Wanita (Foto wanita.jpg) -->
                     <div class="flex flex-col items-center space-y-3 flex-1 reveal">
                         <div class="w-full max-w-[200px] aspect-[716/536] overflow-hidden rounded-t-[80px] border-4 border-slate-900/10 shadow-lg bg-slate-200">
                             <img id="view-bride-img" src="img/wanita.jpg" alt="Foto Puja Shalehah" class="w-full h-full object-cover">
@@ -329,15 +333,21 @@
                             </div>
                         </div>
 
-                        <!-- Peta Interaktif -->
-                        <div class="max-w-md mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-300 bg-slate-200 aspect-video relative reveal">
-                            <iframe 
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.672583853112!2d107.55106517587428!3d-6.929688467828065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e5ff41b4a081%3A0x6bbf7cb3a3f5a2b1!2sGedung%20Serbaguna%20Dirgantara!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
-                                class="w-full h-full border-0" 
-                                allowfullscreen="" 
-                                loading="lazy" 
-                                referrerpolicy="no-referrer-when-downgrade">
-                            </iframe>
+                        <!-- Peta Interaktif & Tombol Google Maps -->
+                        <div class="max-w-md mx-auto space-y-3 reveal">
+                            <div class="rounded-2xl overflow-hidden shadow-lg border border-slate-300 bg-slate-200 aspect-video relative">
+                                <iframe 
+                                    id="view-maps-iframe"
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.672583853112!2d107.55106517587428!3d-6.929688467828065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e5ff41b4a081%3A0x6bbf7cb3a3f5a2b1!2sGedung%20Serbaguna%20Dirgantara!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
+                                    class="w-full h-full border-0" 
+                                    allowfullscreen="" 
+                                    loading="lazy" 
+                                    referrerpolicy="no-referrer-when-downgrade">
+                                </iframe>
+                            </div>
+                            <a id="view-maps-btn" href="https://maps.app.goo.gl/3H92+VF7" target="_blank" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl shadow-md transition-all">
+                                📍 Buka di Google Maps
+                            </a>
                         </div>
                     </div>
                 </section>
@@ -440,13 +450,18 @@
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
         const DEFAULT_AUDIO_SRC = 'Sound/anugrah.mp3';
-        const DEFAULT_GROOM_IMG = 'img/pria.jpg';
+        const DEFAULT_GROOM_IMG = 'img/depan.jpeg';
         const DEFAULT_BRIDE_IMG = 'img/wanita.jpg';
         const DEFAULT_TARGET_DATE = '2026-11-15T08:00:00';
         const DEFAULT_DATE_TEXT = 'Minggu, 15 November 2026';
+        const DEFAULT_MAPS_URL = 'https://maps.app.goo.gl/3H92+VF7';
+
         let showAllComments = false;
         let countdownTimerInterval = null;
         let isPlaying = false;
+
+        // CHANNEL SINKRONISASI REALTIME KOMENTAR DILINTAS TAB/DEVICE
+        const commentChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('wedding_comments_sync') : null;
 
         // ANIMASI SCROLL REVEAL OBSERVATION
         function initScrollReveal() {
@@ -458,8 +473,8 @@
                     }
                 });
             }, {
-                threshold: 0.15,
-                rootMargin: "0px 0px -40px 0px"
+                threshold: 0.12,
+                rootMargin: "0px 0px -30px 0px"
             });
 
             reveals.forEach(el => observer.observe(el));
@@ -472,10 +487,11 @@
                 saved.dateText = DEFAULT_DATE_TEXT;
             }
             saved.audioUrl = DEFAULT_AUDIO_SRC;
-            if (!saved.groomImg) saved.groomImg = DEFAULT_GROOM_IMG;
-            if (!saved.brideImg) saved.brideImg = DEFAULT_BRIDE_IMG;
+            saved.groomImg = DEFAULT_GROOM_IMG;
+            saved.brideImg = DEFAULT_BRIDE_IMG;
             if (!saved.bankNumber || saved.bankNumber === '1234567890') saved.bankNumber = '6765293239';
             if (!saved.time) saved.time = 'Pukul 08.00 WIB - Selesai';
+            if (!saved.mapsUrl) saved.mapsUrl = DEFAULT_MAPS_URL;
 
             localStorage.setItem('wedding_config', JSON.stringify(saved));
 
@@ -484,12 +500,21 @@
             renderComments();
             startCountdown();
 
+            // SINKRONISASI KOMENTAR REALTIME LOKAL BROWSER (EVENT STORAGE & BROADCASTCHANNEL)
             window.addEventListener('storage', (e) => {
                 if (e.key === 'wedding_config') {
                     renderComments();
                     startCountdown();
                 }
             });
+
+            if (commentChannel) {
+                commentChannel.onmessage = (event) => {
+                    if (event.data && event.data.type === 'NEW_COMMENT') {
+                        renderComments();
+                    }
+                };
+            }
         });
 
         function startCountdown() {
@@ -528,23 +553,13 @@
         function parseUrlParameters() {
             const urlParams = new URLSearchParams(window.location.search);
             const toName = urlParams.get('to');
-            const urlAudio = urlParams.get('audio');
-            const urlGroomImg = urlParams.get('gimg');
-            const urlBrideImg = urlParams.get('bimg');
 
             const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
             applyConfigToView(saved);
 
             const audioEl = document.getElementById('bg-audio');
-            if (urlAudio) {
-                audioEl.src = decodeURIComponent(urlAudio);
-            } else {
-                audioEl.src = DEFAULT_AUDIO_SRC;
-            }
+            audioEl.src = saved.audioUrl || DEFAULT_AUDIO_SRC;
             audioEl.load();
-
-            if (urlGroomImg) document.getElementById('view-groom-img').src = decodeURIComponent(urlGroomImg);
-            if (urlBrideImg) document.getElementById('view-bride-img').src = decodeURIComponent(urlBrideImg);
 
             if (toName) {
                 const decodedName = decodeURIComponent(toName.replace(/_/g, ' '));
@@ -579,6 +594,7 @@
             document.getElementById('view-time-box').innerText = saved.time || "Pukul 08.00 WIB - Selesai";
             if (saved.location) document.getElementById('view-location-box').innerText = saved.location;
             if (saved.address) document.getElementById('view-address-box').innerText = saved.address;
+            if (saved.mapsUrl) document.getElementById('view-maps-btn').href = saved.mapsUrl;
             
             if (saved.bankName) document.getElementById('view-bank-name').innerText = saved.bankName;
             if (saved.bankOwner) document.getElementById('view-bank-owner').innerText = saved.bankOwner;
@@ -628,15 +644,11 @@
             isPlaying = !isPlaying;
         }
 
+        // GENERATE LINK SINGKAT SENSASIONAL: https://domain/?to=nama
         function generateShortLinks() {
             saveSettings(false);
             const input = document.getElementById('guest-input').value.trim();
             if (!input) return alert('Masukkan minimal satu nama tamu!');
-
-            const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
-            const audioPath = saved.audioUrl || DEFAULT_AUDIO_SRC;
-            const gImg = saved.groomImg || DEFAULT_GROOM_IMG;
-            const bImg = saved.brideImg || DEFAULT_BRIDE_IMG;
 
             const guests = input.split('\n');
             const baseUrl = window.location.origin + window.location.pathname;
@@ -649,7 +661,8 @@
                 if (!clean) return;
                 count++;
                 
-                const link = `${baseUrl}?to=${encodeURIComponent(clean.replace(/ /g, '_'))}&audio=${encodeURIComponent(audioPath)}&gimg=${encodeURIComponent(gImg)}&bimg=${encodeURIComponent(bImg)}`;
+                // HANYA MENGGUNAKAN NAMA TAMU DI LINK UTAMA
+                const link = `${baseUrl}?to=${encodeURIComponent(clean.replace(/ /g, '_'))}`;
 
                 container.innerHTML += `
                     <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between gap-2">
@@ -675,6 +688,7 @@
             if (!text) return alert('Mohon tuliskan ucapan atau doa restu!');
 
             const newComment = {
+                id: Date.now() + '_' + Math.random().toString(36).substr(2, 5),
                 name: name,
                 attendance: attendance,
                 text: text,
@@ -684,12 +698,21 @@
             const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
             if (!saved.comments) saved.comments = [];
             
-            saved.comments.unshift(newComment);
-            localStorage.setItem('wedding_config', JSON.stringify(saved));
+            // CEK AGAR TIDAK ADA KOMENTAR DUPLIKAT TERTIMPA
+            const exists = saved.comments.some(c => c.name === newComment.name && c.text === newComment.text && c.date === newComment.date);
+            if (!exists) {
+                saved.comments.unshift(newComment);
+                localStorage.setItem('wedding_config', JSON.stringify(saved));
+            }
 
             document.getElementById('comment-text').value = '';
-            alert('Ucapan & doa berhasil dikirim dan tampil di semua undangan!');
+            alert('Ucapan & doa berhasil dikirim dan tersinkronisasi di semua link!');
             renderComments();
+
+            // PANCARKAN UPDATE KEPADA HAK LINK LAIN
+            if (commentChannel) {
+                commentChannel.postMessage({ type: 'NEW_COMMENT', comment: newComment });
+            }
         }
 
         function renderComments() {
@@ -717,7 +740,7 @@
                 if (c.attendance === "Masih Ragu") badgeColor = "bg-amber-100 text-amber-800 border border-amber-300";
 
                 return `
-                    <div class="pb-3 border-b border-slate-300/80 space-y-1">
+                    <div class="pb-3 border-b border-slate-300/80 space-y-1 transition-all duration-300">
                         <div class="flex justify-between items-center gap-2">
                             <div class="flex items-center gap-2">
                                 <span class="text-xs font-extrabold text-slate-900">${escapeHtml(c.name)}</span>
@@ -804,6 +827,7 @@
             existing.time = document.getElementById('cfg-time').value;
             existing.location = document.getElementById('cfg-location').value;
             existing.address = document.getElementById('cfg-address').value;
+            existing.mapsUrl = document.getElementById('cfg-maps-url').value;
             existing.bankName = document.getElementById('cfg-bank-name').value;
             existing.bankOwner = document.getElementById('cfg-bank-owner').value;
             existing.bankNumber = document.getElementById('cfg-bank-number').value;
@@ -828,6 +852,7 @@
             if (saved.time) document.getElementById('cfg-time').value = saved.time;
             if (saved.location) document.getElementById('cfg-location').value = saved.location;
             if (saved.address) document.getElementById('cfg-address').value = saved.address;
+            if (saved.mapsUrl) document.getElementById('cfg-maps-url').value = saved.mapsUrl;
             if (saved.bankName) document.getElementById('cfg-bank-name').value = saved.bankName;
             if (saved.bankOwner) document.getElementById('cfg-bank-owner').value = saved.bankOwner;
             if (saved.bankNumber) document.getElementById('cfg-bank-number').value = saved.bankNumber;
