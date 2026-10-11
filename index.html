@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Wedding Invitation & Dashboard - M. Raihan Aly & Puja Shalehah</title>
+    <title>Digital Wedding Invitation - M. Raihan Aly & Puja Shalehah</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- SheetJS untuk Excel Parsing -->
@@ -13,6 +13,11 @@
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
     </script>
+
+    <!-- FIREBASE SDK UNTUK SINKRONISASI KOMENTAR REALTIME ONLINE -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
     <style>
         @keyframes spinSlow {
             from { transform: rotate(0deg); }
@@ -22,7 +27,6 @@
             animation: spinSlow 8s linear infinite;
         }
 
-        /* STYLING BACKGROUND COVER DEPAN (depan1.jpeg) */
         .bg-cover-permanent {
             background-image: url('img/depan1.jpeg');
             background-size: cover;
@@ -30,7 +34,6 @@
             background-repeat: no-repeat;
         }
 
-        /* STYLING BACKGROUND BAGIAN ATAS */
         .bg-top-section {
             background-image: url('img/1.png');
             background-size: cover;
@@ -60,7 +63,6 @@
             }
         }
 
-        /* STYLING EFEK MUNCUL SAAT SCROLL (ANIMASI FADE-UP) */
         .reveal {
             opacity: 0;
             transform: translateY(40px) scale(0.96);
@@ -118,11 +120,11 @@
                     <input type="text" id="cfg-bride-ig" value="https://www.instagram.com/jaass5_?obrf=MXRqMWN1OHZyejYxcg==" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
-                    <label class="block text-[11px] text-slate-400 mb-1">Tanggal & Waktu Target (Format ISO: YYYY-MM-DDTHH:mm:ss)</label>
+                    <label class="block text-[11px] text-slate-400 mb-1">Tanggal Target (Format: YYYY-MM-DDTHH:mm:ss)</label>
                     <input type="text" id="cfg-date" value="2026-11-15T08:00:00" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
-                    <label class="block text-[11px] text-slate-400 mb-1">Teks Hari & Tanggal (Tampil di Undangan)</label>
+                    <label class="block text-[11px] text-slate-400 mb-1">Teks Hari & Tanggal</label>
                     <input type="text" id="cfg-date-text" value="Minggu, 15 November 2026" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
@@ -138,8 +140,8 @@
                     <input type="text" id="cfg-address" value="3H92+VF7, Jl. Dirgantara Raya, Gempolsari, Kec. Bandung Kulon, Kota Bandung, Jawa Barat 40215" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
-                    <label class="block text-[11px] text-slate-400 mb-1">Tautan Navigasi Google Maps</label>
-                    <input type="text" id="cfg-maps-url" value="https://maps.app.goo.gl/3H92+VF7" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
+                    <label class="block text-[11px] text-slate-400 mb-1">Tautan Google Maps</label>
+                    <input type="text" id="cfg-maps-url" value="https://www.google.com/maps/search/?api=1&query=Gedung+Serbaguna+Dirgantara+Bandung" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Nama Bank</label>
@@ -153,14 +155,9 @@
                     <label class="block text-[11px] text-slate-400 mb-1">Nomor Rekening</label>
                     <input type="text" id="cfg-bank-number" value="6765293239" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500">
                 </div>
-
-                <!-- STRUKTUR INPUT BACKSOUND MANUAL -->
-                <div class="space-y-3 pt-2 border-t border-slate-800">
-                    <label class="block text-xs font-semibold text-slate-100">Pengaturan Musik Utama</label>
-                    <div>
-                        <label class="block text-[11px] text-slate-400 mb-1">Path File Musik (.mp3)</label>
-                        <input type="text" id="cfg-audio-url" value="Sound/anugrah.mp3" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono">
-                    </div>
+                <div>
+                    <label class="block text-[11px] text-slate-400 mb-1">Path Musik (.mp3)</label>
+                    <input type="text" id="cfg-audio-url" value="Sound/anugrah.mp3" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono">
                 </div>
 
                 <button onclick="saveSettings(true)" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-xl text-slate-100 transition-colors">
@@ -168,7 +165,7 @@
                 </button>
             </div>
 
-            <!-- Generator Tamu & Import -->
+            <!-- Generator Tamu -->
             <div class="md:col-span-2 space-y-6">
                 <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4">
                     <div class="flex justify-between items-center">
@@ -184,16 +181,15 @@
                     </div>
 
                     <div>
-                        <label class="block text-[11px] text-slate-400 mb-1">Atau Ketik / Tempel Nama Tamu (Satu nama per baris)</label>
-                        <textarea id="guest-input" rows="5" placeholder="Budi Santoso&#10;Siti Aminah&#10;Keluarga Besar" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono"></textarea>
+                        <label class="block text-[11px] text-slate-400 mb-1">Nama Tamu (1 Nama per baris)</label>
+                        <textarea id="guest-input" rows="5" placeholder="Budi Santoso&#10;Siti Aminah" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono"></textarea>
                     </div>
 
                     <button onclick="generateShortLinks()" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-950 font-bold text-xs rounded-xl transition-all shadow-lg">
-                        Buat Tautan Undangan Singkat (&lt;?to=nama&gt;)
+                        Buat Tautan Undangan Singkat (?to=nama)
                     </button>
                 </div>
 
-                <!-- Hasil Generate -->
                 <div id="result-box" class="hidden bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4">
                     <div class="flex justify-between items-center">
                         <h3 class="text-sm font-semibold text-slate-100">Daftar Link Undangan</h3>
@@ -236,17 +232,11 @@
         <!-- Main Content Section -->
         <div id="main-content" class="hidden min-h-screen w-full">
             
-            <!-- 1. BAGIAN ATAS (Foto Asli Background Terlihat Lengkap) -->
             <section class="relative min-h-screen w-full flex flex-col items-center justify-end text-center px-6 pb-16 pt-64 bg-top-section">
                 <div class="max-w-md w-full space-y-4 z-10 mx-auto flex flex-col items-center reveal">
-                    
-                    <!-- Nama Pengantin -->
                     <h2 id="view-couple-names" class="text-2xl md:text-3xl font-serif font-bold text-slate-900 drop-shadow-sm">M. Raihan Aly & Puja Shalehah</h2>
-                    
-                    <!-- Hari & Tanggal -->
                     <p id="view-date-text" class="text-xs md:text-sm font-semibold text-slate-800">Minggu, 15 November 2026</p>
                     
-                    <!-- Countdown Timer -->
                     <div class="grid grid-cols-4 gap-2 pt-2 max-w-xs w-full mx-auto">
                         <div class="bg-slate-900 text-slate-100 p-2.5 rounded-xl shadow-lg flex flex-col items-center justify-center">
                             <span id="days" class="text-base md:text-lg font-bold font-mono">00</span>
@@ -268,7 +258,6 @@
                 </div>
             </section>
 
-            <!-- 2. BAGIAN TENGAH (Qur'an & Profil Sejajar Kanan-Kiri) -->
             <section class="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-6 py-20 bg-quran-section space-y-12">
                 <div class="max-w-lg w-full space-y-4 z-10 mx-auto p-4 reveal">
                     <h3 class="text-xl md:text-2xl font-serif font-bold text-slate-900">Ar-Rum: 21</h3>
@@ -277,10 +266,7 @@
                     </p>
                 </div>
 
-                <!-- PROFIL SEJAJAR KANAN KIRI -->
                 <div class="max-w-2xl w-full flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12 z-10 mx-auto">
-                    
-                    <!-- Mempelai Pria (Foto depan.jpeg) -->
                     <div class="flex flex-col items-center space-y-3 flex-1 reveal">
                         <div class="w-full max-w-[200px] aspect-[716/536] overflow-hidden rounded-t-[80px] border-4 border-slate-900/10 shadow-lg bg-slate-200">
                             <img id="view-groom-img" src="img/depan.jpeg" alt="Foto M. Raihan Aly" class="w-full h-full object-cover">
@@ -296,7 +282,6 @@
 
                     <div class="text-xl font-serif font-bold text-slate-700 sm:self-center reveal">&</div>
 
-                    <!-- Mempelai Wanita (Foto wanita.jpg) -->
                     <div class="flex flex-col items-center space-y-3 flex-1 reveal">
                         <div class="w-full max-w-[200px] aspect-[716/536] overflow-hidden rounded-t-[80px] border-4 border-slate-900/10 shadow-lg bg-slate-200">
                             <img id="view-bride-img" src="img/wanita.jpg" alt="Foto Puja Shalehah" class="w-full h-full object-cover">
@@ -309,11 +294,9 @@
                             <span>@jaass5_</span>
                         </a>
                     </div>
-
                 </div>
             </section>
 
-            <!-- 3. BAGIAN SELANJUTNYA -->
             <div class="bg-bunga-permanent w-full">
                 <!-- Waktu & Tempat -->
                 <section id="section-date-loc" class="py-16 md:py-24 px-4 md:px-6 text-center">
@@ -333,19 +316,19 @@
                             </div>
                         </div>
 
-                        <!-- Peta Interaktif & Tombol Google Maps -->
+                        <!-- Peta Interaktif Valid -->
                         <div class="max-w-md mx-auto space-y-3 reveal">
                             <div class="rounded-2xl overflow-hidden shadow-lg border border-slate-300 bg-slate-200 aspect-video relative">
                                 <iframe 
                                     id="view-maps-iframe"
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.672583853112!2d107.55106517587428!3d-6.929688467828065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e5ff41b4a081%3A0x6bbf7cb3a3f5a2b1!2sGedung%20Serbaguna%20Dirgantara!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
+                                    src="https://maps.google.com/maps?q=Gedung%20Serbaguna%20Dirgantara%20Bandung&t=&z=15&ie=UTF8&iwloc=&output=embed" 
                                     class="w-full h-full border-0" 
                                     allowfullscreen="" 
                                     loading="lazy" 
                                     referrerpolicy="no-referrer-when-downgrade">
                                 </iframe>
                             </div>
-                            <a id="view-maps-btn" href="https://maps.app.goo.gl/3H92+VF7" target="_blank" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl shadow-md transition-all">
+                            <a id="view-maps-btn" href="https://www.google.com/maps/search/?api=1&query=Gedung+Serbaguna+Dirgantara+Bandung" target="_blank" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl shadow-md transition-all">
                                 📍 Buka di Google Maps
                             </a>
                         </div>
@@ -449,21 +432,33 @@
 
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
+        // INISIALISASI FIREBASE REALTIME DATABASE UNTUK KOMENTAR ONLINE REALTIME
+        const firebaseConfig = {
+            databaseURL: "https://wedding-invitation-aly-default-rtdb.asia-southeast1.firebasedatabase.app/"
+        };
+        
+        let db = null;
+        try {
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            db = firebase.database();
+        } catch (e) {
+            console.log("Firebase initialized in fallback mode");
+        }
+
         const DEFAULT_AUDIO_SRC = 'Sound/anugrah.mp3';
         const DEFAULT_GROOM_IMG = 'img/depan.jpeg';
         const DEFAULT_BRIDE_IMG = 'img/wanita.jpg';
         const DEFAULT_TARGET_DATE = '2026-11-15T08:00:00';
         const DEFAULT_DATE_TEXT = 'Minggu, 15 November 2026';
-        const DEFAULT_MAPS_URL = 'https://maps.app.goo.gl/3H92+VF7';
+        const DEFAULT_MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=Gedung+Serbaguna+Dirgantara+Bandung';
 
         let showAllComments = false;
         let countdownTimerInterval = null;
         let isPlaying = false;
+        let commentsDataList = [];
 
-        // CHANNEL SINKRONISASI REALTIME KOMENTAR DILINTAS TAB/DEVICE
-        const commentChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('wedding_comments_sync') : null;
-
-        // ANIMASI SCROLL REVEAL OBSERVATION
         function initScrollReveal() {
             const reveals = document.querySelectorAll('.reveal');
             const observer = new IntersectionObserver((entries) => {
@@ -491,31 +486,35 @@
             saved.brideImg = DEFAULT_BRIDE_IMG;
             if (!saved.bankNumber || saved.bankNumber === '1234567890') saved.bankNumber = '6765293239';
             if (!saved.time) saved.time = 'Pukul 08.00 WIB - Selesai';
-            if (!saved.mapsUrl) saved.mapsUrl = DEFAULT_MAPS_URL;
+            if (!saved.mapsUrl || saved.mapsUrl.includes('3H92+VF7')) saved.mapsUrl = DEFAULT_MAPS_URL;
 
             localStorage.setItem('wedding_config', JSON.stringify(saved));
 
             loadSavedSettingsToForm();
             parseUrlParameters();
-            renderComments();
+            listenRealtimeComments();
             startCountdown();
-
-            // SINKRONISASI KOMENTAR REALTIME LOKAL BROWSER (EVENT STORAGE & BROADCASTCHANNEL)
-            window.addEventListener('storage', (e) => {
-                if (e.key === 'wedding_config') {
-                    renderComments();
-                    startCountdown();
-                }
-            });
-
-            if (commentChannel) {
-                commentChannel.onmessage = (event) => {
-                    if (event.data && event.data.type === 'NEW_COMMENT') {
-                        renderComments();
-                    }
-                };
-            }
         });
+
+        // SINKRONISASI KOMENTAR REALTIME ONLINE LEWAT FIREBASE DATABASE
+        function listenRealtimeComments() {
+            if (db) {
+                db.ref('comments').on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    commentsDataList = [];
+                    if (data) {
+                        Object.keys(data).forEach(key => {
+                            commentsDataList.unshift(data[key]);
+                        });
+                    }
+                    renderComments();
+                });
+            } else {
+                const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
+                commentsDataList = saved.comments || [];
+                renderComments();
+            }
+        }
 
         function startCountdown() {
             if (countdownTimerInterval) clearInterval(countdownTimerInterval);
@@ -594,13 +593,14 @@
             document.getElementById('view-time-box').innerText = saved.time || "Pukul 08.00 WIB - Selesai";
             if (saved.location) document.getElementById('view-location-box').innerText = saved.location;
             if (saved.address) document.getElementById('view-address-box').innerText = saved.address;
-            if (saved.mapsUrl) document.getElementById('view-maps-btn').href = saved.mapsUrl;
+            
+            const mapsUrl = saved.mapsUrl || DEFAULT_MAPS_URL;
+            document.getElementById('view-maps-btn').href = mapsUrl;
             
             if (saved.bankName) document.getElementById('view-bank-name').innerText = saved.bankName;
             if (saved.bankOwner) document.getElementById('view-bank-owner').innerText = saved.bankOwner;
             document.getElementById('view-bank-number').innerText = saved.bankNumber || "6765293239";
 
-            renderComments();
             startCountdown();
         }
 
@@ -644,7 +644,6 @@
             isPlaying = !isPlaying;
         }
 
-        // GENERATE LINK SINGKAT SENSASIONAL: https://domain/?to=nama
         function generateShortLinks() {
             saveSettings(false);
             const input = document.getElementById('guest-input').value.trim();
@@ -661,7 +660,6 @@
                 if (!clean) return;
                 count++;
                 
-                // HANYA MENGGUNAKAN NAMA TAMU DI LINK UTAMA
                 const link = `${baseUrl}?to=${encodeURIComponent(clean.replace(/ /g, '_'))}`;
 
                 container.innerHTML += `
@@ -688,51 +686,42 @@
             if (!text) return alert('Mohon tuliskan ucapan atau doa restu!');
 
             const newComment = {
-                id: Date.now() + '_' + Math.random().toString(36).substr(2, 5),
                 name: name,
                 attendance: attendance,
                 text: text,
                 date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
             };
 
-            const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
-            if (!saved.comments) saved.comments = [];
-            
-            // CEK AGAR TIDAK ADA KOMENTAR DUPLIKAT TERTIMPA
-            const exists = saved.comments.some(c => c.name === newComment.name && c.text === newComment.text && c.date === newComment.date);
-            if (!exists) {
-                saved.comments.unshift(newComment);
+            if (db) {
+                db.ref('comments').push(newComment);
+            } else {
+                commentsDataList.unshift(newComment);
+                const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
+                saved.comments = commentsDataList;
                 localStorage.setItem('wedding_config', JSON.stringify(saved));
+                renderComments();
             }
 
             document.getElementById('comment-text').value = '';
-            alert('Ucapan & doa berhasil dikirim dan tersinkronisasi di semua link!');
-            renderComments();
-
-            // PANCARKAN UPDATE KEPADA HAK LINK LAIN
-            if (commentChannel) {
-                commentChannel.postMessage({ type: 'NEW_COMMENT', comment: newComment });
-            }
+            alert('Ucapan & doa berhasil dikirim dan tampil di semua link secara realtime!');
         }
 
         function renderComments() {
-            const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
-            const comments = saved.comments || [];
             const container = document.getElementById('comments-container');
             const countBadge = document.getElementById('comment-count');
             const seeMoreContainer = document.getElementById('see-more-container');
             const seeMoreBtn = document.getElementById('see-more-btn');
 
-            countBadge.innerText = comments.length;
+            countBadge.innerText = commentsDataList.length;
 
-            if (comments.length === 0) {
+            if (commentsDataList.length === 0) {
                 container.innerHTML = `<p class="text-center text-xs text-slate-800 font-semibold py-4">Belum ada ucapan. Jadilah yang pertama memberikan ucapan!</p>`;
                 seeMoreContainer.classList.add('hidden');
                 return;
             }
 
-            const limit = showAllComments ? comments.length : 5;
-            const displayedComments = comments.slice(0, limit);
+            const limit = showAllComments ? commentsDataList.length : 5;
+            const displayedComments = commentsDataList.slice(0, limit);
 
             container.innerHTML = displayedComments.map(c => {
                 let badgeColor = "bg-emerald-100 text-emerald-800 border border-emerald-300";
@@ -753,9 +742,9 @@
                 `;
             }).join('');
 
-            if (comments.length > 5) {
+            if (commentsDataList.length > 5) {
                 seeMoreContainer.classList.remove('hidden');
-                seeMoreBtn.innerText = showAllComments ? "Tampilkan Lebih Sedikit" : `See More (${comments.length - 5} lainnya)`;
+                seeMoreBtn.innerText = showAllComments ? "Tampilkan Lebih Sedikit" : `See More (${commentsDataList.length - 5} lainnya)`;
             } else {
                 seeMoreContainer.classList.add('hidden');
             }
