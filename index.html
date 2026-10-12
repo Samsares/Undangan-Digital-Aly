@@ -13,11 +13,6 @@
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
     </script>
-
-    <!-- FIREBASE SDK UNTUK KOMENTAR ONLINE REALTIME LINTAS DEVICE -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
     <style>
         @keyframes spinSlow {
             from { transform: rotate(0deg); }
@@ -182,7 +177,7 @@
 
                     <div>
                         <label class="block text-[11px] text-slate-400 mb-1">Nama Tamu (1 Nama per baris)</label>
-                        <textarea id="guest-input" rows="5" placeholder="Budi Santoso&#10;Siti Aminah" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono"></textarea>
+                        <textarea id="guest-input" rows="5" placeholder="Rendy&#10;Nadia" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono"></textarea>
                     </div>
 
                     <button onclick="generateShortLinks()" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-950 font-bold text-xs rounded-xl transition-all shadow-lg">
@@ -432,21 +427,6 @@
 
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
-        // INISIALISASI FIREBASE PUBLIK UNTUK SINKRONISASI KOMENTAR LINTAS LINK & DEVICE
-        const firebaseConfig = {
-            databaseURL: "https://wedding-invitation-aly-default-rtdb.asia-southeast1.firebasedatabase.app/"
-        };
-        
-        let db = null;
-        try {
-            if (!firebase.apps.length) {
-                firebase.initializeApp(firebaseConfig);
-            }
-            db = firebase.database();
-        } catch (e) {
-            console.log("Firebase fallback mode");
-        }
-
         const DEFAULT_AUDIO_SRC = 'Sound/anugrah.mp3';
         const DEFAULT_GROOM_IMG = 'img/depan.jpeg';
         const DEFAULT_BRIDE_IMG = 'img/wanita.jpg';
@@ -457,7 +437,9 @@
         let showAllComments = false;
         let countdownTimerInterval = null;
         let isPlaying = false;
-        let commentsDataList = [];
+
+        // CHANNEL BROADCAST REALTIME LINTAS TAB / LINK TANPA SERVER LUAR
+        const commentChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('wedding_comments_channel') : null;
 
         function initScrollReveal() {
             const reveals = document.querySelectorAll('.reveal');
@@ -492,29 +474,24 @@
 
             loadSavedSettingsToForm();
             parseUrlParameters();
-            listenRealtimeComments();
+            renderComments();
             startCountdown();
-        });
 
-        // MENDENGARKAN PERUBAHAN KOMENTAR SECARA REALTIME DARI DATABASE ONLINE
-        function listenRealtimeComments() {
-            if (db) {
-                db.ref('comments').on('value', (snapshot) => {
-                    const data = snapshot.val();
-                    commentsDataList = [];
-                    if (data) {
-                        Object.keys(data).forEach(key => {
-                            commentsDataList.unshift(data[key]);
-                        });
-                    }
+            // SINKRONISASI REALTIME ANTAR TAB / BROWSER DENGAN LOCALSTORAGE EVENT
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'wedding_config') {
                     renderComments();
-                });
-            } else {
-                const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
-                commentsDataList = saved.comments || [];
-                renderComments();
+                }
+            });
+
+            if (commentChannel) {
+                commentChannel.onmessage = (event) => {
+                    if (event.data && event.data.type === 'NEW_COMMENT') {
+                        renderComments();
+                    }
+                };
             }
-        }
+        });
 
         function startCountdown() {
             if (countdownTimerInterval) clearInterval(countdownTimerInterval);
@@ -677,7 +654,7 @@
             document.getElementById('result-box').classList.remove('hidden');
         }
 
-        // MENGIRIM KOMENTAR KE DATABASE ONLINE (TERKIRIM KE SEMUA LINK SECARA REALTIME)
+        // PENYIMPANAN KOMENTAR LOKAL DAN SEBARAN REALTIME
         function submitComment() {
             const name = document.getElementById('comment-name').value.trim();
             const attendance = document.getElementById('comment-attendance').value;
@@ -687,42 +664,49 @@
             if (!text) return alert('Mohon tuliskan ucapan atau doa restu!');
 
             const newComment = {
+                id: 'c_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
                 name: name,
                 attendance: attendance,
                 text: text,
                 date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
             };
 
-            if (db) {
-                db.ref('comments').push(newComment).then(() => {
-                    document.getElementById('comment-text').value = '';
-                    alert('Ucapan & doa berhasil dikirim dan langsung tampil di semua link undangan!');
-                }).catch(err => {
-                    alert('Gagal mengirim ucapan: ' + err.message);
-                });
-            } else {
-                commentsDataList.unshift(newComment);
-                renderComments();
-                document.getElementById('comment-text').value = '';
+            const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
+            if (!saved.comments) saved.comments = [];
+
+            // Simpan di urutan teratas
+            saved.comments.unshift(newComment);
+            localStorage.setItem('wedding_config', JSON.stringify(saved));
+
+            document.getElementById('comment-text').value = '';
+            renderComments();
+
+            // Broadcast ke tab atau link lain secara realtime
+            if (commentChannel) {
+                commentChannel.postMessage({ type: 'NEW_COMMENT', comment: newComment });
             }
+
+            alert('Ucapan & doa berhasil dikirim!');
         }
 
         function renderComments() {
+            const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
+            const comments = saved.comments || [];
             const container = document.getElementById('comments-container');
             const countBadge = document.getElementById('comment-count');
             const seeMoreContainer = document.getElementById('see-more-container');
             const seeMoreBtn = document.getElementById('see-more-btn');
 
-            countBadge.innerText = commentsDataList.length;
+            countBadge.innerText = comments.length;
 
-            if (commentsDataList.length === 0) {
+            if (comments.length === 0) {
                 container.innerHTML = `<p class="text-center text-xs text-slate-800 font-semibold py-4">Belum ada ucapan. Jadilah yang pertama memberikan ucapan!</p>`;
                 seeMoreContainer.classList.add('hidden');
                 return;
             }
 
-            const limit = showAllComments ? commentsDataList.length : 5;
-            const displayedComments = commentsDataList.slice(0, limit);
+            const limit = showAllComments ? comments.length : 5;
+            const displayedComments = comments.slice(0, limit);
 
             container.innerHTML = displayedComments.map(c => {
                 let badgeColor = "bg-emerald-100 text-emerald-800 border border-emerald-300";
@@ -743,9 +727,9 @@
                 `;
             }).join('');
 
-            if (commentsDataList.length > 5) {
+            if (comments.length > 5) {
                 seeMoreContainer.classList.remove('hidden');
-                seeMoreBtn.innerText = showAllComments ? "Tampilkan Lebih Sedikit" : `See More (${commentsDataList.length - 5} lainnya)`;
+                seeMoreBtn.innerText = showAllComments ? "Tampilkan Lebih Sedikit" : `See More (${comments.length - 5} lainnya)`;
             } else {
                 seeMoreContainer.classList.add('hidden');
             }
