@@ -81,7 +81,7 @@
                 <p class="text-xs text-slate-400 mt-1">M. Raihan Aly & Puja Solehah Wedding Setup</p>
             </div>
             <button onclick="switchToPreview()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-950 text-xs font-semibold rounded-xl transition-all shadow-lg">
-                Pratinjau Undangan &rarr;
+                Pratinjau Undangan Utuh &rarr;
             </button>
         </header>
 
@@ -152,8 +152,9 @@
                 </button>
             </div>
 
-            <!-- Generator Tamu -->
+            <!-- Generator Tamu & Manajemen Komentar Admin -->
             <div class="md:col-span-2 space-y-6">
+                <!-- Generator Link -->
                 <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4">
                     <div class="flex justify-between items-center">
                         <h2 class="text-sm font-semibold text-slate-100">Daftar Tamu & Generator Link Singkat</h2>
@@ -169,7 +170,7 @@
 
                     <div>
                         <label class="block text-[11px] text-slate-400 mb-1">Nama Tamu (1 Nama per baris)</label>
-                        <textarea id="guest-input" rows="5" placeholder="Rendy&#10;Nadia" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono"></textarea>
+                        <textarea id="guest-input" rows="4" placeholder="Rendy&#10;Nadia" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono"></textarea>
                     </div>
 
                     <button onclick="generateShortLinks()" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-950 font-bold text-xs rounded-xl transition-all shadow-lg">
@@ -182,7 +183,17 @@
                         <h3 class="text-sm font-semibold text-slate-100">Daftar Link Undangan</h3>
                         <span id="counter-badge" class="px-2.5 py-0.5 bg-slate-800 text-slate-200 text-[10px] rounded-full font-mono">0 Tamu</span>
                     </div>
-                    <div id="link-list-container" class="space-y-3 max-h-96 overflow-y-auto pr-1"></div>
+                    <div id="link-list-container" class="space-y-3 max-h-60 overflow-y-auto pr-1"></div>
+                </div>
+
+                <!-- ADMIN MANAJEMEN KOMENTAR & KELOLA HAPUS -->
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                        <h2 class="text-sm font-semibold text-slate-100">Kelola Komentar Tamu (Khusus Admin)</h2>
+                        <span id="admin-comment-count" class="px-2.5 py-0.5 bg-slate-800 text-slate-200 text-[10px] rounded-full font-mono">0 Komentar</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400">Semua ucapan dari berbagai link tamu akan terhimpun di sini. Anda dapat menghapus ucapan yang tidak diinginkan.</p>
+                    <div id="admin-comments-container" class="space-y-3 max-h-80 overflow-y-auto pr-1"></div>
                 </div>
             </div>
         </div>
@@ -193,9 +204,15 @@
     <div id="invitation-page" class="hidden min-h-screen relative overflow-x-hidden w-full text-slate-900">
         <audio id="bg-audio" loop preload="auto"></audio>
 
-        <button id="floating-music-btn" onclick="toggleAudio()" class="hidden fixed bottom-5 right-5 z-50 w-12 h-12 bg-slate-900/90 backdrop-blur text-slate-100 rounded-full flex items-center justify-center shadow-xl hover:scale-105 transition-transform">
-            <svg id="music-icon" class="w-5 h-5 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
-        </button>
+        <!-- Floating Music & Admin Switch Button -->
+        <div class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 items-end">
+            <button id="admin-back-btn" onclick="switchToAdmin()" class="hidden px-4 py-2 bg-slate-900/90 backdrop-blur text-slate-100 border border-slate-700 rounded-full text-xs font-bold shadow-xl hover:scale-105 transition-transform">
+                ⚙️ Dashboard Admin
+            </button>
+            <button id="floating-music-btn" onclick="toggleAudio()" class="hidden w-12 h-12 bg-slate-900/90 backdrop-blur text-slate-100 rounded-full flex items-center justify-center shadow-xl hover:scale-105 transition-transform">
+                <svg id="music-icon" class="w-5 h-5 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
+            </button>
+        </div>
 
         <!-- Cover Section -->
         <section id="cover-section" class="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-6 py-10 bg-cover-permanent">
@@ -423,6 +440,7 @@
         let showAllComments = false;
         let countdownTimerInterval = null;
         let isPlaying = false;
+        let isAdminView = false;
 
         const commentChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('wedding_comments_channel') : null;
 
@@ -462,18 +480,21 @@
             loadSavedSettingsToForm();
             parseUrlParameters();
             renderComments();
+            renderAdminComments();
             startCountdown();
 
             window.addEventListener('storage', (e) => {
                 if (e.key === 'wedding_config') {
                     renderComments();
+                    renderAdminComments();
                 }
             });
 
             if (commentChannel) {
                 commentChannel.onmessage = (event) => {
-                    if (event.data && event.data.type === 'NEW_COMMENT') {
+                    if (event.data && (event.data.type === 'NEW_COMMENT' || event.data.type === 'DELETE_COMMENT')) {
                         renderComments();
+                        renderAdminComments();
                     }
                 };
             }
@@ -524,12 +545,21 @@
             audioEl.load();
 
             if (toName) {
-                const decodedName = decodeURIComponent(toName.replace(/_/g, ' '));
+                // Tampilan untuk tamu via link ?to=
+                isAdminView = false;
                 document.getElementById('admin-page').classList.add('hidden');
+                document.getElementById('admin-back-btn').classList.add('hidden');
                 document.getElementById('invitation-page').classList.remove('hidden');
+                
+                const decodedName = decodeURIComponent(toName.replace(/_/g, ' '));
                 document.getElementById('view-guest-name').innerText = decodedName;
                 document.getElementById('comment-name').value = decodedName;
                 initScrollReveal();
+            } else {
+                // Link Utama tanpa parameter => Membuka Dashboard Admin dengan opsi Pratinjau
+                isAdminView = true;
+                document.getElementById('admin-page').classList.remove('hidden');
+                document.getElementById('invitation-page').classList.add('hidden');
             }
         }
 
@@ -661,6 +691,7 @@
 
             document.getElementById('comment-text').value = '';
             renderComments();
+            renderAdminComments();
 
             if (commentChannel) {
                 commentChannel.postMessage({ type: 'NEW_COMMENT', comment: newComment });
@@ -713,6 +744,63 @@
             } else {
                 seeMoreContainer.classList.add('hidden');
             }
+        }
+
+        // FUNGSI KHUSUS ADMIN UNTUK MEMANTAU & MENGHAPUS KOMENTAR TAMU
+        function renderAdminComments() {
+            const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
+            const comments = saved.comments || [];
+            const container = document.getElementById('admin-comments-container');
+            const countBadge = document.getElementById('admin-comment-count');
+
+            countBadge.innerText = `${comments.length} Komentar`;
+
+            if (comments.length === 0) {
+                container.innerHTML = `<p class="text-center text-xs text-slate-500 py-4">Belum ada ucapan masuk dari tamu.</p>`;
+                return;
+            }
+
+            container.innerHTML = comments.map(c => {
+                let badgeColor = "bg-emerald-950 text-emerald-300 border border-emerald-800";
+                if (c.attendance === "Tidak Hadir") badgeColor = "bg-rose-950 text-rose-300 border border-rose-800";
+                if (c.attendance === "Masih Ragu") badgeColor = "bg-amber-950 text-amber-300 border border-amber-800";
+
+                return `
+                    <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-start justify-between gap-3">
+                        <div class="space-y-1 overflow-hidden">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-100">${escapeHtml(c.name)}</span>
+                                <span class="px-2 py-0.5 text-[9px] font-bold rounded-full ${badgeColor}">${escapeHtml(c.attendance)}</span>
+                                <span class="text-[10px] text-slate-500">${escapeHtml(c.date)}</span>
+                            </div>
+                            <p class="text-xs text-slate-300 font-sans">${escapeHtml(c.text)}</p>
+                        </div>
+                        <button onclick="deleteComment('${c.id}')" title="Hapus Komentar Ini" class="px-2.5 py-1.5 bg-rose-950/80 hover:bg-rose-900 border border-rose-800 text-rose-200 text-[10px] font-bold rounded-lg transition-colors whitespace-nowrap">
+                            🗑️ Hapus
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // MENGHAPUS KOMENTAR SECARA PERMANEN OLEH ADMIN
+        function deleteComment(commentId) {
+            if (!confirm('Apakah Anda yakin ingin menghapus ucapan ini?')) return;
+
+            const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
+            if (!saved.comments) return;
+
+            saved.comments = saved.comments.filter(c => c.id !== commentId);
+            localStorage.setItem('wedding_config', JSON.stringify(saved));
+
+            renderComments();
+            renderAdminComments();
+
+            if (commentChannel) {
+                commentChannel.postMessage({ type: 'DELETE_COMMENT', id: commentId });
+            }
+
+            alert('Komentar berhasil dihapus!');
         }
 
         function toggleSeeMoreComments() {
@@ -813,10 +901,17 @@
             saveSettings(false);
             document.getElementById('admin-page').classList.add('hidden');
             document.getElementById('invitation-page').classList.remove('hidden');
+            document.getElementById('admin-back-btn').classList.remove('hidden');
             
             const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
             applyConfigToView(saved);
             initScrollReveal();
+        }
+
+        function switchToAdmin() {
+            document.getElementById('admin-page').classList.remove('hidden');
+            document.getElementById('invitation-page').classList.add('hidden');
+            renderAdminComments();
         }
 
         function copyRek(btn) {
