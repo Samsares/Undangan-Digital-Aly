@@ -14,7 +14,7 @@
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
     </script>
 
-    <!-- FIREBASE SDK UNTUK SINKRONISASI KOMENTAR REALTIME ONLINE -->
+    <!-- FIREBASE SDK UNTUK KOMENTAR ONLINE REALTIME LINTAS DEVICE -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
@@ -432,7 +432,7 @@
 
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
-        // INISIALISASI FIREBASE REALTIME DATABASE UNTUK KOMENTAR ONLINE REALTIME
+        // INISIALISASI FIREBASE PUBLIK UNTUK SINKRONISASI KOMENTAR LINTAS LINK & DEVICE
         const firebaseConfig = {
             databaseURL: "https://wedding-invitation-aly-default-rtdb.asia-southeast1.firebasedatabase.app/"
         };
@@ -444,7 +444,7 @@
             }
             db = firebase.database();
         } catch (e) {
-            console.log("Firebase initialized in fallback mode");
+            console.log("Firebase fallback mode");
         }
 
         const DEFAULT_AUDIO_SRC = 'Sound/anugrah.mp3';
@@ -496,7 +496,7 @@
             startCountdown();
         });
 
-        // SINKRONISASI KOMENTAR REALTIME ONLINE LEWAT FIREBASE DATABASE
+        // MENDENGARKAN PERUBAHAN KOMENTAR SECARA REALTIME DARI DATABASE ONLINE
         function listenRealtimeComments() {
             if (db) {
                 db.ref('comments').on('value', (snapshot) => {
@@ -615,7 +615,7 @@
                 isPlaying = true;
                 icon.classList.add('animate-spin-slow');
             }).catch((err) => {
-                console.log("Autoplay diblokir browser:", err);
+                console.log("Autoplay diblokir:", err);
                 isPlaying = false;
                 icon.classList.remove('animate-spin-slow');
             });
@@ -677,6 +677,7 @@
             document.getElementById('result-box').classList.remove('hidden');
         }
 
+        // MENGIRIM KOMENTAR KE DATABASE ONLINE (TERKIRIM KE SEMUA LINK SECARA REALTIME)
         function submitComment() {
             const name = document.getElementById('comment-name').value.trim();
             const attendance = document.getElementById('comment-attendance').value;
@@ -693,17 +694,17 @@
             };
 
             if (db) {
-                db.ref('comments').push(newComment);
+                db.ref('comments').push(newComment).then(() => {
+                    document.getElementById('comment-text').value = '';
+                    alert('Ucapan & doa berhasil dikirim dan langsung tampil di semua link undangan!');
+                }).catch(err => {
+                    alert('Gagal mengirim ucapan: ' + err.message);
+                });
             } else {
                 commentsDataList.unshift(newComment);
-                const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
-                saved.comments = commentsDataList;
-                localStorage.setItem('wedding_config', JSON.stringify(saved));
                 renderComments();
+                document.getElementById('comment-text').value = '';
             }
-
-            document.getElementById('comment-text').value = '';
-            alert('Ucapan & doa berhasil dikirim dan tampil di semua link secara realtime!');
         }
 
         function renderComments() {
