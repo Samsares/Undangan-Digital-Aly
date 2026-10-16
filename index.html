@@ -76,10 +76,10 @@
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 antialiased selection:bg-slate-300 selection:text-slate-900">
+<body class="bg-white text-slate-900 antialiased selection:bg-slate-900 selection:text-white">
 
     <!-- ================= ADMIN DASHBOARD PAGE ================= -->
-    <div id="admin-page" class="min-h-screen p-4 md:p-8 max-w-5xl mx-auto">
+    <div id="admin-page" class="hidden min-h-screen p-4 md:p-8 max-w-5xl mx-auto bg-slate-950 text-slate-100 rounded-3xl my-4">
         <header class="mb-8 border-b border-slate-800 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h1 class="text-2xl font-bold text-slate-100 tracking-tight">Dashboard Admin Undangan</h1>
@@ -101,7 +101,7 @@
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Foto Mempelai Pria (Path/URL)</label>
-                    <input type="text" id="cfg-groom-img" value="img/depan.jpeg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono">
+                    <input type="text" id="cfg-groom-img" value="img/fotoaly.jpeg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Nama Mempelai Wanita</label>
@@ -109,7 +109,7 @@
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Foto Mempelai Wanita (Path/URL)</label>
-                    <input type="text" id="cfg-bride-img" value="img/depan.jpeg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono">
+                    <input type="text" id="cfg-bride-img" value="img/fotopuja.jpeg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1">Tanggal Target (Format: YYYY-MM-DDTHH:mm:ss)</label>
@@ -175,7 +175,7 @@
 
                     <div>
                         <label class="block text-[11px] text-slate-400 mb-1">Nama Tamu (1 Nama per baris)</label>
-                        <textarea id="guest-input" rows="4" placeholder="Rendy&#10;Nadia" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono"></textarea>
+                        <textarea id="guest-input" rows="4" placeholder="Cth: Rendy & Nadia&#10;tulis nama tamu lainnya atau masukan excel" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-100 focus:outline-none focus:border-slate-500 font-mono"></textarea>
                     </div>
 
                     <button onclick="generateShortLinks()" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-950 font-bold text-xs rounded-xl transition-all shadow-lg">
@@ -270,7 +270,7 @@
             <section class="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-6 py-20 bg-quran-section space-y-12">
                 <div class="max-w-lg w-full space-y-4 z-10 mx-auto p-4 reveal">
                     <h3 class="text-xl md:text-2xl font-serif font-bold text-slate-900">Ar-Rum: 21</h3>
-                    <p class="text-xs md:text-sm text-slate-800 font-medium leading-relaxed italic px-2">
+                    <p class="text-xs md:text-sm text-slate-900 font-medium leading-relaxed italic px-2">
                         "Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepada-Nya, dan Dia menjadikan di antaramu rasa kasih dan sayang."
                     </p>
                 </div>
@@ -279,19 +279,19 @@
                     <!-- Mempelai Pria -->
                     <div class="flex flex-col items-center space-y-3 flex-1 reveal">
                         <div class="w-full max-w-[200px] aspect-[716/536] overflow-hidden rounded-t-[80px] border-4 border-slate-900/10 shadow-lg bg-slate-200">
-                            <img id="view-groom-img" src="img/depan.jpeg" alt="Foto M. Raihan Aly" class="w-full h-full object-cover">
+                            <img id="view-groom-img" src="img/fotoaly.jpeg" alt="Foto M. Raihan Aly" class="w-full h-full object-cover">
                         </div>
                         <div class="space-y-1">
                             <h4 id="view-groom-name" class="text-base md:text-lg font-serif font-bold text-slate-900">M. Raihan Aly</h4>
                         </div>
                     </div>
 
-                    <div class="text-xl font-serif font-bold text-slate-700 sm:self-center reveal">&</div>
+                    <div class="text-xl font-serif font-bold text-slate-800 sm:self-center reveal">&</div>
 
                     <!-- Mempelai Wanita -->
                     <div class="flex flex-col items-center space-y-3 flex-1 reveal">
                         <div class="w-full max-w-[200px] aspect-[716/536] overflow-hidden rounded-t-[80px] border-4 border-slate-900/10 shadow-lg bg-slate-200">
-                            <img id="view-bride-img" src="img/depan.jpeg" alt="Foto Puja Solehah" class="w-full h-full object-cover">
+                            <img id="view-bride-img" src="img/fotopuja.jpeg" alt="Foto Puja Solehah" class="w-full h-full object-cover">
                         </div>
                         <div class="space-y-1">
                             <h4 id="view-bride-name" class="text-base md:text-lg font-serif font-bold text-slate-900">Puja Solehah</h4>
@@ -300,7 +300,7 @@
                 </div>
             </section>
 
-            <div class="bg-bunga-permanent w-full">
+            <div class="bg-bunga-permanent w-full text-slate-900">
                 <!-- Waktu & Tempat -->
                 <section id="section-date-loc" class="py-16 md:py-24 px-4 md:px-6 text-center">
                     <div class="max-w-2xl mx-auto space-y-8 reveal">
@@ -308,14 +308,14 @@
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
                             <div class="p-2 space-y-1">
-                                <p class="text-xs text-slate-700 font-bold uppercase tracking-wider">Tanggal & Waktu</p>
+                                <p class="text-xs text-slate-900 font-extrabold uppercase tracking-wider">Tanggal & Waktu</p>
                                 <p id="view-date" class="text-base font-extrabold text-slate-900">Minggu, 15 November 2026</p>
-                                <p id="view-time-box" class="text-xs text-slate-800 font-semibold">Pukul 08.00 WIB - Selesai</p>
+                                <p id="view-time-box" class="text-xs text-slate-900 font-bold">Pukul 08.00 WIB - Selesai</p>
                             </div>
                             <div class="p-2 space-y-1">
-                                <p class="text-xs text-slate-700 font-bold uppercase tracking-wider">Lokasi Acara</p>
+                                <p class="text-xs text-slate-900 font-extrabold uppercase tracking-wider">Lokasi Acara</p>
                                 <p id="view-location-box" class="text-base font-extrabold text-slate-900">Gedung Serbaguna Dirgantara</p>
-                                <p id="view-address-box" class="text-[11px] text-slate-700 font-medium max-w-xs mx-auto leading-snug">3H92+VF7, Jl. Dirgantara Raya, Gempolsari, Kec. Bandung Kulon, Kota Bandung, Jawa Barat 40215</p>
+                                <p id="view-address-box" class="text-[11px] text-slate-900 font-semibold max-w-xs mx-auto leading-snug">3H92+VF7, Jl. Dirgantara Raya, Gempolsari, Kec. Bandung Kulon, Kota Bandung, Jawa Barat 40215</p>
                             </div>
                         </div>
 
@@ -341,28 +341,28 @@
                 <!-- OUR LOVE STORY -->
                 <section class="py-16 md:py-24 px-4 md:px-6 max-w-xl mx-auto space-y-10">
                     <div class="text-center space-y-2 reveal">
-                        <h2 class="text-3xl md:text-4xl font-serif text-amber-900 font-normal italic">Our Love Story</h2>
+                        <h2 class="text-3xl md:text-4xl font-serif text-slate-900 font-extrabold italic">Our Love Story</h2>
                     </div>
 
-                    <div class="relative border-l-2 border-amber-900/60 ml-4 md:ml-8 space-y-12 pl-6 md:pl-8">
+                    <div class="relative border-l-2 border-slate-900/80 ml-4 md:ml-8 space-y-12 pl-6 md:pl-8">
                         <div class="relative space-y-2 reveal">
-                            <div class="absolute -left-[31px] md:-left-[39px] top-1 w-4 h-4 rounded-full bg-amber-900 border-2 border-white shadow"></div>
+                            <div class="absolute -left-[31px] md:-left-[39px] top-1 w-4 h-4 rounded-full bg-slate-900 border-2 border-white shadow"></div>
                             <h3 class="text-base font-serif font-bold text-slate-900">Awal Kisah</h3>
-                            <p class="text-xs text-slate-800 font-medium leading-relaxed">
+                            <p class="text-xs text-slate-900 font-semibold leading-relaxed">
                                 Pada awalnya, kami adalah dua orang asing yang berjalan di jalannya masing-masing. Tak saling kenal, tak saling sapa. Hingga semesta dengan caranya yang indah, mempertemukan kami di satu titik yang sama.
                             </p>
                         </div>
                         <div class="relative space-y-2 reveal">
-                            <div class="absolute -left-[31px] md:-left-[39px] top-1 w-4 h-4 rounded-full bg-amber-900 border-2 border-white shadow"></div>
+                            <div class="absolute -left-[31px] md:-left-[39px] top-1 w-4 h-4 rounded-full bg-slate-900 border-2 border-white shadow"></div>
                             <h3 class="text-base font-serif font-bold text-slate-900">Tumbuh Bersama</h3>
-                            <p class="text-xs text-slate-800 font-medium leading-relaxed">
+                            <p class="text-xs text-slate-900 font-semibold leading-relaxed">
                                 Percakapan sederhana menjadi tawa yang panjang. Tawa yang panjang menjadi nyaman yang menetap. Dan nyaman itu pelan-pelan berubah menjadi cinta yang tak kami rencanakan.
                             </p>
                         </div>
                         <div class="relative space-y-2 reveal">
-                            <div class="absolute -left-[31px] md:-left-[39px] top-1 w-4 h-4 rounded-full bg-amber-900 border-2 border-white shadow"></div>
+                            <div class="absolute -left-[31px] md:-left-[39px] top-1 w-4 h-4 rounded-full bg-slate-900 border-2 border-white shadow"></div>
                             <h3 class="text-base font-serif font-bold text-slate-900">Janji Setia</h3>
-                            <p class="text-xs text-slate-800 font-medium leading-relaxed">
+                            <p class="text-xs text-slate-900 font-semibold leading-relaxed">
                                 Dan kini, setelah melalui waktu, doa, dan restu, kami yakin bahwa pertemuan ini bukan kebetulan. Ini adalah jawaban dari doa-doa yang kami langitkan diam-diam.
                             </p>
                         </div>
@@ -373,27 +373,26 @@
                 <section class="py-16 md:py-24 px-4 md:px-6 max-w-2xl mx-auto space-y-8">
                     <div class="text-center space-y-2 reveal">
                         <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900">Ucapan & Doa Restu</h2>
-                        <p class="text-xs text-slate-800 font-semibold">Berikan ucapan, doa, dan konfirmasi kehadiran untuk kedua mempelai.</p>
+                        <p class="text-xs text-slate-900 font-semibold">Berikan ucapan, doa, dan konfirmasi kehadiran untuk kedua mempelai.</p>
                     </div>
 
-                    <div class="space-y-4 reveal">
+                    <div class="space-y-4 reveal bg-white/80 p-6 rounded-2xl shadow-sm border border-slate-200">
                         <div>
                             <label class="block text-xs font-bold text-slate-900 mb-1">Nama Tamu</label>
-                            <input type="text" id="comment-name" placeholder="Nama Anda" class="w-full bg-slate-100/60 border border-slate-400/80 rounded-xl px-3 py-2 text-xs text-slate-900 font-semibold placeholder:text-slate-500 focus:outline-none focus:border-slate-900">
+                            <input type="text" id="comment-name" placeholder="Nama Anda" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 font-semibold placeholder:text-slate-400 focus:outline-none focus:border-slate-900">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-900 mb-1">Konfirmasi Kehadiran</label>
-                            <select id="comment-attendance" class="w-full bg-slate-100/60 border border-slate-400/80 rounded-xl px-3 py-2 text-xs text-slate-900 font-semibold focus:outline-none focus:border-slate-900">
+                            <select id="comment-attendance" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 font-semibold focus:outline-none focus:border-slate-900">
                                 <option value="Hadir">Hadir</option>
                                 <option value="Tidak Hadir">Tidak Hadir</option>
-                                <option value="Masih Ragu">Masih Ragu</option>
                             </select>
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-900 mb-1">Ucapan & Doa</label>
-                            <textarea id="comment-text" rows="3" placeholder="Tulis ucapan dan doa restu di sini..." class="w-full bg-slate-100/60 border border-slate-400/80 rounded-xl p-3 text-xs text-slate-900 font-semibold placeholder:text-slate-500 focus:outline-none focus:border-slate-900"></textarea>
+                            <textarea id="comment-text" rows="3" placeholder="Tulis ucapan dan doa restu di sini..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs text-slate-900 font-semibold placeholder:text-slate-400 focus:outline-none focus:border-slate-900"></textarea>
                         </div>
-                        <button onclick="submitComment()" class="w-full py-3 bg-slate-900 hover:bg-slate-800 text-slate-100 font-bold text-xs rounded-xl transition-all shadow-md">
+                        <button onclick="submitComment()" class="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition-all shadow-md">
                             Kirim Ucapan
                         </button>
                     </div>
@@ -402,7 +401,7 @@
                         <h3 class="text-sm font-bold text-slate-900">Daftar Ucapan Tamu (<span id="comment-count">0</span>)</h3>
                         <div id="comments-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-1"></div>
                         <div id="see-more-container" class="text-center pt-2 hidden">
-                            <button onclick="toggleSeeMoreComments()" id="see-more-btn" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-xs font-bold text-slate-100 rounded-xl transition-colors">
+                            <button onclick="toggleSeeMoreComments()" id="see-more-btn" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-xs font-bold text-white rounded-xl transition-colors">
                                 See More (Lihat Semua)
                             </button>
                         </div>
@@ -413,17 +412,17 @@
                 <section class="py-16 md:py-24 px-4 md:px-6 max-w-4xl mx-auto space-y-12">
                     <div class="p-6 text-center max-w-md mx-auto space-y-4 reveal">
                         <h3 class="text-lg font-serif font-bold text-slate-900">Kado Digital</h3>
-                        <p class="text-xs text-slate-800 font-semibold leading-relaxed">
+                        <p class="text-xs text-slate-900 font-semibold leading-relaxed">
                             Doa restu Anda merupakan karunia terindah bagi kami. Namun jika ingin mengirimkan tanda kasih:
                         </p>
                         
-                        <div class="p-4 bg-slate-100/70 border border-slate-300 rounded-2xl shadow-sm space-y-1.5 text-center">
+                        <div class="p-4 bg-white/90 border border-slate-300 rounded-2xl shadow-sm space-y-1.5 text-center">
                             <p id="view-bank-name" class="text-base font-extrabold text-slate-900 tracking-wider">BCA</p>
-                            <p id="view-bank-owner" class="text-xs font-bold text-slate-700">a.n M. Raihan Aly</p>
+                            <p id="view-bank-owner" class="text-xs font-bold text-slate-800">a.n M. Raihan Aly</p>
                             <p id="view-bank-number" class="text-lg font-mono font-extrabold text-slate-900 tracking-widest pt-1">6765293239</p>
                         </div>
 
-                        <button onclick="copyRek(this)" class="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-xs rounded-xl font-bold text-slate-100 transition-colors shadow-md">
+                        <button onclick="copyRek(this)" class="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-xs rounded-xl font-bold text-white transition-colors shadow-md">
                             Salin Rekening
                         </button>
                     </div>
@@ -457,8 +456,8 @@
         }
 
         const DEFAULT_AUDIO_SRC = 'Sound/anugrah.mp3';
-        const DEFAULT_GROOM_IMG = 'img/depan.jpeg';
-        const DEFAULT_BRIDE_IMG = 'img/depan.jpeg';
+        const DEFAULT_GROOM_IMG = 'img/fotoaly.jpeg';
+        const DEFAULT_BRIDE_IMG = 'img/fotopuja.jpeg';
         const DEFAULT_TARGET_DATE = '2026-11-15T08:00:00';
         const DEFAULT_DATE_TEXT = 'Minggu, 15 November 2026';
         const DEFAULT_MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=Gedung+Serbaguna+Dirgantara+Bandung';
@@ -484,6 +483,7 @@
             reveals.forEach(el => observer.observe(el));
         }
 
+        // MENGATASI GLITCH: PERIKSA PARAMETER URL SEBELUM KONTEN TAMPIL
         window.addEventListener('DOMContentLoaded', () => {
             const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
             if (!saved.date || !saved.date.includes('2026-11-15')) {
@@ -727,7 +727,7 @@
             countBadge.innerText = commentsList.length;
 
             if (commentsList.length === 0) {
-                container.innerHTML = `<p class="text-center text-xs text-slate-800 font-semibold py-4">Belum ada ucapan. Jadilah yang pertama memberikan ucapan!</p>`;
+                container.innerHTML = `<p class="text-center text-xs text-slate-900 font-semibold py-4">Belum ada ucapan. Jadilah yang pertama memberikan ucapan!</p>`;
                 seeMoreContainer.classList.add('hidden');
                 return;
             }
@@ -736,20 +736,19 @@
             const displayedComments = commentsList.slice(0, limit);
 
             container.innerHTML = displayedComments.map(c => {
-                let badgeColor = "bg-emerald-100 text-emerald-800 border border-emerald-300";
-                if (c.attendance === "Tidak Hadir") badgeColor = "bg-rose-100 text-rose-800 border border-rose-300";
-                if (c.attendance === "Masih Ragu") badgeColor = "bg-amber-100 text-amber-800 border border-amber-300";
+                let badgeColor = "bg-emerald-100 text-emerald-900 border border-emerald-400";
+                if (c.attendance === "Tidak Hadir") badgeColor = "bg-rose-100 text-rose-900 border border-rose-400";
 
                 return `
-                    <div class="pb-3 border-b border-slate-300/80 space-y-1 transition-all duration-300">
+                    <div class="pb-3 border-b border-slate-300 space-y-1 transition-all duration-300">
                         <div class="flex justify-between items-center gap-2">
                             <div class="flex items-center gap-2">
                                 <span class="text-xs font-extrabold text-slate-900">${escapeHtml(c.name)}</span>
                                 <span class="px-2 py-0.5 text-[9px] font-bold rounded-full ${badgeColor}">${escapeHtml(c.attendance)}</span>
                             </div>
-                            <span class="text-[10px] text-slate-600 font-medium">${escapeHtml(c.date)}</span>
+                            <span class="text-[10px] text-slate-700 font-semibold">${escapeHtml(c.date)}</span>
                         </div>
-                        <p class="text-xs text-slate-800 font-semibold leading-relaxed">${escapeHtml(c.text)}</p>
+                        <p class="text-xs text-slate-900 font-semibold leading-relaxed">${escapeHtml(c.text)}</p>
                     </div>
                 `;
             }).join('');
@@ -777,7 +776,6 @@
             container.innerHTML = commentsList.map(c => {
                 let badgeColor = "bg-emerald-950 text-emerald-300 border border-emerald-800";
                 if (c.attendance === "Tidak Hadir") badgeColor = "bg-rose-950 text-rose-300 border border-rose-800";
-                if (c.attendance === "Masih Ragu") badgeColor = "bg-amber-950 text-amber-300 border border-amber-800";
 
                 return `
                     <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-start justify-between gap-3">
@@ -819,7 +817,7 @@
         }
 
         function downloadExcelTemplate() {
-            const templateData = [{ "Nama Tamu": "Budi Santoso" }, { "Nama Tamu": "Siti Aminah" }];
+            const templateData = [{ "Nama Tamu": "Rendy & Nadia" }, { "Nama Tamu": "Budi Santoso" }];
             const worksheet = XLSX.utils.json_to_sheet(templateData);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "Daftar Tamu");
