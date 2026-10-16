@@ -13,6 +13,11 @@
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
     </script>
+    
+    <!-- FIREBASE SDK UNTUK PENYIMPANAN CLOUD & SINKRONISASI REALTIME LINTAS PERANGKAT -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
     <style>
         @keyframes spinSlow {
             from { transform: rotate(0deg); }
@@ -189,10 +194,10 @@
                 <!-- ADMIN MANAJEMEN KOMENTAR & KELOLA HAPUS -->
                 <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4">
                     <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-                        <h2 class="text-sm font-semibold text-slate-100">Kelola Komentar Tamu (Khusus Admin)</h2>
+                        <h2 class="text-sm font-semibold text-slate-100">Kelola Komentar Tamu (Cloud Realtime Admin)</h2>
                         <span id="admin-comment-count" class="px-2.5 py-0.5 bg-slate-800 text-slate-200 text-[10px] rounded-full font-mono">0 Komentar</span>
                     </div>
-                    <p class="text-[11px] text-slate-400">Semua ucapan dari berbagai link tamu akan terhimpun di sini. Anda dapat menghapus ucapan yang tidak diinginkan.</p>
+                    <p class="text-[11px] text-slate-400">Semua ucapan dari berbagai link tamu di perangkat apa pun akan terhimpun secara cloud. Anda dapat menghapus ucapan di sini.</p>
                     <div id="admin-comments-container" class="space-y-3 max-h-80 overflow-y-auto pr-1"></div>
                 </div>
             </div>
@@ -430,6 +435,21 @@
 
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
+        // INISIALISASI FIREBASE CLOUD REALTIME DATABASE 
+        const firebaseConfig = {
+            databaseURL: "https://wedding-invitation-aly-default-rtdb.asia-southeast1.firebasedatabase.app/"
+        };
+
+        let db = null;
+        try {
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            db = firebase.database();
+        } catch (e) {
+            console.log("Firebase init error:", e);
+        }
+
         const DEFAULT_AUDIO_SRC = 'Sound/anugrah.mp3';
         const DEFAULT_GROOM_IMG = 'img/depan.jpeg';
         const DEFAULT_BRIDE_IMG = 'img/depan.jpeg';
@@ -440,9 +460,7 @@
         let showAllComments = false;
         let countdownTimerInterval = null;
         let isPlaying = false;
-        let isAdminView = false;
-
-        const commentChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('wedding_comments_channel') : null;
+        let commentsList = [];
 
         function initScrollReveal() {
             const reveals = document.querySelectorAll('.reveal');
@@ -479,26 +497,30 @@
 
             loadSavedSettingsToForm();
             parseUrlParameters();
-            renderComments();
-            renderAdminComments();
+            listenCloudComments();
             startCountdown();
+        });
 
-            window.addEventListener('storage', (e) => {
-                if (e.key === 'wedding_config') {
+        // MENDENGARKAN DAN MENYEBARKAN KOMENTAR SECARA CLOUD REALTIME LINTAS PERANGKAT
+        function listenCloudComments() {
+            if (db) {
+                db.ref('comments').on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    commentsList = [];
+                    if (data) {
+                        Object.keys(data).forEach(key => {
+                            let item = data[key];
+                            item.firebaseKey = key; // Menyimpan ID unik Firebase untuk fitur hapus admin
+                            commentsList.unshift(item);
+                        });
+                    }
                     renderComments();
                     renderAdminComments();
-                }
-            });
-
-            if (commentChannel) {
-                commentChannel.onmessage = (event) => {
-                    if (event.data && (event.data.type === 'NEW_COMMENT' || event.data.type === 'DELETE_COMMENT')) {
-                        renderComments();
-                        renderAdminComments();
-                    }
-                };
+                });
+            } else {
+                alert("Koneksi database cloud gagal dimuat. Pastikan terhubung ke internet.");
             }
-        });
+        }
 
         function startCountdown() {
             if (countdownTimerInterval) clearInterval(countdownTimerInterval);
@@ -546,7 +568,6 @@
 
             if (toName) {
                 // Tampilan untuk tamu via link ?to=
-                isAdminView = false;
                 document.getElementById('admin-page').classList.add('hidden');
                 document.getElementById('admin-back-btn').classList.add('hidden');
                 document.getElementById('invitation-page').classList.remove('hidden');
@@ -557,7 +578,6 @@
                 initScrollReveal();
             } else {
                 // Link Utama tanpa parameter => Membuka Dashboard Admin dengan opsi Pratinjau
-                isAdminView = true;
                 document.getElementById('admin-page').classList.remove('hidden');
                 document.getElementById('invitation-page').classList.add('hidden');
             }
@@ -667,6 +687,7 @@
             document.getElementById('result-box').classList.remove('hidden');
         }
 
+        // MENGIRIM KOMENTAR LANGSUNG KE CLOUD DATABASE (TERKIRIM KE SEMUA LINK/PERANGKAT SECARA INSTAN)
         function submitComment() {
             const name = document.getElementById('comment-name').value.trim();
             const attendance = document.getElementById('comment-attendance').value;
@@ -676,48 +697,42 @@
             if (!text) return alert('Mohon tuliskan ucapan atau doa restu!');
 
             const newComment = {
-                id: 'c_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
                 name: name,
                 attendance: attendance,
                 text: text,
                 date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
             };
 
-            const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
-            if (!saved.comments) saved.comments = [];
-
-            saved.comments.unshift(newComment);
-            localStorage.setItem('wedding_config', JSON.stringify(saved));
-
-            document.getElementById('comment-text').value = '';
-            renderComments();
-            renderAdminComments();
-
-            if (commentChannel) {
-                commentChannel.postMessage({ type: 'NEW_COMMENT', comment: newComment });
+            if (db) {
+                db.ref('comments').push(newComment).then(() => {
+                    document.getElementById('comment-text').value = '';
+                    alert('Ucapan & doa berhasil dikirim dan tersinkronisasi ke semua perangkat secara realtime!');
+                }).catch(err => {
+                    alert('Gagal mengirim ucapan: ' + err.message);
+                });
+            } else {
+                alert('Koneksi database cloud tidak tersedia.');
             }
-
-            alert('Ucapan & doa berhasil dikirim!');
         }
 
+        // MENAMPILKAN KOMENTAR DI HALAMAN UTAMA / LINK TAMU
         function renderComments() {
-            const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
-            const comments = saved.comments || [];
             const container = document.getElementById('comments-container');
             const countBadge = document.getElementById('comment-count');
             const seeMoreContainer = document.getElementById('see-more-container');
             const seeMoreBtn = document.getElementById('see-more-btn');
 
-            countBadge.innerText = comments.length;
+            if (!container) return;
+            countBadge.innerText = commentsList.length;
 
-            if (comments.length === 0) {
+            if (commentsList.length === 0) {
                 container.innerHTML = `<p class="text-center text-xs text-slate-800 font-semibold py-4">Belum ada ucapan. Jadilah yang pertama memberikan ucapan!</p>`;
                 seeMoreContainer.classList.add('hidden');
                 return;
             }
 
-            const limit = showAllComments ? comments.length : 5;
-            const displayedComments = comments.slice(0, limit);
+            const limit = showAllComments ? commentsList.length : 5;
+            const displayedComments = commentsList.slice(0, limit);
 
             container.innerHTML = displayedComments.map(c => {
                 let badgeColor = "bg-emerald-100 text-emerald-800 border border-emerald-300";
@@ -738,29 +753,28 @@
                 `;
             }).join('');
 
-            if (comments.length > 5) {
+            if (commentsList.length > 5) {
                 seeMoreContainer.classList.remove('hidden');
-                seeMoreBtn.innerText = showAllComments ? "Tampilkan Lebih Sedikit" : `See More (${comments.length - 5} lainnya)`;
+                seeMoreBtn.innerText = showAllComments ? "Tampilkan Lebih Sedikit" : `See More (${commentsList.length - 5} lainnya)`;
             } else {
                 seeMoreContainer.classList.add('hidden');
             }
         }
 
-        // FUNGSI KHUSUS ADMIN UNTUK MEMANTAU & MENGHAPUS KOMENTAR TAMU
+        // MENAMPILKAN & MENGELOLA HAPUS KOMENTAR DI DASHBOARD ADMIN
         function renderAdminComments() {
-            const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
-            const comments = saved.comments || [];
             const container = document.getElementById('admin-comments-container');
             const countBadge = document.getElementById('admin-comment-count');
 
-            countBadge.innerText = `${comments.length} Komentar`;
+            if (!container) return;
+            countBadge.innerText = `${commentsList.length} Komentar`;
 
-            if (comments.length === 0) {
+            if (commentsList.length === 0) {
                 container.innerHTML = `<p class="text-center text-xs text-slate-500 py-4">Belum ada ucapan masuk dari tamu.</p>`;
                 return;
             }
 
-            container.innerHTML = comments.map(c => {
+            container.innerHTML = commentsList.map(c => {
                 let badgeColor = "bg-emerald-950 text-emerald-300 border border-emerald-800";
                 if (c.attendance === "Tidak Hadir") badgeColor = "bg-rose-950 text-rose-300 border border-rose-800";
                 if (c.attendance === "Masih Ragu") badgeColor = "bg-amber-950 text-amber-300 border border-amber-800";
@@ -775,7 +789,7 @@
                             </div>
                             <p class="text-xs text-slate-300 font-sans">${escapeHtml(c.text)}</p>
                         </div>
-                        <button onclick="deleteComment('${c.id}')" title="Hapus Komentar Ini" class="px-2.5 py-1.5 bg-rose-950/80 hover:bg-rose-900 border border-rose-800 text-rose-200 text-[10px] font-bold rounded-lg transition-colors whitespace-nowrap">
+                        <button onclick="deleteCloudComment('${c.firebaseKey}')" title="Hapus Komentar Ini" class="px-2.5 py-1.5 bg-rose-950/80 hover:bg-rose-900 border border-rose-800 text-rose-200 text-[10px] font-bold rounded-lg transition-colors whitespace-nowrap">
                             🗑️ Hapus
                         </button>
                     </div>
@@ -783,24 +797,17 @@
             }).join('');
         }
 
-        // MENGHAPUS KOMENTAR SECARA PERMANEN OLEH ADMIN
-        function deleteComment(commentId) {
-            if (!confirm('Apakah Anda yakin ingin menghapus ucapan ini?')) return;
+        // MENGHAPUS KOMENTAR SECARA PERMANEN DARI CLOUD DATABASE OLEH ADMIN
+        function deleteCloudComment(firebaseKey) {
+            if (!confirm('Apakah Anda yakin ingin menghapus ucapan ini secara permanen dari semua perangkat?')) return;
 
-            const saved = JSON.parse(localStorage.getItem('wedding_config')) || {};
-            if (!saved.comments) return;
-
-            saved.comments = saved.comments.filter(c => c.id !== commentId);
-            localStorage.setItem('wedding_config', JSON.stringify(saved));
-
-            renderComments();
-            renderAdminComments();
-
-            if (commentChannel) {
-                commentChannel.postMessage({ type: 'DELETE_COMMENT', id: commentId });
+            if (db) {
+                db.ref('comments').child(firebaseKey).remove().then(() => {
+                    alert('Komentar berhasil dihapus!');
+                }).catch(err => {
+                    alert('Gagal menghapus komentar: ' + err.message);
+                });
             }
-
-            alert('Komentar berhasil dihapus!');
         }
 
         function toggleSeeMoreComments() {
