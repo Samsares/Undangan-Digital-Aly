@@ -27,6 +27,14 @@
             animation: spinSlow 8s linear infinite;
         }
 
+        /* EFEK SHADOW GELAP HALUS SUPAYA TEKS SANGAT JELAS DIBACA TANPA KOTAK */
+        .text-readable-shadow {
+            text-shadow: 
+                0px 2px 4px rgba(0, 0, 0, 0.95), 
+                0px 0px 10px rgba(0, 0, 0, 0.85),
+                0px 0px 20px rgba(0, 0, 0, 0.7);
+        }
+
         .bg-cover-permanent {
             background-image: url('img/depan.jpeg');
             background-size: cover;
@@ -220,20 +228,20 @@
         </div>
 
         <!-- Cover Section -->
-        <section id="cover-section" class="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-4 py-10 bg-cover-permanent">
-            <!-- Kartu Glassmorphism Elegan Agar Teks Terbaca Tajam Lintas Background -->
-            <div class="max-w-md w-full space-y-4 z-10 mx-auto mt-[22vh] p-6 rounded-3xl bg-black/55 backdrop-blur-md border border-white/20 shadow-2xl">
-                <p class="text-[11px] uppercase tracking-[0.3em] font-extrabold text-amber-300 drop-shadow">The Wedding Of</p>
-                <h1 id="view-couple-names-cover" class="text-2xl md:text-3xl font-serif font-bold text-white leading-tight drop-shadow-md">M. Raihan Aly & Puja Solehah</h1>
+        <section id="cover-section" class="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-6 py-10 bg-cover-permanent">
+            <!-- Teks Langsung Tanpa Kotak -->
+            <div class="max-w-md w-full space-y-3.5 z-10 mx-auto mt-[28vh]">
+                <p class="text-[11px] uppercase tracking-[0.3em] font-extrabold text-white text-readable-shadow">The Wedding Of</p>
+                <h1 id="view-couple-names-cover" class="text-2xl md:text-4xl font-serif font-bold text-white leading-tight text-readable-shadow">M. Raihan Aly & Puja Solehah</h1>
                 
-                <div class="py-1 px-4 inline-block border-y border-white/20">
-                    <p class="text-[10px] text-slate-300 uppercase tracking-wider font-semibold">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
-                    <p id="view-guest-name" class="text-sm font-extrabold text-white mt-0.5 tracking-wide">Tamu Kehormatan</p>
+                <div class="py-1 px-4 inline-block">
+                    <p class="text-[10px] text-white uppercase tracking-wider font-bold text-readable-shadow">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
+                    <p id="view-guest-name" class="text-sm md:text-base font-extrabold text-white mt-0.5 tracking-wide text-readable-shadow">Tamu Kehormatan</p>
                 </div>
                 
-                <p class="text-[11px] text-slate-200 font-medium max-w-xs mx-auto leading-relaxed">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.</p>
+                <p class="text-[11px] text-white font-semibold max-w-xs mx-auto leading-relaxed text-readable-shadow">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.</p>
                 
-                <button onclick="openInvitation()" class="px-8 py-2.5 bg-slate-100 hover:bg-white text-slate-950 text-xs font-extrabold rounded-2xl shadow-xl transition-all mt-2 border border-white/40">
+                <button onclick="openInvitation()" class="px-8 py-2.5 bg-slate-900/90 hover:bg-slate-900 text-white text-xs font-bold rounded-2xl shadow-2xl transition-all mt-2 border border-slate-700/80">
                     Buka Undangan
                 </button>
             </div>
