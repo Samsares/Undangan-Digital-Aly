@@ -27,6 +27,13 @@
             animation: spinSlow 8s linear infinite;
         }
 
+        /* OUTLINE TEKS HITAM TIPIS & TEGAS UNTUK COVER */
+        .text-outline-black {
+            -webkit-text-stroke: 1px #000000;
+            text-stroke: 1px #000000;
+            text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.9), 0px 0px 8px rgba(0, 0, 0, 0.8);
+        }
+
         .bg-cover-permanent {
             background-image: url('img/depan.jpeg');
             background-size: cover;
@@ -222,15 +229,15 @@
         <!-- Cover Section -->
         <section id="cover-section" class="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-6 py-10 bg-cover-permanent">
             <div class="max-w-md w-full space-y-3 z-10 mx-auto mt-[28vh]">
-                <p class="text-[11px] uppercase tracking-[0.3em] font-extrabold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">The Wedding Of</p>
-                <h1 id="view-couple-names-cover" class="text-2xl md:text-4xl font-serif font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">M. Raihan Aly & Puja Solehah</h1>
+                <p class="text-[11px] uppercase tracking-[0.3em] font-extrabold text-white text-outline-black">The Wedding Of</p>
+                <h1 id="view-couple-names-cover" class="text-2xl md:text-4xl font-serif font-bold text-white text-outline-black">M. Raihan Aly & Puja Solehah</h1>
                 
                 <div class="py-1 px-4 inline-block">
-                    <p class="text-[10px] text-slate-200 uppercase tracking-wider font-bold drop-shadow">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
-                    <p id="view-guest-name" class="text-sm font-extrabold text-white mt-0.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">Tamu Kehormatan</p>
+                    <p class="text-[10px] text-white uppercase tracking-wider font-extrabold text-outline-black">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
+                    <p id="view-guest-name" class="text-sm font-extrabold text-white mt-0.5 text-outline-black">Tamu Kehormatan</p>
                 </div>
                 
-                <p class="text-[11px] text-slate-100 font-semibold max-w-xs mx-auto leading-tight drop-shadow">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.</p>
+                <p class="text-[11px] text-white font-bold max-w-xs mx-auto leading-tight text-outline-black">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.</p>
                 
                 <button onclick="openInvitation()" class="px-8 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-2xl shadow-2xl transition-all mt-1 border border-slate-700">
                     Buka Undangan
